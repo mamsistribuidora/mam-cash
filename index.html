@@ -9,12 +9,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- InputMask para telefone -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -294,8 +290,46 @@
             margin-bottom: 20px;
             text-align: center;
         }
+        .country-select {
+            width: 100%;
+            padding: 14px 18px;
+            margin: 12px 0;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .phone-container {
+            display: flex;
+            gap: 12px;
+            margin: 8px 0;
+        }
+        .phone-code {
+            width: 100px;
+            padding: 14px 12px;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #d4af37;
+            font-weight: bold;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        .phone-number {
+            flex: 1;
+            padding: 14px 18px;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #fff;
+            font-size: 0.95rem;
+        }
         @media (max-width: 500px) {
             .balance-amount { font-size: 2rem; }
+            .phone-container { flex-direction: column; gap: 8px; }
+            .phone-code { width: 100%; }
         }
     </style>
 </head>
@@ -305,7 +339,7 @@
 <div id="toastMessage" class="toast"></div>
 
 <script>
-    // Firebase Config (fornecida)
+    // Firebase Config
     const firebaseConfig = {
         apiKey: 'AIzaSyC90uEwso8ZP3s7tLvV_z88ZbUijXLOpPU',
         authDomain: 'project-73108ea9-d1b2-4ac3-8fb.firebaseapp.com',
@@ -328,8 +362,60 @@
     let cardActivated = false;
     let userCardData = null;
     let pending2FACode = null;
-    let pending2FAType = null;
     let pendingLoginEmail = null;
+    
+    // Lista completa de países com códigos telefônicos
+    const countriesWithCodes = [
+        { name: "Afeganistão", code: "+93" }, { name: "África do Sul", code: "+27" }, { name: "Albânia", code: "+355" }, { name: "Alemanha", code: "+49" },
+        { name: "Andorra", code: "+376" }, { name: "Angola", code: "+244" }, { name: "Antígua e Barbuda", code: "+1" }, { name: "Arábia Saudita", code: "+966" },
+        { name: "Argélia", code: "+213" }, { name: "Argentina", code: "+54" }, { name: "Armênia", code: "+374" }, { name: "Austrália", code: "+61" },
+        { name: "Áustria", code: "+43" }, { name: "Azerbaijão", code: "+994" }, { name: "Bahamas", code: "+1" }, { name: "Bangladesh", code: "+880" },
+        { name: "Barbados", code: "+1" }, { name: "Bélgica", code: "+32" }, { name: "Belize", code: "+501" }, { name: "Benin", code: "+229" },
+        { name: "Bielorrússia", code: "+375" }, { name: "Bolívia", code: "+591" }, { name: "Bósnia e Herzegovina", code: "+387" }, { name: "Botsuana", code: "+267" },
+        { name: "Brasil", code: "+55" }, { name: "Brunei", code: "+673" }, { name: "Bulgária", code: "+359" }, { name: "Burkina Faso", code: "+226" },
+        { name: "Burundi", code: "+257" }, { name: "Butão", code: "+975" }, { name: "Cabo Verde", code: "+238" }, { name: "Camarões", code: "+237" },
+        { name: "Camboja", code: "+855" }, { name: "Canadá", code: "+1" }, { name: "Catar", code: "+974" }, { name: "Cazaquistão", code: "+7" },
+        { name: "Chade", code: "+235" }, { name: "Chile", code: "+56" }, { name: "China", code: "+86" }, { name: "Chipre", code: "+357" },
+        { name: "Colômbia", code: "+57" }, { name: "Comores", code: "+269" }, { name: "Congo", code: "+242" }, { name: "Coreia do Norte", code: "+850" },
+        { name: "Coreia do Sul", code: "+82" }, { name: "Costa do Marfim", code: "+225" }, { name: "Costa Rica", code: "+506" }, { name: "Croácia", code: "+385" },
+        { name: "Cuba", code: "+53" }, { name: "Dinamarca", code: "+45" }, { name: "Djibouti", code: "+253" }, { name: "Dominica", code: "+1" },
+        { name: "Egito", code: "+20" }, { name: "El Salvador", code: "+503" }, { name: "Emirados Árabes Unidos", code: "+971" }, { name: "Equador", code: "+593" },
+        { name: "Eritreia", code: "+291" }, { name: "Eslováquia", code: "+421" }, { name: "Eslovênia", code: "+386" }, { name: "Espanha", code: "+34" },
+        { name: "Estados Unidos", code: "+1" }, { name: "Estônia", code: "+372" }, { name: "Eswatini", code: "+268" }, { name: "Etiópia", code: "+251" },
+        { name: "Fiji", code: "+679" }, { name: "Filipinas", code: "+63" }, { name: "Finlândia", code: "+358" }, { name: "França", code: "+33" },
+        { name: "Gabão", code: "+241" }, { name: "Gâmbia", code: "+220" }, { name: "Gana", code: "+233" }, { name: "Geórgia", code: "+995" },
+        { name: "Granada", code: "+1" }, { name: "Grécia", code: "+30" }, { name: "Guatemala", code: "+502" }, { name: "Guiana", code: "+592" },
+        { name: "Guiné", code: "+224" }, { name: "Guiné-Bissau", code: "+245" }, { name: "Guiné Equatorial", code: "+240" }, { name: "Haiti", code: "+509" },
+        { name: "Holanda", code: "+31" }, { name: "Honduras", code: "+504" }, { name: "Hungria", code: "+36" }, { name: "Iêmen", code: "+967" },
+        { name: "Índia", code: "+91" }, { name: "Indonésia", code: "+62" }, { name: "Irã", code: "+98" }, { name: "Iraque", code: "+964" },
+        { name: "Irlanda", code: "+353" }, { name: "Islândia", code: "+354" }, { name: "Israel", code: "+972" }, { name: "Itália", code: "+39" },
+        { name: "Jamaica", code: "+1" }, { name: "Japão", code: "+81" }, { name: "Jordânia", code: "+962" }, { name: "Kiribati", code: "+686" },
+        { name: "Kuwait", code: "+965" }, { name: "Laos", code: "+856" }, { name: "Lesoto", code: "+266" }, { name: "Letônia", code: "+371" },
+        { name: "Líbano", code: "+961" }, { name: "Libéria", code: "+231" }, { name: "Líbia", code: "+218" }, { name: "Liechtenstein", code: "+423" },
+        { name: "Lituânia", code: "+370" }, { name: "Luxemburgo", code: "+352" }, { name: "Madagáscar", code: "+261" }, { name: "Malásia", code: "+60" },
+        { name: "Malawi", code: "+265" }, { name: "Maldivas", code: "+960" }, { name: "Mali", code: "+223" }, { name: "Malta", code: "+356" },
+        { name: "Marrocos", code: "+212" }, { name: "Marshall", code: "+692" }, { name: "Maurícia", code: "+230" }, { name: "Mauritânia", code: "+222" },
+        { name: "México", code: "+52" }, { name: "Micronésia", code: "+691" }, { name: "Moçambique", code: "+258" }, { name: "Moldávia", code: "+373" },
+        { name: "Mônaco", code: "+377" }, { name: "Mongólia", code: "+976" }, { name: "Montenegro", code: "+382" }, { name: "Myanmar", code: "+95" },
+        { name: "Namíbia", code: "+264" }, { name: "Nauru", code: "+674" }, { name: "Nepal", code: "+977" }, { name: "Nicarágua", code: "+505" },
+        { name: "Níger", code: "+227" }, { name: "Nigéria", code: "+234" }, { name: "Noruega", code: "+47" }, { name: "Nova Zelândia", code: "+64" },
+        { name: "Omã", code: "+968" }, { name: "Palau", code: "+680" }, { name: "Panamá", code: "+507" }, { name: "Papua-Nova Guiné", code: "+675" },
+        { name: "Paquistão", code: "+92" }, { name: "Paraguai", code: "+595" }, { name: "Peru", code: "+51" }, { name: "Polônia", code: "+48" },
+        { name: "Portugal", code: "+351" }, { name: "Quênia", code: "+254" }, { name: "Quirguistão", code: "+996" }, { name: "Reino Unido", code: "+44" },
+        { name: "República Centro-Africana", code: "+236" }, { name: "República Checa", code: "+420" }, { name: "República Dominicana", code: "+1" },
+        { name: "Romênia", code: "+40" }, { name: "Ruanda", code: "+250" }, { name: "Rússia", code: "+7" }, { name: "Salomão", code: "+677" },
+        { name: "Samoa", code: "+685" }, { name: "San Marino", code: "+378" }, { name: "Santa Lúcia", code: "+1" }, { name: "São Cristóvão e Neves", code: "+1" },
+        { name: "São Tomé e Príncipe", code: "+239" }, { name: "São Vicente e Granadinas", code: "+1" }, { name: "Senegal", code: "+221" },
+        { name: "Serra Leoa", code: "+232" }, { name: "Sérvia", code: "+381" }, { name: "Seychelles", code: "+248" }, { name: "Singapura", code: "+65" },
+        { name: "Síria", code: "+963" }, { name: "Somália", code: "+252" }, { name: "Sri Lanka", code: "+94" }, { name: "Sudão", code: "+249" },
+        { name: "Sudão do Sul", code: "+211" }, { name: "Suécia", code: "+46" }, { name: "Suíça", code: "+41" }, { name: "Suriname", code: "+597" },
+        { name: "Tailândia", code: "+66" }, { name: "Taiwan", code: "+886" }, { name: "Tajiquistão", code: "+992" }, { name: "Tanzânia", code: "+255" },
+        { name: "Timor-Leste", code: "+670" }, { name: "Togo", code: "+228" }, { name: "Tonga", code: "+676" }, { name: "Trindade e Tobago", code: "+1" },
+        { name: "Tunísia", code: "+216" }, { name: "Turcomenistão", code: "+993" }, { name: "Turquia", code: "+90" }, { name: "Tuvalu", code: "+688" },
+        { name: "Ucrânia", code: "+380" }, { name: "Uganda", code: "+256" }, { name: "Uruguai", code: "+598" }, { name: "Uzbequistão", code: "+998" },
+        { name: "Vanuatu", code: "+678" }, { name: "Vaticano", code: "+379" }, { name: "Venezuela", code: "+58" }, { name: "Vietnã", code: "+84" },
+        { name: "Zâmbia", code: "+260" }, { name: "Zimbábue", code: "+263" }
+    ];
     
     function createCoinParticles() {
         const container = document.getElementById('coinParticles');
@@ -409,7 +495,6 @@
             return false;
         }
         
-        // Para ADMIN, cartão gratuito e automático
         if (currentUser.email === ADMIN_EMAIL) {
             const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
             await db.collection('users').doc(uid).update({ cardActivated: true, cardData: cardData });
@@ -511,6 +596,19 @@
         return code;
     }
     
+    function forgotPassword() {
+        const email = prompt("Digite seu e-mail para recuperar a senha:");
+        if (email && email.includes('@')) {
+            auth.sendPasswordResetEmail(email).then(() => {
+                showToast(`📧 Link de recuperação enviado para ${email}`);
+            }).catch(error => {
+                showToast('Erro: ' + error.message);
+            });
+        } else if (email) {
+            showToast('E-mail inválido');
+        }
+    }
+    
     async function renderDashboard() {
         if (!currentUser) { renderLogin(); return; }
         await loadUserData(currentUser.uid);
@@ -568,7 +666,6 @@
         if (isAdmin) {
             const pendingKycSnap = await db.collection('users').where('kycStatus', '==', 'pending_review').get();
             const pendingCardsSnap = await db.collection('cardRequests').where('status', '==', 'pending').get();
-            const allUsersSnap = await db.collection('users').get();
             let pendingKyc = [], pendingCards = [];
             pendingKycSnap.forEach(d => pendingKyc.push({id: d.id, ...d.data()}));
             pendingCardsSnap.forEach(d => pendingCards.push({id: d.id, ...d.data()}));
@@ -660,9 +757,81 @@
         document.getElementById('closeKycModal').onclick = () => { if(stream) stream.getTracks().forEach(track => track.stop()); modal.remove(); };
     }
     
-    async function openTransferModal() { /* similar to previous */ }
-    async function openDepositModal() { /* similar */ }
-    async function openExchangeModal() { /* similar */ }
+    async function openTransferModal() {
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><h3><i class="fas fa-paper-plane"></i> Transferir</h3>
+            <input id="transferEmail" placeholder="Email do destinatário"><input id="transferAmount" type="number" placeholder="Valor"><select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmTransfer" class="btn-gold">Enviar</button><button id="closeModal" class="btn-outline">Cancelar</button></div></div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        document.getElementById('confirmTransfer').onclick = async () => {
+            const toEmail = document.getElementById('transferEmail').value;
+            const amount = parseFloat(document.getElementById('transferAmount').value);
+            const currency = document.getElementById('transferCurrency').value;
+            if (!toEmail || isNaN(amount) || amount<=0) { showToast('Dados inválidos'); return; }
+            if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
+            const usersSnap = await db.collection('users').where('email', '==', toEmail).get();
+            if (usersSnap.empty) { showToast('Destinatário não encontrado'); return; }
+            const targetUser = usersSnap.docs[0];
+            const targetBalances = targetUser.data().balances;
+            targetBalances[currency] = (targetBalances[currency] || 0) + amount;
+            userBalances[currency] -= amount;
+            await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
+            await updateFirestoreBalances(currentUser.uid);
+            showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`);
+            modal.remove(); renderDashboard();
+        };
+        document.getElementById('closeModal').onclick = () => modal.remove();
+    }
+    
+    async function openDepositModal() {
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><h3><i class="fas fa-university"></i> Depósito</h3>
+            <select id="depositMethod"><option value="Angola">🏦 Angola (Multicaixa/IBAN)</option><option value="Crypto">💎 USDT (TRC20)</option><option value="PayPal">💳 PayPal / Cartão Visa</option></select>
+            <input id="depositAmount" placeholder="Valor"><select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <textarea id="depositProof" placeholder="Comprovativo / hash / print"></textarea>
+            <div style="display:flex; gap:12px;"><button id="sendDeposit" class="btn-gold">Solicitar</button><button id="closeDeposit" class="btn-outline">Fechar</button></div></div>`;
+        document.body.appendChild(modal); modal.style.display='flex';
+        document.getElementById('sendDeposit').onclick = async () => {
+            const method = document.getElementById('depositMethod').value;
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+            const currency = document.getElementById('depositCurrency').value;
+            const proof = document.getElementById('depositProof').value;
+            if(isNaN(amount) || amount<=0) return;
+            await db.collection('deposits').add({
+                userId: currentUser.uid, userEmail: currentUser.email, amount, currency, method, proof,
+                status: 'pending', timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast(`📤 Pedido de depósito de ${formatMoney(amount, currency)} enviado.`);
+            modal.remove();
+        };
+        document.getElementById('closeDeposit').onclick = () => modal.remove();
+    }
+    
+    async function openExchangeModal() {
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><h3>💰 Câmbio MAM Cash</h3>
+            <select id="fromCurr"><option>AOA</option><option>USD</option><option>BRL</option></select> → <select id="toCurr"><option>USD</option><option>AOA</option><option>BRL</option></select>
+            <input id="exchangeAmount" placeholder="Montante">
+            <button id="doExchange" class="btn-gold">Converter</button><button id="closeEx" class="btn-outline">Fechar</button></div>`;
+        document.body.appendChild(modal); modal.style.display='flex';
+        document.getElementById('doExchange').onclick = async () => {
+            await exchangeCurrency(document.getElementById('fromCurr').value, document.getElementById('toCurr').value, parseFloat(document.getElementById('exchangeAmount').value));
+            modal.remove();
+        };
+        document.getElementById('closeEx').onclick = () => modal.remove();
+    }
+    
+    function updatePhoneCode() {
+        const countrySelect = document.getElementById('regCountry');
+        const phoneCodeSpan = document.getElementById('phoneCode');
+        if (countrySelect && phoneCodeSpan) {
+            const selectedCountry = countrySelect.value;
+            const countryData = countriesWithCodes.find(c => c.name === selectedCountry);
+            if (countryData) {
+                phoneCodeSpan.textContent = countryData.code;
+            }
+        }
+    }
     
     function renderLogin() {
         document.getElementById('appRoot').innerHTML = `
@@ -673,7 +842,7 @@
                     <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
                     <button id="doLoginStep1" class="btn-gold" style="width:100%; margin-top:16px;">Continuar</button>
                     <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
-                    <div class="forgot-link" id="forgotPasswordBtn">Esqueci a senha</div>
+                    <div class="forgot-link" id="forgotPasswordBtn" style="text-align:center; margin-top:16px; cursor:pointer; color:#d4af37;"><i class="fas fa-key"></i> Esqueci minha senha</div>
                 </div>
                 <div id="codeVerificationView" style="display:none;">
                     <p style="color:#d4af37;">Digite o código enviado</p>
@@ -684,6 +853,7 @@
             </div>`;
         
         document.getElementById('toggleLoginPass')?.addEventListener('click', () => { const inp = document.getElementById('loginPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
+        document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => forgotPassword());
         document.getElementById('doLoginStep1').onclick = async () => {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
@@ -708,41 +878,56 @@
             } else { showToast('Código inválido'); }
         };
         document.getElementById('goToRegister').onclick = () => renderRegister();
-        document.getElementById('forgotPasswordBtn').onclick = () => { const email = document.getElementById('loginEmail').value; if(email) auth.sendPasswordResetEmail(email).then(()=>showToast('Email enviado')).catch(e=>showToast(e.message)); else showToast('Digite seu email'); };
         document.getElementById('backToLogin').onclick = () => { document.getElementById('loginView').style.display = 'block'; document.getElementById('codeVerificationView').style.display = 'none'; };
     }
     
     function renderRegister() {
+        let countryOptions = countriesWithCodes.map(c => `<option value="${c.name}" ${c.name === 'Angola' ? 'selected' : ''}>${c.name}</option>`).join('');
         document.getElementById('appRoot').innerHTML = `
             <div style="max-width:480px; margin: 3vh auto; background:#12100b; border-radius:56px; padding:32px 28px; border:1px solid #d4af37;">
                 <h2 style="color:#d4af37; text-align:center;">Criar Conta</h2>
                 <input id="regFirstName" placeholder="Nome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
                 <input id="regLastName" placeholder="Sobrenome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
                 <input id="regEmail" placeholder="Email" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
-                <input id="regCountry" placeholder="País" value="Angola" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
-                <input id="regPhone" placeholder="+244 999 999 999" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
+                <select id="regCountry" class="country-select" onchange="updatePhoneCode()">${countryOptions}</select>
+                <div class="phone-container">
+                    <span id="phoneCode" class="phone-code">+244</span>
+                    <input id="regPhone" class="phone-number" placeholder="999 999 999">
+                </div>
                 <div class="password-wrapper"><input id="regPassword" type="password" placeholder="Senha (min 6)"><button type="button" id="toggleRegPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
                 <div class="password-wrapper"><input id="regConfirmPassword" type="password" placeholder="Confirmar Senha"><button type="button" id="toggleRegConfirm" class="toggle-password"><i class="fas fa-eye"></i></button></div>
                 <button id="doRegisterFinal" class="btn-gold" style="width:100%; margin-top:16px;">Registrar e Verificar</button>
                 <button id="backToLoginFromReg" class="btn-outline" style="width:100%; margin-top:12px;">Voltar ao Login</button>
             </div>`;
+        
+        window.updatePhoneCode = updatePhoneCode;
+        
         document.getElementById('toggleRegPass')?.addEventListener('click', () => { const inp = document.getElementById('regPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
         document.getElementById('toggleRegConfirm')?.addEventListener('click', () => { const inp = document.getElementById('regConfirmPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
+        
+        const countrySelect = document.getElementById('regCountry');
+        if (countrySelect) {
+            countrySelect.addEventListener('change', updatePhoneCode);
+        }
+        updatePhoneCode();
+        
         document.getElementById('doRegisterFinal').onclick = async () => {
             const firstName = document.getElementById('regFirstName').value;
             const lastName = document.getElementById('regLastName').value;
             const email = document.getElementById('regEmail').value;
             const country = document.getElementById('regCountry').value;
-            const phone = document.getElementById('regPhone').value;
+            const phoneCode = document.getElementById('phoneCode').textContent;
+            const phoneNumber = document.getElementById('regPhone').value;
+            const fullPhone = `${phoneCode} ${phoneNumber}`;
             const password = document.getElementById('regPassword').value;
             const confirm = document.getElementById('regConfirmPassword').value;
-            if(!firstName || !lastName || !email || !phone || !password) { showToast('Preencha todos os campos'); return; }
+            if(!firstName || !lastName || !email || !phoneNumber || !password) { showToast('Preencha todos os campos'); return; }
             if(password !== confirm) { showToast('Senhas não coincidem'); return; }
             if(password.length < 6) { showToast('Senha mínima 6 caracteres'); return; }
             try {
                 const userCred = await auth.createUserWithEmailAndPassword(email, password);
                 await db.collection('users').doc(userCred.user.uid).set({
-                    firstName, lastName, email, country, phone,
+                    firstName, lastName, email, country, phone: fullPhone,
                     balances: { AOA: 0, USD: 0, BRL: 0 },
                     cardActivated: false, kycStatus: 'pending',
                     linkedIBAN: '', linkedPaypal: '',
