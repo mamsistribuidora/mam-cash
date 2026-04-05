@@ -23,123 +23,161 @@
         body {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             min-height: 100vh;
-            padding: 20px 16px 40px;
+            padding: 0;
             position: relative;
             overflow-x: hidden;
         }
-        body::before {
-            content: "💰 💵 💶 💷 💎 🪙";
+        
+        /* Header Fixo */
+        .fixed-header {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            font-size: 70px;
-            opacity: 0.03;
-            pointer-events: none;
-            white-space: pre;
-            overflow: hidden;
-            letter-spacing: 30px;
-            line-height: 1.8;
-            animation: floatMoney 40s infinite linear;
-            z-index: 0;
+            right: 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border-bottom: 2px solid #D4AF37;
+            padding: 16px 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
-        @keyframes floatMoney {
-            0% { transform: translateY(0px) translateX(0px); }
-            100% { transform: translateY(-200px) translateX(50px); }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .app-container {
+        .shield-icon {
+            font-size: 32px;
+            color: #D4AF37;
+            text-shadow: 0 0 10px rgba(212,175,55,0.5);
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #D4AF37;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(212,175,55,0.3);
+        }
+        .logo-sub {
+            font-size: 0.7rem;
+            color: #b9a46b;
+            letter-spacing: 1px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #D4AF37;
+        }
+        
+        /* Conteúdo principal com padding para o header */
+        .main-content {
+            padding-top: 90px;
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: 80px;
             max-width: 680px;
             margin: 0 auto;
-            position: relative;
-            z-index: 2;
         }
-        /* Cartão MAM BLACK Premium */
-        .card-mam-black {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0d0d0d 100%);
+        
+        /* Cartão Premium - Design Profissional */
+        .premium-card {
+            background: linear-gradient(135deg, #0f0f0f 0%, #2c2c2c 100%);
             border-radius: 24px;
             padding: 28px 24px;
             margin-bottom: 28px;
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            box-shadow: 0 30px 45px -12px rgba(0,0,0,0.9), 0 0 0 1px rgba(212,175,55,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
             position: relative;
-            overflow: hidden;
+            transition: transform 0.3s ease;
         }
-        .card-mam-black::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 40%, rgba(212,175,55,0.08) 0%, transparent 60%);
-            pointer-events: none;
+        .premium-card:hover {
+            transform: translateY(-2px);
         }
         .card-chip {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
         .chip-icon {
-            font-size: 48px;
-            color: #d4af37;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            font-size: 42px;
+            color: #D4AF37;
+            text-shadow: 0 0 5px rgba(212,175,55,0.8);
         }
         .card-network {
             font-size: 14px;
-            color: #d4af37;
-            letter-spacing: 2px;
+            color: #D4AF37;
             font-weight: bold;
+            letter-spacing: 2px;
         }
         .card-number {
             font-size: 1.4rem;
-            letter-spacing: 4px;
-            font-weight: 500;
-            color: #e8d5a8;
-            margin-bottom: 28px;
+            letter-spacing: 3px;
+            font-weight: 600;
+            color: #D4AF37;
+            text-shadow: 0 0 5px rgba(212,175,55,0.5);
+            margin-bottom: 25px;
             font-family: monospace;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-        }
-        .card-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 28px;
-        }
-        .card-expiry, .card-cvv {
-            color: #c4b07a;
-            font-size: 0.7rem;
-        }
-        .card-expiry span, .card-cvv span {
-            display: block;
-            color: #e8d5a8;
-            font-size: 1rem;
-            margin-top: 4px;
-            font-family: monospace;
+            word-break: break-word;
         }
         .card-holder {
-            color: #c4b07a;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .holder-label {
             font-size: 0.7rem;
+            color: rgba(212,175,55,0.7);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .card-holder-name {
-            display: block;
-            color: #e8d5a8;
-            font-size: 1.1rem;
-            margin-top: 6px;
-            font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-            letter-spacing: 1px;
+        .holder-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #D4AF37;
+            text-shadow: 0 0 3px rgba(212,175,55,0.3);
+            text-transform: uppercase;
         }
+        .card-footer-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .expiry {
+            color: #D4AF37;
+        }
+        .expiry-label {
+            font-size: 0.6rem;
+            color: rgba(212,175,55,0.6);
+        }
+        .expiry-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .contactless-icon {
+            font-size: 24px;
+            color: #D4AF37;
+            transform: rotate(90deg);
+        }
+        .card-brand {
+            font-size: 28px;
+            font-weight: bold;
+            color: #D4AF37;
+            letter-spacing: 3px;
+        }
+        
+        /* Outros estilos */
         .currency-tabs {
             display: flex;
             gap: 12px;
-            background: #12100c;
+            background: #1a1a1a;
             padding: 8px;
             border-radius: 60px;
             margin-bottom: 20px;
-            border: 1px solid #3a321c;
+            border: 1px solid #D4AF3740;
         }
         .currency-btn {
             flex: 1;
@@ -157,23 +195,28 @@
             gap: 8px;
         }
         .currency-btn.active {
-            background: #d4af37;
+            background: #D4AF37;
             color: #0a0a0a;
             box-shadow: 0 4px 15px rgba(212,175,55,0.4);
         }
         .balance-box {
-            background: linear-gradient(145deg, #0e0c07, #080703);
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
             border-radius: 28px;
             padding: 22px;
             text-align: center;
             margin-bottom: 20px;
-            border: 1px solid #d4af3740;
+            border: 1px solid #D4AF3740;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.3);
         }
         .balance-amount {
             font-size: 2.9rem;
             font-weight: 800;
-            color: #f5c542;
+            color: #D4AF37;
             text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .balance-label {
+            font-size: 0.8rem;
+            color: #D4AF37;
         }
         .action-grid {
             display: grid;
@@ -182,7 +225,7 @@
             margin-bottom: 28px;
         }
         .btn-gold {
-            background: linear-gradient(95deg, #d4af37, #b8941e);
+            background: linear-gradient(95deg, #D4AF37, #b8941e);
             border: none;
             padding: 15px;
             border-radius: 48px;
@@ -194,72 +237,78 @@
             gap: 10px;
             cursor: pointer;
             transition: 0.2s;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.3);
         }
         .btn-gold:hover { transform: scale(0.97); background: linear-gradient(95deg, #c6a12e, #a57e18); }
         .btn-outline {
             background: transparent;
-            border: 1.5px solid #d4af37;
+            border: 1.5px solid #D4AF37;
             padding: 15px;
             border-radius: 48px;
-            color: #d4af37;
+            color: #D4AF37;
             font-weight: bold;
             cursor: pointer;
             transition: 0.2s;
         }
-        .btn-outline:hover { background: #d4af3715; }
-        .modal-custom {
+        .btn-outline:hover { background: #D4AF3715; }
+        .modal {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98);
+            background: rgba(0,0,0,0.96);
             backdrop-filter: blur(12px);
             justify-content: center;
             align-items: center;
             z-index: 2000;
         }
-        .modal-content-custom {
-            background: #1a1710;
+        .modal-content {
+            background: #1a1a1a;
             max-width: 94%;
-            width: 460px;
-            border-radius: 48px;
+            width: 480px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 32px;
             padding: 32px;
-            border-top: 4px solid #d4af37;
+            border-top: 4px solid #D4AF37;
             box-shadow: 0 30px 50px black;
+            color: #ffffff;
         }
-        .modal-content-custom input, .modal-content-custom select, .modal-content-custom textarea {
+        .modal-content input, .modal-content select, .modal-content textarea {
             width: 100%;
             padding: 14px 18px;
             margin: 12px 0;
-            background: #2c271e;
-            border: 1px solid #d4af3760;
+            background: #2c2c2c;
+            border: 1px solid #D4AF3760;
             border-radius: 60px;
-            color: #ffffff !important;
+            color: #ffffff;
             font-size: 0.95rem;
         }
-        .modal-content-custom input::placeholder, .modal-content-custom textarea::placeholder {
-            color: #aaa;
+        .modal-content input::placeholder, .modal-content textarea::placeholder {
+            color: #888;
         }
         .admin-panel {
-            background: #0e0c08;
+            background: #1a1a1a;
             border-radius: 32px;
             padding: 22px;
             margin-top: 24px;
-            border: 1px solid #d4af3740;
+            border: 1px solid #D4AF3740;
+            color: #ffffff;
         }
         .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1f1b12;
-            color: #ffdf9c;
+            background: #1a1a1a;
+            color: #D4AF37;
             padding: 12px 28px;
             border-radius: 60px;
-            border-left: 5px solid #d4af37;
+            border-left: 5px solid #D4AF37;
             z-index: 3000;
             display: none;
             font-weight: bold;
+            box-shadow: 0 8px 20px black;
         }
         .password-wrapper {
             position: relative;
@@ -267,7 +316,6 @@
         }
         .password-wrapper input {
             padding-right: 45px;
-            color: #ffffff !important;
         }
         .toggle-password {
             position: absolute;
@@ -275,52 +323,102 @@
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #d4af37;
+            color: #D4AF37;
             background: transparent;
             border: none;
             font-size: 1.1rem;
         }
-        .footer-credit {
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            border-top: 1px solid #D4AF3740;
+            padding: 12px;
             text-align: center;
-            margin-top: 40px;
+            font-size: 0.75rem;
+            color: #D4AF37;
+            z-index: 1000;
+        }
+        .camera-preview {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border-radius: 24px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        .camera-preview video, .camera-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 16px;
+            margin: 10px 0;
+        }
+        .kyc-status {
+            background: #1a1a1a;
+            border-radius: 24px;
             padding: 20px;
-            color: #d4af37;
-            font-size: 0.8rem;
-            border-top: 1px solid rgba(212,175,55,0.2);
-        }
-        label {
-            color: #d4af37;
-            display: block;
-            margin-top: 10px;
-            font-size: 0.85rem;
-        }
-        h3, h4, p {
+            margin-bottom: 20px;
+            text-align: center;
             color: #ffffff;
         }
-        .status-badge {
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(8px);
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: #fff;
+        .forgot-link {
+            text-align: center;
+            margin-top: 16px;
+            cursor: pointer;
+            color: #D4AF37;
+            font-size: 0.85rem;
+            text-decoration: underline;
         }
-        .status-active { color: #2ecc71; border-left: 3px solid #2ecc71; background: #0a1f0a; }
-        .status-inactive { color: #e67e22; border-left: 3px solid #e67e22; background: #1f140a; }
+        input, select, textarea {
+            color: #ffffff !important;
+        }
+        option {
+            background: #2c2c2c;
+            color: #ffffff;
+        }
         @media (max-width: 500px) {
             .balance-amount { font-size: 2rem; }
             .card-number { font-size: 1rem; letter-spacing: 2px; }
+            .logo-text { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
-<div id="coinParticles"></div>
-<div id="appRoot"></div>
+<!-- Header Fixo -->
+<div class="fixed-header">
+    <div class="logo-container">
+        <i class="fas fa-shield-alt shield-icon"></i>
+        <div>
+            <div class="logo-text">MAM CASH</div>
+            <div class="logo-sub">Plataforma Financeira Premium</div>
+        </div>
+    </div>
+    <div class="user-info" id="userInfoHeader">
+        <i class="fas fa-user-circle"></i>
+        <span id="userNameHeader">Conta</span>
+    </div>
+</div>
+
+<div class="main-content" id="appRoot"></div>
+<div class="footer" id="footer">
+    from: MAM & Filhos (Matias Arsénio Manuel)
+</div>
 <div id="toastMessage" class="toast"></div>
 
 <script>
-    // Configuração Firebase
+    // EmailJS Config
+    (function() {
+        emailjs.init("YOUR_PUBLIC_KEY"); // Usuário deve substituir pela chave pública do EmailJS
+    })();
+    
+    // Firebase Config
     const firebaseConfig = {
         apiKey: 'AIzaSyC90uEwso8ZP3s7tLvV_z88ZbUijXLOpPU',
         authDomain: 'project-73108ea9-d1b2-4ac3-8fb.firebaseapp.com',
@@ -334,9 +432,6 @@
     const db = firebase.firestore();
     const storage = firebase.storage();
 
-    // Inicializar EmailJS
-    emailjs.init("YOUR_PUBLIC_KEY"); // Usuário deve substituir pela chave real
-
     const ADMIN_EMAIL = "mamfilhos29@gmail.com";
     let exchangeRates = { AOA_USD: 0.00115, USD_AOA: 870, AOA_BRL: 0.0062, BRL_AOA: 161, USD_BRL: 5.35, BRL_USD: 0.187 };
     
@@ -346,215 +441,235 @@
     let cardActivated = false;
     let userCardData = null;
     let pending2FACode = null;
-    let pending2FAContext = null; // 'login' or 'transfer'
-    let pendingTransferData = null;
-
-    function createCoinParticles() {
-        const container = document.getElementById('coinParticles');
-        if(!container) return;
-        const coins = ['💰', '💵', '💶', '🪙', '💷', '💎'];
-        for (let i = 0; i < 25; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'coin-particle';
-            particle.innerHTML = coins[Math.floor(Math.random() * coins.length)];
-            particle.style.position = 'fixed';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.bottom = '-50px';
-            particle.style.fontSize = (20 + Math.random() * 40) + 'px';
-            particle.style.opacity = '0.06';
-            particle.style.pointerEvents = 'none';
-            particle.style.zIndex = '0';
-            particle.style.animation = `floatCoin ${15 + Math.random() * 20}s linear infinite`;
-            container.appendChild(particle);
-        }
-    }
-    createCoinParticles();
-
+    let pending2FAType = null;
+    let pendingLoginEmail = null;
+    let pendingActionCallback = null;
+    
     function showToast(msg) {
         const toast = document.getElementById('toastMessage');
         toast.innerText = msg;
         toast.style.display = 'block';
         setTimeout(() => toast.style.display = 'none', 4000);
     }
-
-    function translateFirebaseError(errorMessage) {
-        const errors = {
-            'auth/invalid-email': 'E-mail inválido. Verifique o formato.',
-            'auth/user-disabled': 'Conta desativada. Contacte o suporte.',
-            'auth/user-not-found': 'Usuário não encontrado. Verifique o e-mail.',
-            'auth/wrong-password': 'Senha incorreta. Tente novamente.',
-            'auth/email-already-in-use': 'E-mail já registrado. Faça login.',
-            'auth/weak-password': 'Senha muito fraca. Use pelo menos 6 caracteres.',
-            'auth/network-request-failed': 'Erro de rede. Verifique sua conexão.'
-        };
-        return errors[errorMessage] || 'Erro desconhecido. Tente novamente.';
-    }
-
+    
     function formatMoney(value, currency) {
         if (isNaN(value)) value = 0;
-        return new Intl.NumberFormat('pt-AO', { style: 'currency', currency: currency, minimumFractionDigits: 2 }).format(value);
+        const opts = { style: 'currency', currency: currency, minimumFractionDigits: 2 };
+        if (currency === 'AOA') opts.currency = 'AOA';
+        return new Intl.NumberFormat('pt-AO', opts).format(value);
     }
-
+    
     function generateCardNumber() {
         let num = '';
         for (let i = 0; i < 16; i++) num += Math.floor(Math.random() * 10);
         return num.match(/.{4}/g).join(' ');
     }
-    function generateCVV() { return Math.floor(100 + Math.random() * 900).toString(); }
+    
+    function generateCVV() {
+        return Math.floor(100 + Math.random() * 900).toString();
+    }
+    
     function generateExpiry() {
         const date = new Date();
         const year = date.getFullYear() + 5;
         const month = String(date.getMonth() + 1).padStart(2, '0');
         return `${month}/${year.toString().slice(-2)}`;
     }
-
+    
+    async function sendEmailCode(email, code) {
+        // Simulação de envio de email - na prática usar EmailJS
+        showToast(`📧 Código ${code} enviado para ${email} (simulação)`);
+        return true;
+    }
+    
+    function request2FA(callback) {
+        pendingActionCallback = callback;
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content">
+            <h3 style="color:#D4AF37;"><i class="fas fa-shield-alt"></i> Verificação de Segurança 2FA</h3>
+            <p style="margin:15px 0; color:#ccc;">Escolha como receber o código de verificação:</p>
+            <button id="2faEmailBtn" class="btn-gold" style="width:100%; margin:8px 0;"><i class="fas fa-envelope"></i> Receber por E-mail</button>
+            <button id="2faSmsBtn" class="btn-outline" style="width:100%; margin:8px 0;"><i class="fas fa-phone"></i> Receber por SMS</button>
+            <button id="close2faBtn" class="btn-outline" style="width:100%; margin-top:16px;">Cancelar</button>
+        </div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        
+        document.getElementById('2faEmailBtn').onclick = async () => {
+            const code = Math.floor(100000 + Math.random() * 900000).toString();
+            pending2FACode = code;
+            await sendEmailCode(currentUser.email, code);
+            modal.remove();
+            showToast(`Código enviado para ${currentUser.email}. Verifique seu e-mail.`);
+            prompt2FACode();
+        };
+        document.getElementById('2faSmsBtn').onclick = async () => {
+            const doc = await db.collection('users').doc(currentUser.uid).get();
+            const phone = doc.exists ? doc.data().phone : '';
+            if(!phone) { showToast('Número de telefone não cadastrado. Use e-mail.'); return; }
+            const code = Math.floor(100000 + Math.random() * 900000).toString();
+            pending2FACode = code;
+            showToast(`📱 Código ${code} enviado para ${phone} (simulação)`);
+            modal.remove();
+            prompt2FACode();
+        };
+        document.getElementById('close2faBtn').onclick = () => modal.remove();
+    }
+    
+    function prompt2FACode() {
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content">
+            <h3 style="color:#D4AF37;">Digite o código de verificação</h3>
+            <input type="text" id="codeInput" placeholder="Código de 6 dígitos" style="text-align:center; font-size:1.5rem;">
+            <button id="verifyCodeBtn2fa" class="btn-gold" style="width:100%; margin-top:16px;">Verificar</button>
+            <button id="cancelCodeBtn" class="btn-outline" style="width:100%; margin-top:12px;">Cancelar</button>
+        </div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        
+        document.getElementById('verifyCodeBtn2fa').onclick = () => {
+            const code = document.getElementById('codeInput').value;
+            if(code === pending2FACode) {
+                modal.remove();
+                if(pendingActionCallback) {
+                    pendingActionCallback();
+                    pendingActionCallback = null;
+                }
+                showToast('✅ Verificação concluída!');
+            } else {
+                showToast('❌ Código inválido!');
+            }
+        };
+        document.getElementById('cancelCodeBtn').onclick = () => modal.remove();
+    }
+    
     async function loadUserData(uid) {
         const doc = await db.collection('users').doc(uid).get();
         if (doc.exists) {
             const data = doc.data();
             userBalances = { AOA: data.balances?.AOA ?? 0, USD: data.balances?.USD ?? 0, BRL: data.balances?.BRL ?? 0 };
             cardActivated = data.cardActivated || false;
+            window.userKycStatus = data.kycStatus || 'pending';
             window.userCardData = data.cardData || null;
-            window.userFullName = `${data.firstName || ''} ${data.lastName || ''}`.trim() || "MAM CLIENT";
-        } else {
-            userBalances = { AOA: 0, USD: 0, BRL: 0 };
-            cardActivated = false;
-            window.userCardData = null;
-            window.userFullName = "MAM CLIENT";
-        }
-        // Admin tem saldo infinito simbólico
-        if (currentUser && currentUser.email === ADMIN_EMAIL) {
-            userBalances = { AOA: 9999999, USD: 9999999, BRL: 9999999 };
-            cardActivated = true;
-            if (!window.userCardData) {
-                window.userCardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
-                await db.collection('users').doc(uid).set({ cardData: window.userCardData, cardActivated: true }, { merge: true });
-            }
+            window.userFullName = `${data.firstName || ''} ${data.lastName || ''}`.toUpperCase();
+            document.getElementById('userNameHeader').innerText = window.userFullName.split(' ')[0] || 'Usuário';
         }
     }
-
-    async function send2FACode(method, email, phone, context, callbackData) {
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        pending2FACode = code;
-        pending2FAContext = context;
-        if (context === 'transfer') pendingTransferData = callbackData;
-        
-        if (method === 'email') {
-            try {
-                await emailjs.send("service_mam", "template_mam", {
-                    to_email: email,
-                    code: code,
-                    name: "MAM Cash"
-                });
-                showToast("📧 Código enviado para seu e-mail!");
-            } catch(e) {
-                showToast(`📧 Código simulado: ${code} (EmailJS não configurado)`);
-            }
-        } else {
-            // Simulação SMS - Firebase SMS não configurado automaticamente
-            showToast(`📱 Código SMS simulado: ${code} (Ative o Firebase SMS)`);
-        }
-        show2FAModal();
+    
+    async function updateFirestoreBalances(uid) {
+        await db.collection('users').doc(uid).update({ balances: userBalances });
     }
-
-    function show2FAModal() {
-        const modal = document.createElement('div'); modal.className = 'modal-custom';
-        modal.innerHTML = `<div class="modal-content-custom"><h3>MAM Cash - Verificação 2FA</h3><label>Código de segurança</label><input id="2faCode" placeholder="Digite o código de 6 dígitos"><div style="display:flex; gap:12px; margin-top:20px;"><button id="verify2FABtn" class="btn-gold">Verificar</button><button id="close2FAModal" class="btn-outline">Cancelar</button></div></div>`;
-        document.body.appendChild(modal); modal.style.display = 'flex';
-        document.getElementById('verify2FABtn').onclick = () => {
-            const entered = document.getElementById('2faCode').value;
-            if (entered === pending2FACode) {
-                modal.remove();
-                if (pending2FAContext === 'login') {
-                    renderDashboard();
-                } else if (pending2FAContext === 'transfer' && pendingTransferData) {
-                    executeTransfer(pendingTransferData);
-                }
-                pending2FACode = null;
-            } else { showToast("Código inválido!"); }
-        };
-        document.getElementById('close2FAModal').onclick = () => modal.remove();
-    }
-
-    async function executeTransfer(data) {
-        const { toEmail, amount, currency } = data;
-        if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
-        const usersSnap = await db.collection('users').where('email', '==', toEmail).get();
-        if (usersSnap.empty) { showToast('Destinatário não encontrado'); return; }
-        const targetUser = usersSnap.docs[0];
-        const targetBalances = targetUser.data().balances;
-        targetBalances[currency] = (targetBalances[currency] || 0) + amount;
-        userBalances[currency] -= amount;
-        await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
-        await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
-        showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`);
-        renderDashboard();
-    }
-
-    async function requestCardPurchase() {
-        if (cardActivated) { showToast('Cartão já está ativo'); return; }
+    
+    async function requestCardPurchase(uid) {
+        if (cardActivated) { showToast('Cartão já está ativo'); return false; }
+        if (window.userKycStatus !== 'approved') { showToast('É necessário ter a identidade verificada pelo ADMIN primeiro!'); return false; }
         if (userBalances.AOA < 5000 && currentUser.email !== ADMIN_EMAIL) {
-            showToast(`Saldo insuficiente. Taxa: ${formatMoney(5000, 'AOA')}`);
-            return;
+            showToast(`Saldo insuficiente em AOA. Taxa: ${formatMoney(5000, 'AOA')}`);
+            return false;
         }
-        if (currentUser.email === ADMIN_EMAIL) {
-            const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
-            await db.collection('users').doc(currentUser.uid).update({ cardActivated: true, cardData: cardData });
-            cardActivated = true; window.userCardData = cardData;
-            showToast('✨ Cartão ADMIN gerado!');
-            renderDashboard(); return;
-        }
-        await db.collection('cardRequests').add({ userId: currentUser.uid, userEmail: currentUser.email, status: 'pending', fee: 5000, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-        showToast('✅ Pedido enviado ao administrador.');
+        
+        request2FA(async () => {
+            if (currentUser.email === ADMIN_EMAIL) {
+                const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
+                await db.collection('users').doc(uid).update({ cardActivated: true, cardData: cardData });
+                cardActivated = true;
+                window.userCardData = cardData;
+                showToast('✨ Cartão ADMIN gerado com sucesso!');
+                renderDashboard();
+                return;
+            }
+            
+            await db.collection('cardRequests').add({
+                userId: uid, userEmail: currentUser.email, status: 'pending', fee: 5000,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast('✅ Pedido de cartão enviado. Aguarde aprovação do ADMIN.');
+        });
     }
-
+    
     async function adminApproveCard(userId, fee) {
         const userRef = db.collection('users').doc(userId);
         const userDoc = await userRef.get();
-        const balances = userDoc.data().balances;
-        if (balances.AOA < fee) { showToast('Saldo insuficiente'); return; }
-        balances.AOA -= fee;
+        if (!userDoc.exists) return;
+        const balances = userDoc.data().balances || { AOA: 0, USD: 0, BRL: 0 };
+        if (balances.AOA < fee) { showToast('Saldo insuficiente para taxa'); return; }
+        const newBalances = { ...balances };
+        newBalances.AOA = balances.AOA - fee;
         const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
-        await userRef.update({ balances, cardActivated: true, cardData });
-        await db.collection('cardRequests').where('userId', '==', userId).where('status', '==', 'pending').get().then(q => q.forEach(d => d.ref.update({ status: 'approved' })));
-        showToast(`💳 Cartão aprovado!`);
-        renderDashboard();
+        await userRef.update({ balances: newBalances, cardActivated: true, cardData: cardData });
+        const reqQuery = await db.collection('cardRequests').where('userId', '==', userId).where('status', '==', 'pending').get();
+        reqQuery.forEach(doc => doc.ref.update({ status: 'approved' }));
+        showToast(`💳 Cartão aprovado! Taxa: ${formatMoney(fee, 'AOA')}`);
+        if (currentUser && currentUser.uid === userId) {
+            userBalances = newBalances;
+            cardActivated = true;
+            window.userCardData = cardData;
+            renderDashboard();
+        }
     }
-
+    
+    async function exchangeCurrency(from, to, amount) {
+        if (amount <= 0) return false;
+        let rate = 1;
+        const rates = { 'AOA_USD': exchangeRates.AOA_USD, 'USD_AOA': exchangeRates.USD_AOA, 'AOA_BRL': exchangeRates.AOA_BRL, 'BRL_AOA': exchangeRates.BRL_AOA, 'USD_BRL': exchangeRates.USD_BRL, 'BRL_USD': exchangeRates.BRL_USD };
+        rate = rates[`${from}_${to}`];
+        if (!rate) { showToast('Par não suportado'); return false; }
+        if (userBalances[from] < amount) { showToast(`Saldo insuficiente em ${from}`); return false; }
+        const converted = amount * rate;
+        userBalances[from] -= amount;
+        userBalances[to] += converted;
+        await updateFirestoreBalances(currentUser.uid);
+        showToast(`🔄 Conversão: ${formatMoney(amount, from)} → ${formatMoney(converted, to)}`);
+        renderDashboard();
+        return true;
+    }
+    
     async function renderDashboard() {
         if (!currentUser) { renderLogin(); return; }
         await loadUserData(currentUser.uid);
         const isAdmin = (currentUser.email === ADMIN_EMAIL);
         const balanceNow = userBalances[currentCurrency] || 0;
-        const cardStatusClass = cardActivated ? 'status-active' : 'status-inactive';
-        const cardStatusText = cardActivated ? 'ATIVO • PREMIUM' : 'BLOQUEADO';
+        let cardStatusText = 'BLOQUEADO';
+        let cardStatusClass = 'status-inactive';
+        if (window.userKycStatus === 'pending') cardStatusText = 'AGUARDANDO KYC';
+        else if (window.userKycStatus === 'pending_review') cardStatusText = 'KYC EM ANÁLISE';
+        else if (window.userKycStatus === 'approved' && !cardActivated) cardStatusText = 'KYC APROVADO • CARTÃO PENDENTE';
+        else if (cardActivated) { cardStatusText = 'ATIVO • PREMIUM'; cardStatusClass = 'status-active'; }
         
         let html = `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <div><i class="fas fa-gem" style="color:#d4af37"></i> <span style="color:#e6d5a8;">${currentUser.email}</span></div>
-                <button id="logoutMainBtn" style="background:#222216; border:1px solid #d4af37; padding:8px 18px; border-radius:40px; color:#d4af37; cursor:pointer;"><i class="fas fa-sign-out-alt"></i> Sair</button>
-            </div>
-            <div class="card-mam-black">
+            <div class="premium-card">
                 <div class="card-chip">
-                    <div class="chip-icon"><i class="fas fa-microchip"></i></div>
-                    <div class="card-network">MAM BLACK</div>
+                    <i class="fas fa-microchip chip-icon"></i>
+                    <span class="card-network">MAM BLACK</span>
                 </div>
                 <div class="card-number">${window.userCardData ? window.userCardData.number : '****  ****  ****  ****'}</div>
-                <div class="card-details">
-                    <div class="card-expiry">VALIDADE <span>${window.userCardData ? window.userCardData.expiry : '**/**'}</span></div>
-                    <div class="card-cvv">CVV <span>${window.userCardData ? window.userCardData.cvv : '***'}</span></div>
+                <div class="card-holder">
+                    <div>
+                        <div class="holder-label">Titular do Cartão</div>
+                        <div class="holder-name">${window.userFullName || 'CARREGANDO...'}</div>
+                    </div>
+                    <div class="expiry">
+                        <div class="expiry-label">Validade</div>
+                        <div class="expiry-value">${window.userCardData ? window.userCardData.expiry : '**/**'}</div>
+                    </div>
                 </div>
-                <div class="card-holder">TITULAR <div class="card-holder-name">${window.userFullName.toUpperCase()}</div></div>
+                <div class="card-footer-card">
+                    <i class="fas fa-wifi contactless-icon"></i>
+                    <div class="card-brand">MAM</div>
+                </div>
             </div>
+            
             <div class="currency-tabs">
-                <button class="currency-btn ${currentCurrency === 'AOA' ? 'active' : ''}" data-cur="AOA"><i class="fas fa-coins"></i> Kwanza</button>
+                <button class="currency-btn ${currentCurrency === 'AOA' ? 'active' : ''}" data-cur="AOA"><i class="fas fa-coins"></i> Kwanza (AOA)</button>
                 <button class="currency-btn ${currentCurrency === 'USD' ? 'active' : ''}" data-cur="USD"><i class="fas fa-dollar-sign"></i> USD</button>
                 <button class="currency-btn ${currentCurrency === 'BRL' ? 'active' : ''}" data-cur="BRL"><i class="fas fa-real"></i> BRL</button>
             </div>
-            <div class="balance-box"><div class="balance-amount">${formatMoney(balanceNow, currentCurrency)}</div></div>
+            <div class="balance-box">
+                <div class="balance-label">Saldo disponível</div>
+                <div class="balance-amount">${formatMoney(balanceNow, currentCurrency)}</div>
+            </div>
             <div class="action-grid">
                 <button id="btnTransfer" class="btn-gold"><i class="fas fa-exchange-alt"></i> Transferir</button>
                 <button id="btnDeposit" class="btn-gold"><i class="fas fa-upload"></i> Depositar</button>
+                <button id="btnExchange" class="btn-outline"><i class="fas fa-chart-line"></i> Câmbio</button>
                 <button id="btnBuyCard" class="btn-outline"><i class="fas fa-credit-card"></i> ${cardActivated ? 'Cartão Ativo' : 'Comprar Cartão'}</button>
             </div>`;
         
@@ -562,18 +677,17 @@
             const pendingCardsSnap = await db.collection('cardRequests').where('status', '==', 'pending').get();
             let pendingCards = [];
             pendingCardsSnap.forEach(d => pendingCards.push({id: d.id, ...d.data()}));
-            html += `<div class="admin-panel"><h3><i class="fas fa-crown"></i> Painel ADM</h3>`;
-            html += `<h4>💳 Pedidos de Cartão</h4>`;
-            if(pendingCards.length===0) html+=`<p>Sem pedidos</p>`;
+            html += `<div class="admin-panel"><h3 style="color:#D4AF37;"><i class="fas fa-crown"></i> Painel Administrador</h3>`;
+            html += `<h4 style="margin:16px 0 8px;">💳 Pedidos de Cartão</h4>`;
+            if(pendingCards.length===0) html+=`<p>Sem pedidos pendentes</p>`;
             pendingCards.forEach(card => {
-                html += `<div style="background:#1a1710; padding:12px; margin:8px 0; border-radius:20px;">
+                html += `<div style="background:#2c2c2c; padding:12px; margin:8px 0; border-radius:20px;">
                             <div>👤 ${card.userEmail}</div>
-                            <button class="approveCardBtn" data-uid="${card.userId}" data-fee="${card.fee}" style="background:#d4af37; border:none; padding:6px 18px; border-radius:40px;">💳 Gerar Cartão (Cobrar ${formatMoney(card.fee, 'AOA')})</button>
+                            <button class="approveCardBtn" data-uid="${card.userId}" data-fee="${card.fee}" style="background:#D4AF37; border:none; padding:8px 20px; border-radius:40px; margin-top:8px; color:#0a0a0a; font-weight:bold;">💳 Gerar Cartão (Cobrar ${formatMoney(card.fee, 'AOA')})</button>
                          </div>`;
             });
             html += `</div>`;
         }
-        html += `<div class="footer-credit">from: MAM & Filhos (Matias Arsénio Manuel)</div>`;
         document.getElementById('appRoot').innerHTML = html;
         
         document.querySelectorAll('.currency-btn').forEach(btn => {
@@ -581,34 +695,51 @@
         });
         document.getElementById('btnTransfer')?.addEventListener('click', () => openTransferModal());
         document.getElementById('btnDeposit')?.addEventListener('click', () => openDepositModal());
-        document.getElementById('btnBuyCard')?.addEventListener('click', () => requestCardPurchase());
-        document.getElementById('logoutMainBtn')?.addEventListener('click', () => auth.signOut());
+        document.getElementById('btnExchange')?.addEventListener('click', () => openExchangeModal());
+        document.getElementById('btnBuyCard')?.addEventListener('click', () => requestCardPurchase(currentUser.uid));
+        
         if (isAdmin) {
             document.querySelectorAll('.approveCardBtn').forEach(btn => {
                 btn.addEventListener('click', async () => { await adminApproveCard(btn.getAttribute('data-uid'), parseFloat(btn.getAttribute('data-fee'))); renderDashboard(); });
             });
         }
     }
-
-    function openTransferModal() {
-        const modal = document.createElement('div'); modal.className = 'modal-custom';
-        modal.innerHTML = `<div class="modal-content-custom"><h3>MAM Cash - Transferência</h3><label>Email do destinatário</label><input id="transferEmail" placeholder="email@exemplo.com"><label>Valor</label><input id="transferAmount" type="number" placeholder="0.00"><label>Moeda</label><select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select><div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmTransferBtn" class="btn-gold">Continuar</button><button id="closeTransferModal" class="btn-outline">Cancelar</button></div></div>`;
-        document.body.appendChild(modal); modal.style.display = 'flex';
-        document.getElementById('confirmTransferBtn').onclick = () => {
-            const toEmail = document.getElementById('transferEmail').value;
-            const amount = parseFloat(document.getElementById('transferAmount').value);
-            const currency = document.getElementById('transferCurrency').value;
-            if (!toEmail || isNaN(amount) || amount<=0) { showToast('Dados inválidos'); return; }
-            modal.remove();
-            const method = confirm("Receber código por Email? (OK=Email, Cancel=SMS)") ? 'email' : 'sms';
-            send2FACode(method, currentUser.email, "", 'transfer', { toEmail, amount, currency });
-        };
-        document.getElementById('closeTransferModal').onclick = () => modal.remove();
+    
+    async function openTransferModal() {
+        request2FA(async () => {
+            const modal = document.createElement('div'); modal.className = 'modal';
+            modal.innerHTML = `<div class="modal-content"><h3 style="color:#D4AF37;"><i class="fas fa-paper-plane"></i> Transferir</h3>
+                <input id="transferEmail" placeholder="Email do destinatário"><input id="transferAmount" type="number" placeholder="Valor"><select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+                <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmTransfer" class="btn-gold">Enviar</button><button id="closeModal" class="btn-outline">Cancelar</button></div></div>`;
+            document.body.appendChild(modal); modal.style.display = 'flex';
+            document.getElementById('confirmTransfer').onclick = async () => {
+                const toEmail = document.getElementById('transferEmail').value;
+                const amount = parseFloat(document.getElementById('transferAmount').value);
+                const currency = document.getElementById('transferCurrency').value;
+                if (!toEmail || isNaN(amount) || amount<=0) { showToast('Dados inválidos'); return; }
+                if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
+                const usersSnap = await db.collection('users').where('email', '==', toEmail).get();
+                if (usersSnap.empty) { showToast('Destinatário não encontrado'); return; }
+                const targetUser = usersSnap.docs[0];
+                const targetBalances = targetUser.data().balances;
+                targetBalances[currency] = (targetBalances[currency] || 0) + amount;
+                userBalances[currency] -= amount;
+                await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
+                await updateFirestoreBalances(currentUser.uid);
+                showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`);
+                modal.remove(); renderDashboard();
+            };
+            document.getElementById('closeModal').onclick = () => modal.remove();
+        });
     }
-
+    
     async function openDepositModal() {
-        const modal = document.createElement('div'); modal.className = 'modal-custom';
-        modal.innerHTML = `<div class="modal-content-custom"><h3>MAM Cash - Depósito</h3><label>Método</label><select id="depositMethod"><option>Transferência Bancária</option><option>PayPal</option><option>USDT</option></select><label>Valor</label><input id="depositAmount" type="number"><label>Moeda</label><select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select><label>Comprovativo</label><textarea id="depositProof" placeholder="Link ou hash"></textarea><div style="display:flex; gap:12px;"><button id="sendDeposit" class="btn-gold">Solicitar</button><button id="closeDeposit" class="btn-outline">Fechar</button></div></div>`;
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#D4AF37;"><i class="fas fa-university"></i> Depósito</h3>
+            <select id="depositMethod"><option value="Angola">🏦 Angola (Multicaixa/IBAN)</option><option value="Crypto">💎 USDT (TRC20)</option><option value="PayPal">💳 PayPal / Cartão Visa</option></select>
+            <input id="depositAmount" placeholder="Valor"><select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <textarea id="depositProof" placeholder="Comprovativo / hash / print"></textarea>
+            <div style="display:flex; gap:12px;"><button id="sendDeposit" class="btn-gold">Solicitar</button><button id="closeDeposit" class="btn-outline">Fechar</button></div></div>`;
         document.body.appendChild(modal); modal.style.display='flex';
         document.getElementById('sendDeposit').onclick = async () => {
             const method = document.getElementById('depositMethod').value;
@@ -616,79 +747,78 @@
             const currency = document.getElementById('depositCurrency').value;
             const proof = document.getElementById('depositProof').value;
             if(isNaN(amount) || amount<=0) return;
-            await db.collection('deposits').add({ userId: currentUser.uid, userEmail: currentUser.email, amount, currency, method, proof, status: 'pending', timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-            showToast(`Depósito solicitado. Aguarde aprovação.`);
+            await db.collection('deposits').add({
+                userId: currentUser.uid, userEmail: currentUser.email, amount, currency, method, proof,
+                status: 'pending', timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast(`📤 Pedido de depósito de ${formatMoney(amount, currency)} enviado.`);
             modal.remove();
         };
         document.getElementById('closeDeposit').onclick = () => modal.remove();
     }
-
+    
+    async function openExchangeModal() {
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#D4AF37;">💰 Câmbio MAM Cash</h3>
+            <select id="fromCurr"><option>AOA</option><option>USD</option><option>BRL</option></select> → <select id="toCurr"><option>USD</option><option>AOA</option><option>BRL</option></select>
+            <input id="exchangeAmount" placeholder="Montante">
+            <button id="doExchange" class="btn-gold">Converter</button><button id="closeEx" class="btn-outline">Fechar</button></div>`;
+        document.body.appendChild(modal); modal.style.display='flex';
+        document.getElementById('doExchange').onclick = async () => {
+            await exchangeCurrency(document.getElementById('fromCurr').value, document.getElementById('toCurr').value, parseFloat(document.getElementById('exchangeAmount').value));
+            modal.remove();
+        };
+        document.getElementById('closeEx').onclick = () => modal.remove();
+    }
+    
+    function forgotPassword() {
+        const email = prompt("Digite seu e-mail para recuperar a senha:");
+        if (email && email.includes('@')) {
+            auth.sendPasswordResetEmail(email).then(() => {
+                showToast(`📧 Link de recuperação enviado para ${email}`);
+            }).catch(error => {
+                showToast('Erro: ' + error.message);
+            });
+        } else if (email) {
+            showToast('E-mail inválido');
+        }
+    }
+    
     function renderLogin() {
         document.getElementById('appRoot').innerHTML = `
-            <div style="max-width:460px; margin: 5vh auto; background:#12100b; border-radius:56px; padding:38px 28px; border:1px solid #d4af37;">
-                <div style="text-align:center;"><i class="fas fa-coins" style="font-size:3rem; color:#d4af37;"></i><h2 style="color:#d4af37;">MAM CASH</h2></div>
-                <input id="loginEmail" placeholder="Email" style="width:100%; margin:12px 0; padding:14px; background:#2a241b; border-radius:60px; color:#fff;">
-                <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha" style="color:#fff;"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
-                <button id="doLogin" class="btn-gold" style="width:100%; margin-top:16px;">Entrar</button>
-                <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
-                <div class="footer-credit" style="margin-top:20px;">from: MAM & Filhos (Matias Arsénio Manuel)</div>
+            <div style="max-width:460px; margin: 20px auto; background:#1a1a1a; border-radius:56px; padding:38px 28px; border:1px solid #D4AF37;">
+                <div style="text-align:center;"><i class="fas fa-shield-alt" style="font-size:3rem; color:#D4AF37;"></i><h2 style="color:#D4AF37; margin-top:8px;">MAM CASH</h2><p style="color:#b9a46b;">Sua plataforma financeira premium</p></div>
+                <div id="loginView">
+                    <input id="loginEmail" placeholder="Email" style="width:100%; margin:12px 0; padding:14px; background:#2c2c2c; border-radius:60px; color:white; border:1px solid #D4AF3760;">
+                    <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha" style="background:#2c2c2c; border:1px solid #D4AF3760;"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                    <button id="doLogin" class="btn-gold" style="width:100%; margin-top:16px;">Entrar</button>
+                    <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
+                    <div class="forgot-link" id="forgotPasswordBtn"><i class="fas fa-key"></i> Esqueci minha senha</div>
+                </div>
             </div>`;
+        
         document.getElementById('toggleLoginPass')?.addEventListener('click', () => { const inp = document.getElementById('loginPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
+        document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => forgotPassword());
         document.getElementById('doLogin').onclick = async () => {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
+            if(!email || !password) { showToast('Preencha email e senha'); return; }
             try {
-                const cred = await auth.signInWithEmailAndPassword(email, password);
-                currentUser = cred.user;
-                if (email === ADMIN_EMAIL) { renderDashboard(); return; }
-                const method = confirm("MAM Cash - Escolha o método de verificação:\nOK = E-mail | Cancel = SMS") ? 'email' : 'sms';
-                const userDoc = await db.collection('users').doc(currentUser.uid).get();
-                const phone = userDoc.exists ? userDoc.data().phone : '';
-                send2FACode(method, email, phone, 'login', null);
-            } catch(e) { showToast(translateFirebaseError(e.code)); }
+                await auth.signInWithEmailAndPassword(email, password);
+                showToast('Login realizado!');
+                renderDashboard();
+            } catch(e) { showToast(e.message); }
         };
-        document.getElementById('goToRegister').onclick = () => renderRegister();
-    }
-
-    function renderRegister() {
-        document.getElementById('appRoot').innerHTML = `
-            <div style="max-width:480px; margin: 3vh auto; background:#12100b; border-radius:56px; padding:32px 28px; border:1px solid #d4af37;">
-                <h2 style="color:#d4af37; text-align:center;">Criar Conta</h2>
-                <input id="regFirstName" placeholder="Nome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px; color:#fff;">
-                <input id="regLastName" placeholder="Sobrenome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px; color:#fff;">
-                <input id="regEmail" placeholder="Email" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px; color:#fff;">
-                <input id="regPhone" placeholder="Telefone (+244 999 999 999)" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px; color:#fff;">
-                <div class="password-wrapper"><input id="regPassword" type="password" placeholder="Senha (min 6)" style="color:#fff;"><button type="button" id="toggleRegPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
-                <div class="password-wrapper"><input id="regConfirmPassword" type="password" placeholder="Confirmar Senha" style="color:#fff;"><button type="button" id="toggleRegConfirm" class="toggle-password"><i class="fas fa-eye"></i></button></div>
-                <button id="doRegisterFinal" class="btn-gold" style="width:100%; margin-top:16px;">Registrar</button>
-                <button id="backToLoginFromReg" class="btn-outline" style="width:100%; margin-top:12px;">Voltar</button>
-                <div class="footer-credit" style="margin-top:20px;">from: MAM & Filhos (Matias Arsénio Manuel)</div>
-            </div>`;
-        document.getElementById('toggleRegPass')?.addEventListener('click', () => { const inp = document.getElementById('regPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
-        document.getElementById('toggleRegConfirm')?.addEventListener('click', () => { const inp = document.getElementById('regConfirmPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
-        document.getElementById('doRegisterFinal').onclick = async () => {
-            const firstName = document.getElementById('regFirstName').value;
-            const lastName = document.getElementById('regLastName').value;
-            const email = document.getElementById('regEmail').value;
-            const phone = document.getElementById('regPhone').value;
-            const password = document.getElementById('regPassword').value;
-            const confirm = document.getElementById('regConfirmPassword').value;
-            if(!firstName || !lastName || !email || !phone || !password) { showToast('Preencha todos os campos'); return; }
-            if(password !== confirm) { showToast('Senhas não coincidem'); return; }
-            try {
-                const userCred = await auth.createUserWithEmailAndPassword(email, password);
-                await db.collection('users').doc(userCred.user.uid).set({
-                    firstName, lastName, email, phone, balances: { AOA: 0, USD: 0, BRL: 0 },
-                    cardActivated: false, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                showToast('Conta criada! Faça login.');
-                renderLogin();
-            } catch(e) { showToast(translateFirebaseError(e.code)); }
+        document.getElementById('goToRegister').onclick = () => {
+            showToast('Registro disponível via console Firebase. Contate o administrador.');
         };
-        document.getElementById('backToLoginFromReg').onclick = () => renderLogin();
+        document.getElementById('userNameHeader').innerText = 'Entrar';
     }
-
-    auth.onAuthStateChanged(user => { if(user) { currentUser = user; renderDashboard(); } else { currentUser = null; renderLogin(); } });
+    
+    auth.onAuthStateChanged(async user => {
+        if(user) { currentUser = user; await renderDashboard(); }
+        else { currentUser = null; renderLogin(); }
+    });
 </script>
 </body>
 </html>
