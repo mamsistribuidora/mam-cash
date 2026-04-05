@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MAM Cash • Fintech Premium</title>
+    <title>MAM Cash • Plataforma Financeira Premium</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -15,523 +18,309 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
         }
-
         body {
-            background: #0a0a0a;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             min-height: 100vh;
-            color: #ffffff;
+            padding: 20px 16px 40px;
+            position: relative;
+            overflow-x: hidden;
         }
-
-        /* Header Fixo */
-        .header {
+        body::before {
+            content: "💰 💵 💶 💷 💎 🪙";
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            background: #000000;
-            border-bottom: 2px solid #d4af37;
-            padding: 16px 24px;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            width: 100%;
+            height: 100%;
+            font-size: 70px;
+            opacity: 0.03;
+            pointer-events: none;
+            white-space: pre;
+            overflow: hidden;
+            letter-spacing: 30px;
+            line-height: 1.8;
+            animation: floatMoney 40s infinite linear;
+            z-index: 0;
         }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        @keyframes floatMoney {
+            0% { transform: translateY(0px) translateX(0px); }
+            100% { transform: translateY(-200px) translateX(50px); }
         }
-
-        .logo img {
-            width: 40px;
-            height: 40px;
+        .app-container {
+            max-width: 680px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
-
-        .logo span {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #d4af37;
-            letter-spacing: 1px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .user-email {
-            color: #d4af37;
-            font-size: 0.85rem;
-        }
-
-        .logout-btn {
-            background: transparent;
-            border: 1px solid #d4af37;
-            padding: 8px 16px;
-            border-radius: 30px;
-            color: #d4af37;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .logout-btn:hover {
-            background: #d4af37;
-            color: #000;
-        }
-
-        /* Container Principal */
-        .container {
-            max-width: 700px;
-            margin: 100px auto 80px;
-            padding: 0 20px;
-        }
-
-        /* Cartão Premium */
-        .card-container {
-            background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+        /* Cartão MAM BLACK Premium */
+        .card-mam-black {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0d0d0d 100%);
             border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.5);
+            padding: 28px 24px;
+            margin-bottom: 28px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 30px 45px -12px rgba(0,0,0,0.9), 0 0 0 1px rgba(212,175,55,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
             position: relative;
             overflow: hidden;
         }
-
-        .card-container::before {
+        .card-mam-black::before {
             content: "";
             position: absolute;
             top: -50%;
-            right: -20%;
-            width: 80%;
+            left: -50%;
+            width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%);
+            background: radial-gradient(circle at 30% 40%, rgba(212,175,55,0.08) 0%, transparent 60%);
             pointer-events: none;
         }
-
         .card-chip {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 40px;
         }
-
         .chip-icon {
-            font-size: 2.5rem;
+            font-size: 48px;
             color: #d4af37;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
-
-        .contactless {
-            font-size: 1.2rem;
+        .card-network {
+            font-size: 14px;
             color: #d4af37;
+            letter-spacing: 2px;
+            font-weight: bold;
         }
-
         .card-number {
-            font-family: 'Courier New', monospace;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             letter-spacing: 4px;
-            color: #d4af37;
-            margin-bottom: 30px;
-            font-weight: 600;
+            font-weight: 500;
+            color: #e8d5a8;
+            margin-bottom: 28px;
+            font-family: monospace;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
-
         .card-details {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 28px;
         }
-
-        .card-holder, .card-expiry {
-            flex: 1;
-        }
-
-        .card-label {
+        .card-expiry, .card-cvv {
+            color: #c4b07a;
             font-size: 0.7rem;
-            color: #888;
+        }
+        .card-expiry span, .card-cvv span {
+            display: block;
+            color: #e8d5a8;
+            font-size: 1rem;
+            margin-top: 4px;
+            font-family: monospace;
+        }
+        .card-holder {
+            color: #c4b07a;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
-        .card-value {
-            font-size: 1rem;
-            color: #fff;
-            font-weight: 600;
-            margin-top: 5px;
+        .card-holder-name {
+            display: block;
+            color: #e8d5a8;
+            font-size: 1.1rem;
+            margin-top: 6px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
         }
-
-        .card-brand {
-            text-align: right;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #d4af37;
-            font-family: serif;
-        }
-
-        /* Tabs Moedas */
         .currency-tabs {
             display: flex;
             gap: 12px;
-            background: #111111;
+            background: #12100c;
             padding: 8px;
             border-radius: 60px;
-            margin-bottom: 25px;
-            border: 1px solid #d4af37;
+            margin-bottom: 20px;
+            border: 1px solid #3a321c;
         }
-
         .currency-btn {
             flex: 1;
             background: transparent;
             border: none;
-            padding: 14px 0;
+            padding: 12px 0;
             border-radius: 50px;
             font-weight: bold;
-            color: #888;
+            color: #b9a46b;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-
         .currency-btn.active {
             background: #d4af37;
-            color: #000;
-            box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+            color: #0a0a0a;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.4);
         }
-
-        /* Saldo */
-        .balance-card {
-            background: #111111;
-            border-radius: 24px;
-            padding: 25px;
+        .balance-box {
+            background: linear-gradient(145deg, #0e0c07, #080703);
+            border-radius: 28px;
+            padding: 22px;
             text-align: center;
-            margin-bottom: 25px;
-            border: 1px solid #d4af37;
+            margin-bottom: 20px;
+            border: 1px solid #d4af3740;
         }
-
-        .balance-label {
-            font-size: 0.85rem;
-            color: #d4af37;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
-        .balance-value {
-            font-size: 3rem;
+        .balance-amount {
+            font-size: 2.9rem;
             font-weight: 800;
-            color: #d4af37;
+            color: #f5c542;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
-
-        /* Botões Ação */
-        .action-buttons {
+        .action-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
         }
-
-        .btn-action {
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            border: 1px solid #d4af37;
-            padding: 16px;
-            border-radius: 50px;
-            color: #d4af37;
+        .btn-gold {
+            background: linear-gradient(95deg, #d4af37, #b8941e);
+            border: none;
+            padding: 15px;
+            border-radius: 48px;
             font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
+            color: #0a0a0a;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-        }
-
-        .btn-action:hover {
-            background: #d4af37;
-            color: #000;
-            transform: translateY(-2px);
-        }
-
-        /* Contas Vinculadas */
-        .linked-section {
-            background: #111111;
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #d4af37;
-        }
-
-        .linked-title {
-            color: #d4af37;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .linked-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #222;
-        }
-
-        .linked-item:last-child {
-            border-bottom: none;
-        }
-
-        .linked-label {
-            color: #888;
-        }
-
-        .linked-value {
-            color: #fff;
-        }
-
-        .edit-link {
-            color: #d4af37;
             cursor: pointer;
-            font-size: 0.8rem;
+            transition: 0.2s;
         }
-
-        /* Admin Panel */
-        .admin-panel {
-            background: #111111;
-            border-radius: 24px;
-            padding: 20px;
-            margin-top: 25px;
-            border: 1px solid #d4af37;
-        }
-
-        .admin-title {
-            color: #d4af37;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-
-        .admin-section {
-            margin-bottom: 25px;
-        }
-
-        .admin-section h4 {
-            color: #d4af37;
-            margin-bottom: 12px;
-            font-size: 1rem;
-        }
-
-        .kyc-item, .card-item {
-            background: #1a1a1a;
+        .btn-gold:hover { transform: scale(0.97); background: linear-gradient(95deg, #c6a12e, #a57e18); }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #d4af37;
             padding: 15px;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            border-left: 3px solid #d4af37;
-        }
-
-        .kyc-item p, .card-item p {
-            color: #fff;
-            margin-bottom: 10px;
-        }
-
-        .btn-approve {
-            background: #2ecc71;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 30px;
-            color: #fff;
-            cursor: pointer;
+            border-radius: 48px;
+            color: #d4af37;
             font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
         }
-
-        /* Modal */
-        .modal {
+        .btn-outline:hover { background: #d4af3715; }
+        .modal-custom {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(8px);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98);
+            backdrop-filter: blur(12px);
             justify-content: center;
             align-items: center;
             z-index: 2000;
         }
-
-        .modal-content {
-            background: #111111;
-            width: 90%;
-            max-width: 450px;
-            border-radius: 32px;
-            padding: 30px;
+        .modal-content-custom {
+            background: #1a1710;
+            max-width: 94%;
+            width: 460px;
+            border-radius: 48px;
+            padding: 32px;
             border-top: 4px solid #d4af37;
+            box-shadow: 0 30px 50px black;
         }
-
-        .modal-content h3 {
-            color: #d4af37;
-            margin-bottom: 20px;
-        }
-
-        .modal-content input, .modal-content select {
+        .modal-content-custom input, .modal-content-custom select, .modal-content-custom textarea {
             width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            background: #1a1a1a;
-            border: 1px solid #d4af37;
-            border-radius: 30px;
-            color: #fff;
-            font-size: 1rem;
+            padding: 14px 18px;
+            margin: 12px 0;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #ffffff !important;
+            font-size: 0.95rem;
         }
-
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
+        .modal-content-custom input::placeholder, .modal-content-custom textarea::placeholder {
+            color: #aaa;
         }
-
-        .btn-modal-confirm {
-            flex: 1;
-            background: #d4af37;
-            border: none;
-            padding: 12px;
-            border-radius: 30px;
-            color: #000;
-            font-weight: bold;
-            cursor: pointer;
+        .admin-panel {
+            background: #0e0c08;
+            border-radius: 32px;
+            padding: 22px;
+            margin-top: 24px;
+            border: 1px solid #d4af3740;
         }
-
-        .btn-modal-cancel {
-            flex: 1;
-            background: transparent;
-            border: 1px solid #d4af37;
-            padding: 12px;
-            border-radius: 30px;
-            color: #d4af37;
-            cursor: pointer;
-        }
-
-        /* Toast */
         .toast {
             position: fixed;
-            bottom: 80px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #d4af37;
-            color: #000;
-            padding: 12px 24px;
-            border-radius: 50px;
+            background: #1f1b12;
+            color: #ffdf9c;
+            padding: 12px 28px;
+            border-radius: 60px;
+            border-left: 5px solid #d4af37;
             z-index: 3000;
             display: none;
             font-weight: bold;
         }
-
-        /* Footer */
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #000000;
-            border-top: 1px solid #d4af37;
-            padding: 12px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #d4af37;
-            z-index: 1000;
-        }
-
-        /* Login/Registro */
-        .auth-container {
-            max-width: 450px;
-            margin: 120px auto;
-            background: #111111;
-            border-radius: 32px;
-            padding: 40px 30px;
-            border: 1px solid #d4af37;
-        }
-
-        .auth-title {
-            text-align: center;
-            color: #d4af37;
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-        }
-
-        .auth-input {
-            width: 100%;
-            padding: 14px;
-            margin: 12px 0;
-            background: #1a1a1a;
-            border: 1px solid #d4af37;
-            border-radius: 30px;
-            color: #fff;
-        }
-
-        .auth-btn {
-            width: 100%;
-            background: #d4af37;
-            border: none;
-            padding: 14px;
-            border-radius: 30px;
-            color: #000;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .auth-link {
-            text-align: center;
-            margin-top: 15px;
-            color: #d4af37;
-            cursor: pointer;
-        }
-
         .password-wrapper {
             position: relative;
+            width: 100%;
         }
-
-        .toggle-pass {
+        .password-wrapper input {
+            padding-right: 45px;
+            color: #ffffff !important;
+        }
+        .toggle-password {
             position: absolute;
-            right: 15px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
             color: #d4af37;
             background: transparent;
             border: none;
+            font-size: 1.1rem;
         }
-
-        .forgot-pass {
+        .footer-credit {
             text-align: center;
-            margin-top: 12px;
+            margin-top: 40px;
+            padding: 20px;
             color: #d4af37;
-            cursor: pointer;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(212,175,55,0.2);
+        }
+        label {
+            color: #d4af37;
+            display: block;
+            margin-top: 10px;
             font-size: 0.85rem;
+        }
+        h3, h4, p {
+            color: #ffffff;
+        }
+        .status-badge {
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .status-active { color: #2ecc71; border-left: 3px solid #2ecc71; background: #0a1f0a; }
+        .status-inactive { color: #e67e22; border-left: 3px solid #e67e22; background: #1f140a; }
+        @media (max-width: 500px) {
+            .balance-amount { font-size: 2rem; }
+            .card-number { font-size: 1rem; letter-spacing: 2px; }
         }
     </style>
 </head>
 <body>
-
-<div class="header" id="header" style="display: none;">
-    <div class="logo">
-        <img src="https://img.icons8.com/fluency/48/000000/shield.png" alt="logo">
-        <span>MAM Cash</span>
-    </div>
-    <div class="user-info">
-        <span class="user-email" id="userEmail"></span>
-        <button class="logout-btn" id="logoutBtn">Sair</button>
-    </div>
-</div>
-
+<div id="coinParticles"></div>
 <div id="appRoot"></div>
 <div id="toastMessage" class="toast"></div>
-<div class="footer">from: MAM & Filhos (Matias Arsénio Manuel)</div>
 
 <script>
+    // Configuração Firebase
     const firebaseConfig = {
         apiKey: 'AIzaSyC90uEwso8ZP3s7tLvV_z88ZbUijXLOpPU',
         authDomain: 'project-73108ea9-d1b2-4ac3-8fb.firebaseapp.com',
@@ -543,28 +332,67 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    // Inicializar EmailJS
+    emailjs.init("YOUR_PUBLIC_KEY"); // Usuário deve substituir pela chave real
 
     const ADMIN_EMAIL = "mamfilhos29@gmail.com";
+    let exchangeRates = { AOA_USD: 0.00115, USD_AOA: 870, AOA_BRL: 0.0062, BRL_AOA: 161, USD_BRL: 5.35, BRL_USD: 0.187 };
+    
     let currentUser = null;
     let currentCurrency = 'AOA';
     let userBalances = { AOA: 0, USD: 0, BRL: 0 };
     let cardActivated = false;
     let userCardData = null;
-    let exchangeRateUSD = 830; // 1 USD = 830 AOA
+    let pending2FACode = null;
+    let pending2FAContext = null; // 'login' or 'transfer'
+    let pendingTransferData = null;
+
+    function createCoinParticles() {
+        const container = document.getElementById('coinParticles');
+        if(!container) return;
+        const coins = ['💰', '💵', '💶', '🪙', '💷', '💎'];
+        for (let i = 0; i < 25; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'coin-particle';
+            particle.innerHTML = coins[Math.floor(Math.random() * coins.length)];
+            particle.style.position = 'fixed';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.bottom = '-50px';
+            particle.style.fontSize = (20 + Math.random() * 40) + 'px';
+            particle.style.opacity = '0.06';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '0';
+            particle.style.animation = `floatCoin ${15 + Math.random() * 20}s linear infinite`;
+            container.appendChild(particle);
+        }
+    }
+    createCoinParticles();
 
     function showToast(msg) {
         const toast = document.getElementById('toastMessage');
         toast.innerText = msg;
         toast.style.display = 'block';
-        setTimeout(() => toast.style.display = 'none', 3000);
+        setTimeout(() => toast.style.display = 'none', 4000);
+    }
+
+    function translateFirebaseError(errorMessage) {
+        const errors = {
+            'auth/invalid-email': 'E-mail inválido. Verifique o formato.',
+            'auth/user-disabled': 'Conta desativada. Contacte o suporte.',
+            'auth/user-not-found': 'Usuário não encontrado. Verifique o e-mail.',
+            'auth/wrong-password': 'Senha incorreta. Tente novamente.',
+            'auth/email-already-in-use': 'E-mail já registrado. Faça login.',
+            'auth/weak-password': 'Senha muito fraca. Use pelo menos 6 caracteres.',
+            'auth/network-request-failed': 'Erro de rede. Verifique sua conexão.'
+        };
+        return errors[errorMessage] || 'Erro desconhecido. Tente novamente.';
     }
 
     function formatMoney(value, currency) {
         if (isNaN(value)) value = 0;
-        if (currency === 'AOA') return value.toLocaleString('pt-AO') + ' Kz';
-        if (currency === 'USD') return '$ ' + value.toFixed(2);
-        if (currency === 'BRL') return 'R$ ' + value.toFixed(2);
-        return value;
+        return new Intl.NumberFormat('pt-AO', { style: 'currency', currency: currency, minimumFractionDigits: 2 }).format(value);
     }
 
     function generateCardNumber() {
@@ -572,11 +400,7 @@
         for (let i = 0; i < 16; i++) num += Math.floor(Math.random() * 10);
         return num.match(/.{4}/g).join(' ');
     }
-
-    function generateCVV() {
-        return Math.floor(100 + Math.random() * 900).toString();
-    }
-
+    function generateCVV() { return Math.floor(100 + Math.random() * 900).toString(); }
     function generateExpiry() {
         const date = new Date();
         const year = date.getFullYear() + 5;
@@ -588,26 +412,86 @@
         const doc = await db.collection('users').doc(uid).get();
         if (doc.exists) {
             const data = doc.data();
-            userBalances = { AOA: data.balances?.AOA || 0, USD: data.balances?.USD || 0, BRL: data.balances?.BRL || 0 };
+            userBalances = { AOA: data.balances?.AOA ?? 0, USD: data.balances?.USD ?? 0, BRL: data.balances?.BRL ?? 0 };
             cardActivated = data.cardActivated || false;
-            userCardData = data.cardData || null;
+            window.userCardData = data.cardData || null;
+            window.userFullName = `${data.firstName || ''} ${data.lastName || ''}`.trim() || "MAM CLIENT";
         } else {
             userBalances = { AOA: 0, USD: 0, BRL: 0 };
             cardActivated = false;
-            await db.collection('users').doc(uid).set({
-                email: currentUser.email,
-                balances: { AOA: 0, USD: 0, BRL: 0 },
-                cardActivated: false,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            window.userCardData = null;
+            window.userFullName = "MAM CLIENT";
+        }
+        // Admin tem saldo infinito simbólico
+        if (currentUser && currentUser.email === ADMIN_EMAIL) {
+            userBalances = { AOA: 9999999, USD: 9999999, BRL: 9999999 };
+            cardActivated = true;
+            if (!window.userCardData) {
+                window.userCardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
+                await db.collection('users').doc(uid).set({ cardData: window.userCardData, cardActivated: true }, { merge: true });
+            }
         }
     }
 
-    async function updateBalances() {
-        await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
+    async function send2FACode(method, email, phone, context, callbackData) {
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        pending2FACode = code;
+        pending2FAContext = context;
+        if (context === 'transfer') pendingTransferData = callbackData;
+        
+        if (method === 'email') {
+            try {
+                await emailjs.send("service_mam", "template_mam", {
+                    to_email: email,
+                    code: code,
+                    name: "MAM Cash"
+                });
+                showToast("📧 Código enviado para seu e-mail!");
+            } catch(e) {
+                showToast(`📧 Código simulado: ${code} (EmailJS não configurado)`);
+            }
+        } else {
+            // Simulação SMS - Firebase SMS não configurado automaticamente
+            showToast(`📱 Código SMS simulado: ${code} (Ative o Firebase SMS)`);
+        }
+        show2FAModal();
     }
 
-    async function requestCardActivation() {
+    function show2FAModal() {
+        const modal = document.createElement('div'); modal.className = 'modal-custom';
+        modal.innerHTML = `<div class="modal-content-custom"><h3>MAM Cash - Verificação 2FA</h3><label>Código de segurança</label><input id="2faCode" placeholder="Digite o código de 6 dígitos"><div style="display:flex; gap:12px; margin-top:20px;"><button id="verify2FABtn" class="btn-gold">Verificar</button><button id="close2FAModal" class="btn-outline">Cancelar</button></div></div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        document.getElementById('verify2FABtn').onclick = () => {
+            const entered = document.getElementById('2faCode').value;
+            if (entered === pending2FACode) {
+                modal.remove();
+                if (pending2FAContext === 'login') {
+                    renderDashboard();
+                } else if (pending2FAContext === 'transfer' && pendingTransferData) {
+                    executeTransfer(pendingTransferData);
+                }
+                pending2FACode = null;
+            } else { showToast("Código inválido!"); }
+        };
+        document.getElementById('close2FAModal').onclick = () => modal.remove();
+    }
+
+    async function executeTransfer(data) {
+        const { toEmail, amount, currency } = data;
+        if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
+        const usersSnap = await db.collection('users').where('email', '==', toEmail).get();
+        if (usersSnap.empty) { showToast('Destinatário não encontrado'); return; }
+        const targetUser = usersSnap.docs[0];
+        const targetBalances = targetUser.data().balances;
+        targetBalances[currency] = (targetBalances[currency] || 0) + amount;
+        userBalances[currency] -= amount;
+        await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
+        await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
+        showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`);
+        renderDashboard();
+    }
+
+    async function requestCardPurchase() {
         if (cardActivated) { showToast('Cartão já está ativo'); return; }
         if (userBalances.AOA < 5000 && currentUser.email !== ADMIN_EMAIL) {
             showToast(`Saldo insuficiente. Taxa: ${formatMoney(5000, 'AOA')}`);
@@ -616,19 +500,11 @@
         if (currentUser.email === ADMIN_EMAIL) {
             const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
             await db.collection('users').doc(currentUser.uid).update({ cardActivated: true, cardData: cardData });
-            cardActivated = true;
-            userCardData = cardData;
-            showToast('✨ Cartão ADMIN gerado com sucesso!');
-            renderDashboard();
-            return;
+            cardActivated = true; window.userCardData = cardData;
+            showToast('✨ Cartão ADMIN gerado!');
+            renderDashboard(); return;
         }
-        await db.collection('cardRequests').add({
-            userId: currentUser.uid,
-            userEmail: currentUser.email,
-            status: 'pending',
-            fee: 5000,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        await db.collection('cardRequests').add({ userId: currentUser.uid, userEmail: currentUser.email, status: 'pending', fee: 5000, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
         showToast('✅ Pedido enviado ao administrador.');
     }
 
@@ -639,340 +515,180 @@
         if (balances.AOA < fee) { showToast('Saldo insuficiente'); return; }
         balances.AOA -= fee;
         const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
-        await userRef.update({ balances: balances, cardActivated: true, cardData: cardData });
-        await db.collection('cardRequests').where('userId', '==', userId).where('status', '==', 'pending').get()
-            .then(snap => snap.forEach(doc => doc.ref.update({ status: 'approved' })));
-        showToast(`✅ Cartão aprovado para ${userDoc.data().email}`);
-        if (currentUser && currentUser.uid === userId) {
-            userBalances = balances;
-            cardActivated = true;
-            userCardData = cardData;
-            renderDashboard();
-        }
-    }
-
-    async function exchangeCurrency(from, to, amount) {
-        if (amount <= 0 || isNaN(amount)) return false;
-        if (userBalances[from] < amount) { showToast(`Saldo insuficiente em ${from}`); return false; }
-        
-        let converted = 0;
-        if (from === 'AOA' && to === 'USD') converted = amount / exchangeRateUSD;
-        else if (from === 'USD' && to === 'AOA') converted = amount * exchangeRateUSD;
-        else if (from === 'AOA' && to === 'BRL') converted = amount / 160;
-        else if (from === 'BRL' && to === 'AOA') converted = amount * 160;
-        else if (from === 'USD' && to === 'BRL') converted = amount * 5.3;
-        else if (from === 'BRL' && to === 'USD') converted = amount / 5.3;
-        else { showToast('Par não suportado'); return false; }
-        
-        userBalances[from] -= amount;
-        userBalances[to] += converted;
-        await updateBalances();
-        showToast(`✅ Convertido: ${formatMoney(amount, from)} → ${formatMoney(converted, to)}`);
+        await userRef.update({ balances, cardActivated: true, cardData });
+        await db.collection('cardRequests').where('userId', '==', userId).where('status', '==', 'pending').get().then(q => q.forEach(d => d.ref.update({ status: 'approved' })));
+        showToast(`💳 Cartão aprovado!`);
         renderDashboard();
-        return true;
-    }
-
-    async function transferMoney(email, amount, currency) {
-        if (!email || amount <= 0) return false;
-        if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return false; }
-        const usersSnap = await db.collection('users').where('email', '==', email).get();
-        if (usersSnap.empty) { showToast('Destinatário não encontrado'); return false; }
-        const targetUser = usersSnap.docs[0];
-        const targetBalances = targetUser.data().balances;
-        targetBalances[currency] = (targetBalances[currency] || 0) + amount;
-        userBalances[currency] -= amount;
-        await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
-        await updateBalances();
-        showToast(`✅ Transferência de ${formatMoney(amount, currency)} enviada para ${email}`);
-        renderDashboard();
-        return true;
     }
 
     async function renderDashboard() {
         if (!currentUser) { renderLogin(); return; }
         await loadUserData(currentUser.uid);
-        const isAdmin = currentUser.email === ADMIN_EMAIL;
+        const isAdmin = (currentUser.email === ADMIN_EMAIL);
         const balanceNow = userBalances[currentCurrency] || 0;
+        const cardStatusClass = cardActivated ? 'status-active' : 'status-inactive';
+        const cardStatusText = cardActivated ? 'ATIVO • PREMIUM' : 'BLOQUEADO';
         
         let html = `
-            <div class="container">
-                <div class="card-container">
-                    <div class="card-chip">
-                        <div class="chip-icon"><i class="fas fa-microchip"></i></div>
-                        <div class="contactless"><i class="fas fa-wifi"></i></div>
-                    </div>
-                    <div class="card-number">${userCardData ? userCardData.number : '****  ****  ****  ****'}</div>
-                    <div class="card-details">
-                        <div class="card-holder">
-                            <div class="card-label">Titular</div>
-                            <div class="card-value">MATIAS ARSÉNIO MANUEL</div>
-                        </div>
-                        <div class="card-expiry">
-                            <div class="card-label">Validade</div>
-                            <div class="card-value">${userCardData ? userCardData.expiry : '**/**'}</div>
-                        </div>
-                        <div class="card-expiry">
-                            <div class="card-label">CVV</div>
-                            <div class="card-value">${userCardData ? userCardData.cvv : '***'}</div>
-                        </div>
-                    </div>
-                    <div class="card-brand">
-                        <i class="fab fa-cc-mastercard"></i> MASTERCARD
-                    </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div><i class="fas fa-gem" style="color:#d4af37"></i> <span style="color:#e6d5a8;">${currentUser.email}</span></div>
+                <button id="logoutMainBtn" style="background:#222216; border:1px solid #d4af37; padding:8px 18px; border-radius:40px; color:#d4af37; cursor:pointer;"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            </div>
+            <div class="card-mam-black">
+                <div class="card-chip">
+                    <div class="chip-icon"><i class="fas fa-microchip"></i></div>
+                    <div class="card-network">MAM BLACK</div>
                 </div>
-
-                <div class="currency-tabs">
-                    <button class="currency-btn ${currentCurrency === 'AOA' ? 'active' : ''}" data-cur="AOA"><i class="fas fa-coins"></i> Kwanza (AOA)</button>
-                    <button class="currency-btn ${currentCurrency === 'USD' ? 'active' : ''}" data-cur="USD"><i class="fas fa-dollar-sign"></i> USD</button>
-                    <button class="currency-btn ${currentCurrency === 'BRL' ? 'active' : ''}" data-cur="BRL"><i class="fas fa-real"></i> BRL</button>
+                <div class="card-number">${window.userCardData ? window.userCardData.number : '****  ****  ****  ****'}</div>
+                <div class="card-details">
+                    <div class="card-expiry">VALIDADE <span>${window.userCardData ? window.userCardData.expiry : '**/**'}</span></div>
+                    <div class="card-cvv">CVV <span>${window.userCardData ? window.userCardData.cvv : '***'}</span></div>
                 </div>
-
-                <div class="balance-card">
-                    <div class="balance-label">SALDO DISPONÍVEL</div>
-                    <div class="balance-value">${formatMoney(balanceNow, currentCurrency)}</div>
-                </div>
-
-                <div class="action-buttons">
-                    <button class="btn-action" id="transferBtn"><i class="fas fa-exchange-alt"></i> Transferir</button>
-                    <button class="btn-action" id="depositBtn"><i class="fas fa-upload"></i> Depositar</button>
-                    <button class="btn-action" id="exchangeBtn"><i class="fas fa-chart-line"></i> Câmbio</button>
-                </div>
-
-                <div class="linked-section">
-                    <div class="linked-title"><i class="fas fa-link"></i> Contas Vinculadas</div>
-                    <div class="linked-item">
-                        <span class="linked-label">🏦 IBAN Angola:</span>
-                        <span class="linked-value">AO06 0000 0000 0000 0000 0000 0</span>
-                    </div>
-                    <div class="linked-item">
-                        <span class="linked-label">📧 PayPal:</span>
-                        <span class="linked-value">${currentUser.email}</span>
-                    </div>
-                </div>
-        `;
-
-        if (!cardActivated && currentUser.email !== ADMIN_EMAIL) {
-            html += `<button id="buyCardBtn" class="btn-action" style="width:100%; margin-bottom:20px;"><i class="fas fa-credit-card"></i> Solicitar Cartão (5.000 Kz)</button>`;
-        }
-
+                <div class="card-holder">TITULAR <div class="card-holder-name">${window.userFullName.toUpperCase()}</div></div>
+            </div>
+            <div class="currency-tabs">
+                <button class="currency-btn ${currentCurrency === 'AOA' ? 'active' : ''}" data-cur="AOA"><i class="fas fa-coins"></i> Kwanza</button>
+                <button class="currency-btn ${currentCurrency === 'USD' ? 'active' : ''}" data-cur="USD"><i class="fas fa-dollar-sign"></i> USD</button>
+                <button class="currency-btn ${currentCurrency === 'BRL' ? 'active' : ''}" data-cur="BRL"><i class="fas fa-real"></i> BRL</button>
+            </div>
+            <div class="balance-box"><div class="balance-amount">${formatMoney(balanceNow, currentCurrency)}</div></div>
+            <div class="action-grid">
+                <button id="btnTransfer" class="btn-gold"><i class="fas fa-exchange-alt"></i> Transferir</button>
+                <button id="btnDeposit" class="btn-gold"><i class="fas fa-upload"></i> Depositar</button>
+                <button id="btnBuyCard" class="btn-outline"><i class="fas fa-credit-card"></i> ${cardActivated ? 'Cartão Ativo' : 'Comprar Cartão'}</button>
+            </div>`;
+        
         if (isAdmin) {
             const pendingCardsSnap = await db.collection('cardRequests').where('status', '==', 'pending').get();
             let pendingCards = [];
-            pendingCardsSnap.forEach(d => pendingCards.push({ id: d.id, ...d.data() }));
-            
-            html += `<div class="admin-panel">
-                        <div class="admin-title"><i class="fas fa-crown"></i> Painel Administrador</div>
-                        <div class="admin-section">
-                            <h4>💳 Pedidos de Cartão Pendentes</h4>`;
-            if (pendingCards.length === 0) {
-                html += `<p style="color:#fff;">Nenhum pedido pendente</p>`;
-            } else {
-                pendingCards.forEach(card => {
-                    html += `<div class="card-item">
-                                <p><strong>${card.userEmail}</strong> - Taxa: 5.000 Kz</p>
-                                <button class="btn-approve" data-uid="${card.userId}" data-fee="5000">Aprovar Cartão</button>
-                            </div>`;
-                });
-            }
-            html += `</div></div>`;
+            pendingCardsSnap.forEach(d => pendingCards.push({id: d.id, ...d.data()}));
+            html += `<div class="admin-panel"><h3><i class="fas fa-crown"></i> Painel ADM</h3>`;
+            html += `<h4>💳 Pedidos de Cartão</h4>`;
+            if(pendingCards.length===0) html+=`<p>Sem pedidos</p>`;
+            pendingCards.forEach(card => {
+                html += `<div style="background:#1a1710; padding:12px; margin:8px 0; border-radius:20px;">
+                            <div>👤 ${card.userEmail}</div>
+                            <button class="approveCardBtn" data-uid="${card.userId}" data-fee="${card.fee}" style="background:#d4af37; border:none; padding:6px 18px; border-radius:40px;">💳 Gerar Cartão (Cobrar ${formatMoney(card.fee, 'AOA')})</button>
+                         </div>`;
+            });
+            html += `</div>`;
         }
-
-        html += `</div>`;
+        html += `<div class="footer-credit">from: MAM & Filhos (Matias Arsénio Manuel)</div>`;
         document.getElementById('appRoot').innerHTML = html;
-        document.getElementById('header').style.display = 'flex';
-        document.getElementById('userEmail').innerText = currentUser.email;
-
+        
         document.querySelectorAll('.currency-btn').forEach(btn => {
             btn.addEventListener('click', () => { currentCurrency = btn.getAttribute('data-cur'); renderDashboard(); });
         });
-
-        document.getElementById('transferBtn')?.addEventListener('click', openTransferModal);
-        document.getElementById('depositBtn')?.addEventListener('click', openDepositModal);
-        document.getElementById('exchangeBtn')?.addEventListener('click', openExchangeModal);
-        document.getElementById('buyCardBtn')?.addEventListener('click', requestCardActivation);
-        document.getElementById('logoutBtn')?.addEventListener('click', () => auth.signOut());
-
+        document.getElementById('btnTransfer')?.addEventListener('click', () => openTransferModal());
+        document.getElementById('btnDeposit')?.addEventListener('click', () => openDepositModal());
+        document.getElementById('btnBuyCard')?.addEventListener('click', () => requestCardPurchase());
+        document.getElementById('logoutMainBtn')?.addEventListener('click', () => auth.signOut());
         if (isAdmin) {
-            document.querySelectorAll('.btn-approve').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    await adminApproveCard(btn.getAttribute('data-uid'), parseFloat(btn.getAttribute('data-fee')));
-                    renderDashboard();
-                });
+            document.querySelectorAll('.approveCardBtn').forEach(btn => {
+                btn.addEventListener('click', async () => { await adminApproveCard(btn.getAttribute('data-uid'), parseFloat(btn.getAttribute('data-fee'))); renderDashboard(); });
             });
         }
     }
 
     function openTransferModal() {
-        const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3><i class="fas fa-paper-plane"></i> Transferir</h3>
-                <input id="transferEmail" placeholder="Email do destinatário">
-                <input id="transferAmount" type="number" placeholder="Valor">
-                <select id="transferCurrency">
-                    <option value="AOA">Kwanza (AOA)</option>
-                    <option value="USD">Dólar (USD)</option>
-                    <option value="BRL">Real (BRL)</option>
-                </select>
-                <div class="modal-buttons">
-                    <button id="confirmTransfer" class="btn-modal-confirm">Enviar</button>
-                    <button id="closeModal" class="btn-modal-cancel">Cancelar</button>
-                </div>
-            </div>`;
+        const modal = document.createElement('div'); modal.className = 'modal-custom';
+        modal.innerHTML = `<div class="modal-content-custom"><h3>MAM Cash - Transferência</h3><label>Email do destinatário</label><input id="transferEmail" placeholder="email@exemplo.com"><label>Valor</label><input id="transferAmount" type="number" placeholder="0.00"><label>Moeda</label><select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select><div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmTransferBtn" class="btn-gold">Continuar</button><button id="closeTransferModal" class="btn-outline">Cancelar</button></div></div>`;
         document.body.appendChild(modal); modal.style.display = 'flex';
-        document.getElementById('confirmTransfer').onclick = async () => {
-            const email = document.getElementById('transferEmail').value;
+        document.getElementById('confirmTransferBtn').onclick = () => {
+            const toEmail = document.getElementById('transferEmail').value;
             const amount = parseFloat(document.getElementById('transferAmount').value);
             const currency = document.getElementById('transferCurrency').value;
-            await transferMoney(email, amount, currency);
+            if (!toEmail || isNaN(amount) || amount<=0) { showToast('Dados inválidos'); return; }
             modal.remove();
+            const method = confirm("Receber código por Email? (OK=Email, Cancel=SMS)") ? 'email' : 'sms';
+            send2FACode(method, currentUser.email, "", 'transfer', { toEmail, amount, currency });
         };
-        document.getElementById('closeModal').onclick = () => modal.remove();
+        document.getElementById('closeTransferModal').onclick = () => modal.remove();
     }
 
-    function openDepositModal() {
-        const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3><i class="fas fa-university"></i> Solicitar Depósito</h3>
-                <p style="color:#fff; margin-bottom:10px;">IBAN: AO06 0000 0000 0000 0000 0000 0</p>
-                <p style="color:#fff; margin-bottom:20px;">Envie o comprovativo para aprovação do ADMIN</p>
-                <input id="depositAmount" type="number" placeholder="Valor">
-                <select id="depositCurrency">
-                    <option value="AOA">Kwanza (AOA)</option>
-                    <option value="USD">Dólar (USD)</option>
-                    <option value="BRL">Real (BRL)</option>
-                </select>
-                <textarea id="depositProof" placeholder="Código do comprovativo" style="width:100%; padding:14px; background:#1a1a1a; border:1px solid #d4af37; border-radius:30px; color:#fff; margin:10px 0;"></textarea>
-                <div class="modal-buttons">
-                    <button id="sendDeposit" class="btn-modal-confirm">Enviar Solicitação</button>
-                    <button id="closeDeposit" class="btn-modal-cancel">Cancelar</button>
-                </div>
-            </div>`;
-        document.body.appendChild(modal); modal.style.display = 'flex';
+    async function openDepositModal() {
+        const modal = document.createElement('div'); modal.className = 'modal-custom';
+        modal.innerHTML = `<div class="modal-content-custom"><h3>MAM Cash - Depósito</h3><label>Método</label><select id="depositMethod"><option>Transferência Bancária</option><option>PayPal</option><option>USDT</option></select><label>Valor</label><input id="depositAmount" type="number"><label>Moeda</label><select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select><label>Comprovativo</label><textarea id="depositProof" placeholder="Link ou hash"></textarea><div style="display:flex; gap:12px;"><button id="sendDeposit" class="btn-gold">Solicitar</button><button id="closeDeposit" class="btn-outline">Fechar</button></div></div>`;
+        document.body.appendChild(modal); modal.style.display='flex';
         document.getElementById('sendDeposit').onclick = async () => {
+            const method = document.getElementById('depositMethod').value;
             const amount = parseFloat(document.getElementById('depositAmount').value);
             const currency = document.getElementById('depositCurrency').value;
             const proof = document.getElementById('depositProof').value;
-            if (isNaN(amount) || amount <= 0) { showToast('Valor inválido'); return; }
-            await db.collection('deposits').add({
-                userId: currentUser.uid, userEmail: currentUser.email, amount, currency, proof,
-                status: 'pending', timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            showToast(`✅ Solicitação de depósito de ${formatMoney(amount, currency)} enviada`);
+            if(isNaN(amount) || amount<=0) return;
+            await db.collection('deposits').add({ userId: currentUser.uid, userEmail: currentUser.email, amount, currency, method, proof, status: 'pending', timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+            showToast(`Depósito solicitado. Aguarde aprovação.`);
             modal.remove();
         };
         document.getElementById('closeDeposit').onclick = () => modal.remove();
     }
 
-    function openExchangeModal() {
-        const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3><i class="fas fa-chart-line"></i> Câmbio (USD = ${exchangeRateUSD} AOA)</h3>
-                <select id="fromCurrency">
-                    <option value="AOA">Kwanza (AOA)</option>
-                    <option value="USD">Dólar (USD)</option>
-                    <option value="BRL">Real (BRL)</option>
-                </select>
-                <select id="toCurrency">
-                    <option value="USD">Dólar (USD)</option>
-                    <option value="AOA">Kwanza (AOA)</option>
-                    <option value="BRL">Real (BRL)</option>
-                </select>
-                <input id="exchangeAmount" type="number" placeholder="Montante a converter">
-                <div class="modal-buttons">
-                    <button id="doExchange" class="btn-modal-confirm">Converter</button>
-                    <button id="closeExchange" class="btn-modal-cancel">Cancelar</button>
-                </div>
-            </div>`;
-        document.body.appendChild(modal); modal.style.display = 'flex';
-        document.getElementById('doExchange').onclick = async () => {
-            const from = document.getElementById('fromCurrency').value;
-            const to = document.getElementById('toCurrency').value;
-            const amount = parseFloat(document.getElementById('exchangeAmount').value);
-            await exchangeCurrency(from, to, amount);
-            modal.remove();
-        };
-        document.getElementById('closeExchange').onclick = () => modal.remove();
-    }
-
     function renderLogin() {
-        document.getElementById('header').style.display = 'none';
         document.getElementById('appRoot').innerHTML = `
-            <div class="auth-container">
-                <div class="auth-title"><i class="fas fa-shield-alt"></i> MAM Cash</div>
-                <div id="loginView">
-                    <input class="auth-input" id="loginEmail" placeholder="Email">
-                    <div class="password-wrapper">
-                        <input class="auth-input" id="loginPassword" type="password" placeholder="Senha">
-                        <button class="toggle-pass" onclick="togglePassword('loginPassword')"><i class="fas fa-eye"></i></button>
-                    </div>
-                    <button class="auth-btn" id="doLogin">Entrar</button>
-                    <div class="forgot-pass" id="forgotPassBtn">Esqueci minha senha</div>
-                    <div class="auth-link" id="goToRegister">Criar Conta</div>
-                </div>
-                <div id="registerView" style="display:none;">
-                    <input class="auth-input" id="regName" placeholder="Nome Completo">
-                    <input class="auth-input" id="regEmail" placeholder="Email">
-                    <div class="password-wrapper">
-                        <input class="auth-input" id="regPassword" type="password" placeholder="Senha (min 6)">
-                        <button class="toggle-pass" onclick="togglePassword('regPassword')"><i class="fas fa-eye"></i></button>
-                    </div>
-                    <button class="auth-btn" id="doRegister">Registrar</button>
-                    <div class="auth-link" id="backToLogin">Voltar ao Login</div>
-                </div>
+            <div style="max-width:460px; margin: 5vh auto; background:#12100b; border-radius:56px; padding:38px 28px; border:1px solid #d4af37;">
+                <div style="text-align:center;"><i class="fas fa-coins" style="font-size:3rem; color:#d4af37;"></i><h2 style="color:#d4af37;">MAM CASH</h2></div>
+                <input id="loginEmail" placeholder="Email" style="width:100%; margin:12px 0; padding:14px; background:#2a241b; border-radius:60px; color:#fff;">
+                <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha" style="color:#fff;"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                <button id="doLogin" class="btn-gold" style="width:100%; margin-top:16px;">Entrar</button>
+                <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
+                <div class="footer-credit" style="margin-top:20px;">from: MAM & Filhos (Matias Arsénio Manuel)</div>
             </div>`;
-        
-        window.togglePassword = (id) => {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
-        };
-        
+        document.getElementById('toggleLoginPass')?.addEventListener('click', () => { const inp = document.getElementById('loginPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
         document.getElementById('doLogin').onclick = async () => {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             try {
-                await auth.signInWithEmailAndPassword(email, password);
-                showToast('Login efetuado!');
-                renderDashboard();
-            } catch(e) { showToast(e.message); }
+                const cred = await auth.signInWithEmailAndPassword(email, password);
+                currentUser = cred.user;
+                if (email === ADMIN_EMAIL) { renderDashboard(); return; }
+                const method = confirm("MAM Cash - Escolha o método de verificação:\nOK = E-mail | Cancel = SMS") ? 'email' : 'sms';
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                const phone = userDoc.exists ? userDoc.data().phone : '';
+                send2FACode(method, email, phone, 'login', null);
+            } catch(e) { showToast(translateFirebaseError(e.code)); }
         };
-        document.getElementById('forgotPassBtn').onclick = () => {
-            const email = document.getElementById('loginEmail').value;
-            if (!email) { showToast('Digite seu email'); return; }
-            auth.sendPasswordResetEmail(email).then(() => showToast('Email de recuperação enviado!')).catch(e => showToast(e.message));
-        };
-        document.getElementById('goToRegister').onclick = () => {
-            document.getElementById('loginView').style.display = 'none';
-            document.getElementById('registerView').style.display = 'block';
-        };
-        document.getElementById('backToLogin').onclick = () => {
-            document.getElementById('registerView').style.display = 'none';
-            document.getElementById('loginView').style.display = 'block';
-        };
-        document.getElementById('doRegister').onclick = async () => {
-            const name = document.getElementById('regName').value;
+        document.getElementById('goToRegister').onclick = () => renderRegister();
+    }
+
+    function renderRegister() {
+        document.getElementById('appRoot').innerHTML = `
+            <div style="max-width:480px; margin: 3vh auto; background:#12100b; border-radius:56px; padding:32px 28px; border:1px solid #d4af37;">
+                <h2 style="color:#d4af37; text-align:center;">Criar Conta</h2>
+                <input id="regFirstName" placeholder="Nome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px; color:#fff;">
+                <input id="regLastName" placeholder="Sobrenome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px; color:#fff;">
+                <input id="regEmail" placeholder="Email" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px; color:#fff;">
+                <input id="regPhone" placeholder="Telefone (+244 999 999 999)" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px; color:#fff;">
+                <div class="password-wrapper"><input id="regPassword" type="password" placeholder="Senha (min 6)" style="color:#fff;"><button type="button" id="toggleRegPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                <div class="password-wrapper"><input id="regConfirmPassword" type="password" placeholder="Confirmar Senha" style="color:#fff;"><button type="button" id="toggleRegConfirm" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                <button id="doRegisterFinal" class="btn-gold" style="width:100%; margin-top:16px;">Registrar</button>
+                <button id="backToLoginFromReg" class="btn-outline" style="width:100%; margin-top:12px;">Voltar</button>
+                <div class="footer-credit" style="margin-top:20px;">from: MAM & Filhos (Matias Arsénio Manuel)</div>
+            </div>`;
+        document.getElementById('toggleRegPass')?.addEventListener('click', () => { const inp = document.getElementById('regPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
+        document.getElementById('toggleRegConfirm')?.addEventListener('click', () => { const inp = document.getElementById('regConfirmPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
+        document.getElementById('doRegisterFinal').onclick = async () => {
+            const firstName = document.getElementById('regFirstName').value;
+            const lastName = document.getElementById('regLastName').value;
             const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
             const password = document.getElementById('regPassword').value;
-            if (!name || !email || password.length < 6) { showToast('Preencha todos os campos e senha com 6+ caracteres'); return; }
+            const confirm = document.getElementById('regConfirmPassword').value;
+            if(!firstName || !lastName || !email || !phone || !password) { showToast('Preencha todos os campos'); return; }
+            if(password !== confirm) { showToast('Senhas não coincidem'); return; }
             try {
                 const userCred = await auth.createUserWithEmailAndPassword(email, password);
                 await db.collection('users').doc(userCred.user.uid).set({
-                    name, email, balances: { AOA: 0, USD: 0, BRL: 0 }, cardActivated: false,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    firstName, lastName, email, phone, balances: { AOA: 0, USD: 0, BRL: 0 },
+                    cardActivated: false, createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                showToast('Conta criada com sucesso!');
-                renderDashboard();
-            } catch(e) { showToast(e.message); }
+                showToast('Conta criada! Faça login.');
+                renderLogin();
+            } catch(e) { showToast(translateFirebaseError(e.code)); }
         };
+        document.getElementById('backToLoginFromReg').onclick = () => renderLogin();
     }
 
-    auth.onAuthStateChanged(user => {
-        currentUser = user;
-        if (user) renderDashboard();
-        else renderLogin();
-    });
+    auth.onAuthStateChanged(user => { if(user) { currentUser = user; renderDashboard(); } else { currentUser = null; renderLogin(); } });
 </script>
 </body>
 </html>
