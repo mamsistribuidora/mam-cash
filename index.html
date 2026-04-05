@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MAM Cash • Carteira Digital Profissional | Distribuidora Musical</title>
+    <title>MAM Distribuidora • Sistema Financeiro Profissional</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-functions-compat.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- CryptoJS para tokenização segura -->
+    <!-- CryptoJS para tokenização -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
         * {
@@ -40,7 +41,6 @@
             white-space: pre;
             overflow: hidden;
             letter-spacing: 30px;
-            line-height: 1.8;
             animation: floatMoney 40s infinite linear;
             z-index: 0;
         }
@@ -48,12 +48,8 @@
             0% { transform: translateY(0px) translateX(0px); }
             100% { transform: translateY(-200px) translateX(50px); }
         }
-        .app-container {
-            max-width: 680px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
+        .app-container { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
+        
         /* Cartão Digital Premium */
         .digital-card {
             background: linear-gradient(135deg, #1a160c 0%, #0c0a04 100%);
@@ -64,7 +60,6 @@
             box-shadow: 0 30px 45px -12px rgba(0,0,0,0.9), 0 0 0 1px rgba(212,175,55,0.3);
             position: relative;
             overflow: hidden;
-            transition: all 0.3s;
         }
         .digital-card::before {
             content: "💳";
@@ -97,28 +92,11 @@
             color: #f5e2b0;
             margin-bottom: 20px;
             font-family: monospace;
-            word-break: break-all;
         }
-        .card-details-row {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 20px;
-        }
-        .card-detail-item {
-            flex: 1;
-        }
-        .card-detail-label {
-            font-size: 0.7rem;
-            color: #d4af37;
-            opacity: 0.7;
-            letter-spacing: 1px;
-        }
-        .card-detail-value {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #fff;
-            font-family: monospace;
-        }
+        .card-details-row { display: flex; gap: 30px; margin-bottom: 20px; }
+        .card-detail-item { flex: 1; }
+        .card-detail-label { font-size: 0.7rem; color: #d4af37; opacity: 0.7; letter-spacing: 1px; }
+        .card-detail-value { font-size: 1rem; font-weight: bold; color: #fff; font-family: monospace; }
         .toggle-card-btn {
             background: rgba(212, 175, 55, 0.2);
             border: 1px solid #d4af37;
@@ -127,15 +105,12 @@
             color: #d4af37;
             cursor: pointer;
             font-size: 0.85rem;
-            transition: all 0.2s;
             width: 100%;
             margin-top: 10px;
         }
-        .toggle-card-btn:hover {
-            background: #d4af37;
-            color: #0a0a0a;
-        }
-        .card-status-badge {
+        .toggle-card-btn:hover { background: #d4af37; color: #0a0a0a; }
+        
+        .status-badge {
             display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
@@ -143,19 +118,10 @@
             font-weight: bold;
             margin-bottom: 15px;
         }
-        .card-active {
-            background: #2ecc71;
-            color: #0a0a0a;
-        }
-        .card-inactive {
-            background: #e67e22;
-            color: #fff;
-        }
-        .card-pending {
-            background: #f39c12;
-            color: #0a0a0a;
-        }
-        /* Abas de moeda */
+        .status-verified { background: #2ecc71; color: #0a0a0a; }
+        .status-pending { background: #f39c12; color: #0a0a0a; }
+        .status-rejected { background: #e74c3c; color: #fff; }
+        
         .currency-tabs {
             display: flex;
             gap: 12px;
@@ -180,11 +146,8 @@
             justify-content: center;
             gap: 8px;
         }
-        .currency-btn.active {
-            background: #d4af37;
-            color: #0a0a0a;
-            box-shadow: 0 4px 15px rgba(212,175,55,0.4);
-        }
+        .currency-btn.active { background: #d4af37; color: #0a0a0a; box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
+        
         .balance-box {
             background: linear-gradient(145deg, #0e0c07, #080703);
             border-radius: 28px;
@@ -193,12 +156,8 @@
             margin-bottom: 20px;
             border: 1px solid #d4af3740;
         }
-        .balance-amount {
-            font-size: 2.9rem;
-            font-weight: 800;
-            color: #f5c542;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
+        .balance-amount { font-size: 2.9rem; font-weight: 800; color: #f5c542; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        
         .action-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -217,7 +176,6 @@
             justify-content: center;
             gap: 10px;
             cursor: pointer;
-            transition: 0.2s;
         }
         .btn-gold:hover { transform: scale(0.97); }
         .btn-outline {
@@ -229,6 +187,8 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .btn-outline:disabled { opacity: 0.5; cursor: not-allowed; }
+        
         .settings-section {
             background: #12100b;
             border-radius: 28px;
@@ -236,23 +196,9 @@
             margin-bottom: 20px;
             border: 1px solid #2a2416;
         }
-        .settings-title {
-            color: #d4af37;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            display: block;
-            color: #b9a46b;
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-        }
+        .settings-title { color: #d4af37; margin-bottom: 15px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; color: #b9a46b; font-size: 0.8rem; margin-bottom: 5px; }
         .input-group input, .input-group select {
             width: 100%;
             padding: 14px 18px;
@@ -262,14 +208,17 @@
             color: #fff;
             font-size: 0.95rem;
         }
-        .iban-preview {
+        .input-group input:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .kyc-section {
             background: #1a1710;
-            padding: 12px;
-            border-radius: 16px;
-            margin-top: 10px;
-            font-family: monospace;
-            color: #d4af37;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
         }
+        .kyc-preview-img { max-width: 100px; border-radius: 12px; margin: 5px; cursor: pointer; }
+        
         .modal {
             display: none;
             position: fixed;
@@ -303,12 +252,8 @@
             display: none;
             font-weight: bold;
         }
-        .password-wrapper {
-            position: relative;
-        }
-        .password-wrapper input {
-            padding-right: 45px;
-        }
+        .password-wrapper { position: relative; }
+        .password-wrapper input { padding-right: 45px; }
         .toggle-password {
             position: absolute;
             right: 16px;
@@ -319,35 +264,10 @@
             background: transparent;
             border: none;
         }
-        .country-select {
-            width: 100%;
-            padding: 14px 18px;
-            background: #2c271e;
-            border: 1px solid #d4af3760;
-            border-radius: 60px;
-            color: #fff;
-        }
-        .phone-container {
-            display: flex;
-            gap: 12px;
-        }
-        .phone-code {
-            width: 100px;
-            padding: 14px;
-            background: #2c271e;
-            border: 1px solid #d4af3760;
-            border-radius: 60px;
-            color: #d4af37;
-            text-align: center;
-        }
-        .phone-number {
-            flex: 1;
-            padding: 14px;
-            background: #2c271e;
-            border: 1px solid #d4af3760;
-            border-radius: 60px;
-            color: #fff;
-        }
+        .phone-container { display: flex; gap: 12px; }
+        .phone-code { width: 100px; padding: 14px; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #d4af37; text-align: center; }
+        .phone-number { flex: 1; padding: 14px; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #fff; }
+        
         @media (max-width: 500px) {
             .balance-amount { font-size: 2rem; }
             .card-number-display { font-size: 1.1rem; }
@@ -362,7 +282,7 @@
 
 <script>
     // ============================================
-    // CONFIGURAÇÃO FIREBASE (NÃO ALTERAR)
+    // FIREBASE CONFIGURAÇÃO
     // ============================================
     const firebaseConfig = {
         apiKey: 'AIzaSyC90uEwso8ZP3s7tLvV_z88ZbUijXLOpPU',
@@ -376,40 +296,42 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
     const storage = firebase.storage();
+    const functions = firebase.functions();
 
     // ============================================
-    // CONSTANTES E VARIÁVEIS GLOBAIS
+    // CONSTANTES
     // ============================================
     const ADMIN_EMAIL = "mamfilhos29@gmail.com";
     const ENCRYPTION_KEY = "MAM_DISTRIBUIDORA_SECURE_KEY_2024";
+    const MIN_WITHDRAWAL = 1000; // 1000 AOA mínimo para saque
     
     let currentUser = null;
     let currentCurrency = 'AOA';
     let userBalances = { AOA: 0, USD: 0, BRL: 0 };
     let userCardData = null;
-    let isCardVisible = false;
-    let pending2FACode = null;
-    
-    // Chave para tokenização dos dados do cartão (simula tokenização real)
-    let cardToken = null;
-    
-    // Países com códigos telefônicos
+    let isCvvVisible = false;
+    let userKycStatus = 'pending';
+    let userKycDocuments = null;
+    let isKycLocked = false;
+
+    // Países
     const countriesWithCodes = [
         { name: "Angola", code: "+244" }, { name: "Brasil", code: "+55" }, { name: "Portugal", code: "+351" },
         { name: "Estados Unidos", code: "+1" }, { name: "Reino Unido", code: "+44" }, { name: "Alemanha", code: "+49" },
         { name: "França", code: "+33" }, { name: "Espanha", code: "+34" }, { name: "Itália", code: "+39" },
-        { name: "Moçambique", code: "+258" }, { name: "Cabo Verde", code: "+238" }, { name: "São Tomé", code: "+239" },
-        { name: "Guiné-Bissau", code: "+245" }, { name: "Timor-Leste", code: "+670" }
+        { name: "Moçambique", code: "+258" }, { name: "Cabo Verde", code: "+238" }
     ];
-    
+
     // ============================================
     // FUNÇÕES AUXILIARES
     // ============================================
-    function showToast(msg) {
+    function showToast(msg, isError = false) {
         const toast = document.getElementById('toastMessage');
         toast.innerText = msg;
+        toast.style.backgroundColor = isError ? '#2c1a1a' : '#1f1b12';
+        toast.style.borderLeftColor = isError ? '#e74c3c' : '#d4af37';
         toast.style.display = 'block';
-        setTimeout(() => toast.style.display = 'none', 4000);
+        setTimeout(() => toast.style.display = 'none', 5000);
     }
     
     function formatMoney(value, currency) {
@@ -418,42 +340,32 @@
     }
     
     // ============================================
-    // VALIDAÇÃO DE IBAN (Padrão Internacional)
+    // VALIDAÇÕES BANCÁRIAS
     // ============================================
     function validateIBAN(iban) {
         const cleanIBAN = iban.replace(/\s/g, '').toUpperCase();
-        // Regex para IBAN (mínimo 15, máximo 34 caracteres)
+        // Padrão internacional e específico Angola (AO06 + 21 dígitos = 25)
         const ibanRegex = /^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/;
         if (!ibanRegex.test(cleanIBAN)) return false;
-        
-        // Validação específica para Angola (AO)
-        if (cleanIBAN.startsWith('AO')) {
-            return cleanIBAN.length === 25;
-        }
+        if (cleanIBAN.startsWith('AO')) return cleanIBAN.length === 25;
         return cleanIBAN.length >= 15 && cleanIBAN.length <= 34;
     }
     
-    // ============================================
-    // VALIDAÇÃO DE EMAIL DO PAYPAL
-    // ============================================
     function validatePaypalEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
     
     // ============================================
-    // GERAÇÃO DE CARTÃO DIGITAL COM TOKENIZAÇÃO
+    // GERAÇÃO E TOKENIZAÇÃO DO CARTÃO
     // ============================================
     function generateCardNumber() {
         let num = '';
         for (let i = 0; i < 16; i++) num += Math.floor(Math.random() * 10);
-        return num;
+        return num.match(/.{4}/g).join(' ');
     }
     
-    function generateCVV() {
-        return Math.floor(100 + Math.random() * 900).toString();
-    }
-    
+    function generateCVV() { return Math.floor(100 + Math.random() * 900).toString(); }
     function generateExpiry() {
         const date = new Date();
         const year = date.getFullYear() + 5;
@@ -461,7 +373,6 @@
         return `${month}/${year.toString().slice(-2)}`;
     }
     
-    // Tokenização dos dados sensíveis do cartão
     function tokenizeCardData(cardNumber, cvv, expiry) {
         const rawData = `${cardNumber}|${cvv}|${expiry}`;
         return CryptoJS.AES.encrypt(rawData, ENCRYPTION_KEY).toString();
@@ -476,10 +387,58 @@
         return { cardNumber, cvv, expiry };
     }
     
-    function maskCardNumber(cardNumber) {
-        if (!cardNumber) return '**** **** **** ****';
-        const last4 = cardNumber.slice(-4);
-        return `**** **** **** ${last4}`;
+    // ============================================
+    // ENVIO DE EMAIL VIA BACKEND (Firebase Function)
+    // ============================================
+    async function sendEmailViaBackend(to, subject, htmlContent) {
+        try {
+            const sendEmail = functions.httpsCallable('sendEmail');
+            const result = await sendEmail({ to, subject, html: htmlContent });
+            return result.data.success;
+        } catch (error) {
+            console.error('Erro ao enviar email:', error);
+            // Fallback: mostrar no console para debug
+            showToast(`⚠️ Email seria enviado para ${to}: ${subject} (modo debug)`, false);
+            return false;
+        }
+    }
+    
+    async function sendKYCApprovalEmail(userEmail, userName) {
+        const html = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: linear-gradient(135deg, #1a160c, #0c0a04); padding: 30px; border-radius: 20px; text-align: center;">
+                    <h2 style="color: #d4af37;">✅ KYC Aprovado!</h2>
+                    <p style="color: #fff;">Olá <strong>${userName}</strong>,</p>
+                    <p style="color: #b9a46b;">Sua verificação de identidade foi aprovada. Agora você pode:</p>
+                    <ul style="color: #fff; text-align: left;">
+                        <li>Solicitar seu cartão digital</li>
+                        <li>Configurar contas bancárias para saque</li>
+                        <li>Realizar saques</li>
+                    </ul>
+                    <p style="color: #d4af37;">Bem-vindo à MAM Distribuidora!</p>
+                </div>
+            </div>
+        `;
+        return sendEmailViaBackend(userEmail, '✅ KYC Aprovado - MAM Distribuidora', html);
+    }
+    
+    async function sendWelcomeEmail(userEmail, userName) {
+        const html = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: linear-gradient(135deg, #1a160c, #0c0a04); padding: 30px; border-radius: 20px; text-align: center;">
+                    <h2 style="color: #d4af37;">🎵 Bem-vindo à MAM Distribuidora!</h2>
+                    <p style="color: #fff;">Olá <strong>${userName}</strong>,</p>
+                    <p style="color: #b9a46b;">Sua conta foi criada com sucesso. Para começar a sacar seus royalties:</p>
+                    <ul style="color: #fff; text-align: left;">
+                        <li>Complete a verificação KYC (Selfie + Documento)</li>
+                        <li>Aguarde a aprovação do administrador</li>
+                        <li>Configure seu IBAN ou PayPal</li>
+                    </ul>
+                    <p style="color: #d4af37;">A MAM Distribuidora valoriza sua música!</p>
+                </div>
+            </div>
+        `;
+        return sendEmailViaBackend(userEmail, '🎵 Bem-vindo à MAM Distribuidora', html);
     }
     
     // ============================================
@@ -491,41 +450,95 @@
             const data = doc.data();
             userBalances = { AOA: data.balances?.AOA ?? 0, USD: data.balances?.USD ?? 0, BRL: data.balances?.BRL ?? 0 };
             userCardData = data.cardToken ? detokenizeCardData(data.cardToken) : null;
-            cardToken = data.cardToken || null;
-            window.userKycStatus = data.kycStatus || 'pending';
+            userKycStatus = data.kycStatus || 'pending';
+            userKycDocuments = data.kycDocuments || null;
             window.linkedIBAN = data.linkedIBAN || '';
             window.linkedPaypal = data.linkedPaypal || '';
             window.userFullName = `${data.firstName || ''} ${data.lastName || ''}`;
+            window.userEmail = data.email;
+            isKycLocked = userKycStatus !== 'verified';
         }
     }
     
-    async function saveWithdrawalSettings(uid, iban, paypalEmail) {
-        if (iban && !validateIBAN(iban)) {
-            showToast('IBAN inválido. Verifique o formato.');
-            return false;
-        }
-        if (paypalEmail && !validatePaypalEmail(paypalEmail)) {
-            showToast('Email do PayPal inválido.');
-            return false;
-        }
-        await db.collection('users').doc(uid).update({
-            linkedIBAN: iban || '',
-            linkedPaypal: paypalEmail || ''
+    // ============================================
+    // UPLOAD DE DOCUMENTOS KYC
+    // ============================================
+    async function uploadKYCFile(userId, file, type) {
+        if (!file) return null;
+        const ext = file.name.split('.').pop();
+        const filename = `${userId}/${type}_${Date.now()}.${ext}`;
+        const ref = storage.ref().child(`kyc/${filename}`);
+        await ref.put(file);
+        return await ref.getDownloadURL();
+    }
+    
+    async function submitKYC(selfieFile, idFrontFile, idBackFile) {
+        if (!selfieFile || !idFrontFile) { showToast('Selfie e documento são obrigatórios', true); return false; }
+        showToast('📤 Enviando documentos para análise...', false);
+        
+        const selfieUrl = await uploadKYCFile(currentUser.uid, selfieFile, 'selfie');
+        const idFrontUrl = await uploadKYCFile(currentUser.uid, idFrontFile, 'id_front');
+        let idBackUrl = null;
+        if (idBackFile) idBackUrl = await uploadKYCFile(currentUser.uid, idBackFile, 'id_back');
+        
+        await db.collection('users').doc(currentUser.uid).update({
+            kycStatus: 'pending_review',
+            kycDocuments: { selfie: selfieUrl, idFront: idFrontUrl, idBack: idBackUrl, submittedAt: new Date() }
         });
-        window.linkedIBAN = iban || '';
-        window.linkedPaypal = paypalEmail || '';
-        showToast('✅ Configurações de saque salvas com sucesso!');
+        
+        // Notificar admin via email (simulado via função cloud)
+        showToast('✅ Documentos enviados! Aguarde aprovação do administrador.', false);
+        renderDashboard();
         return true;
     }
     
     // ============================================
-    // COMPRAR/ATIVAR CARTÃO
+    // ADMIN: APROVAR KYC
+    // ============================================
+    async function adminApproveKYC(userId) {
+        const userRef = db.collection('users').doc(userId);
+        const userDoc = await userRef.get();
+        const userData = userDoc.data();
+        
+        await userRef.update({ kycStatus: 'verified' });
+        await sendKYCApprovalEmail(userData.email, `${userData.firstName} ${userData.lastName}`);
+        showToast('✅ KYC aprovado! Email de confirmação enviado.', false);
+        renderDashboard();
+    }
+    
+    async function adminRejectKYC(userId) {
+        await db.collection('users').doc(userId).update({ kycStatus: 'rejected' });
+        showToast('❌ KYC rejeitado', false);
+        renderDashboard();
+    }
+    
+    // ============================================
+    // SALVAR CONFIGURAÇÕES DE SAQUE (SÓ SE KYC VERIFIED)
+    // ============================================
+    async function saveWithdrawalSettings(uid, iban, paypalEmail) {
+        if (userKycStatus !== 'verified') {
+            showToast('⚠️ Complete a verificação KYC primeiro para configurar contas de saque!', true);
+            return false;
+        }
+        
+        if (iban && !validateIBAN(iban)) { showToast('IBAN inválido. Formato: AO06 XXXX XXXX XXXX XXXX XXXX X', true); return false; }
+        if (paypalEmail && !validatePaypalEmail(paypalEmail)) { showToast('Email do PayPal inválido', true); return false; }
+        
+        await db.collection('users').doc(uid).update({ linkedIBAN: iban || '', linkedPaypal: paypalEmail || '' });
+        window.linkedIBAN = iban || '';
+        window.linkedPaypal = paypalEmail || '';
+        showToast('✅ Configurações de saque salvas!', false);
+        return true;
+    }
+    
+    // ============================================
+    // COMPRAR CARTÃO
     // ============================================
     async function requestCardPurchase(uid) {
-        if (userCardData) { showToast('Cartão já está ativo'); return false; }
-        if (window.userKycStatus !== 'approved') { showToast('Complete a verificação KYC primeiro!'); return false; }
+        if (userCardData) { showToast('Cartão já está ativo', false); return false; }
+        if (userKycStatus !== 'verified') { showToast('Complete a verificação KYC primeiro!', true); return false; }
         if (userBalances.AOA < 5000 && currentUser.email !== ADMIN_EMAIL) {
-            showToast(`Saldo insuficiente. Taxa: ${formatMoney(5000, 'AOA')}`);
+            showToast(`Saldo insuficiente. Taxa: ${formatMoney(5000, 'AOA')}`, true);
             return false;
         }
         
@@ -535,29 +548,44 @@
         const token = tokenizeCardData(newCardNumber, newCVV, newExpiry);
         
         if (currentUser.email === ADMIN_EMAIL) {
-            await db.collection('users').doc(uid).update({ 
-                cardToken: token, 
-                cardActivated: true 
-            });
+            await db.collection('users').doc(uid).update({ cardToken: token, cardActivated: true });
             userCardData = { cardNumber: newCardNumber, cvv: newCVV, expiry: newExpiry };
-            cardToken = token;
-            showToast('✨ Cartão ADMIN gerado com sucesso!');
+            showToast('✨ Cartão ADMIN gerado com sucesso!', false);
             renderDashboard();
             return true;
         }
         
         const newBalances = { ...userBalances };
         newBalances.AOA = userBalances.AOA - 5000;
-        await db.collection('users').doc(uid).update({
-            balances: newBalances,
-            cardToken: token,
-            cardActivated: true
-        });
+        await db.collection('users').doc(uid).update({ balances: newBalances, cardToken: token, cardActivated: true });
         userBalances = newBalances;
         userCardData = { cardNumber: newCardNumber, cvv: newCVV, expiry: newExpiry };
-        cardToken = token;
-        showToast(`💳 Cartão adquirido! Taxa: ${formatMoney(5000, 'AOA')}`);
+        showToast(`💳 Cartão adquirido! Taxa: ${formatMoney(5000, 'AOA')}`, false);
         renderDashboard();
+        return true;
+    }
+    
+    // ============================================
+    // SAQUE (COM TRAVA DE SEGURANÇA)
+    // ============================================
+    async function requestWithdrawal(amount, currency, method) {
+        if (userKycStatus !== 'verified') {
+            showToast('⚠️ Verificação KYC necessária para realizar saques!', true);
+            return false;
+        }
+        if (userBalances[currency] < amount) { showToast('Saldo insuficiente', true); return false; }
+        if (amount < MIN_WITHDRAWAL) { showToast(`Saque mínimo: ${formatMoney(MIN_WITHDRAWAL, currency)}`, true); return false; }
+        
+        const destination = method === 'iban' ? window.linkedIBAN : window.linkedPaypal;
+        if (!destination) { showToast('Configure uma conta de saque primeiro!', true); return false; }
+        
+        await db.collection('withdrawals').add({
+            userId: currentUser.uid, userEmail: currentUser.email,
+            amount, currency, method, destination,
+            status: 'pending',
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        showToast(`📤 Pedido de saque de ${formatMoney(amount, currency)} enviado para análise.`, false);
         return true;
     }
     
@@ -570,49 +598,43 @@
         const isAdmin = (currentUser.email === ADMIN_EMAIL);
         const balanceNow = userBalances[currentCurrency] || 0;
         
-        // Dados do cartão com máscara
-        const maskedNumber = userCardData ? maskCardNumber(userCardData.cardNumber) : '**** **** **** ****';
-        const maskedCVV = userCardData ? '***' : '***';
-        const maskedExpiry = userCardData ? '**/**' : '**/**';
-        const actualNumber = userCardData?.cardNumber || '';
-        const actualCVV = userCardData?.cvv || '';
-        const actualExpiry = userCardData?.expiry || '';
+        // Dados do cartão - número e validade visíveis, CVV oculto por padrão
+        const maskedNumber = userCardData ? userCardData.cardNumber : '**** **** **** ****';
+        const maskedCVV = '***';
+        const actualCVV = userCardData?.cvv || '***';
+        const displayCVV = isCvvVisible && userCardData ? actualCVV : maskedCVV;
         
-        const displayNumber = isCardVisible && userCardData ? actualNumber : maskedNumber;
-        const displayCVV = isCardVisible && userCardData ? actualCVV : maskedCVV;
-        const displayExpiry = isCardVisible && userCardData ? actualExpiry : maskedExpiry;
+        let kycBadge = '';
+        if (userKycStatus === 'verified') kycBadge = '<span class="status-badge status-verified">✅ KYC VERIFICADO</span>';
+        else if (userKycStatus === 'pending_review') kycBadge = '<span class="status-badge status-pending">⏳ KYC EM ANÁLISE</span>';
+        else if (userKycStatus === 'rejected') kycBadge = '<span class="status-badge status-rejected">❌ KYC REJEITADO</span>';
+        else kycBadge = '<span class="status-badge status-pending">⚠️ KYC PENDENTE</span>';
         
-        let cardStatus = '';
-        if (!userCardData && window.userKycStatus !== 'approved') cardStatus = '<span class="card-status-badge card-pending">🔒 KYC Pendente</span>';
-        else if (!userCardData) cardStatus = '<span class="card-status-badge card-inactive">💳 Cartão Disponível (5.000 Kz)</span>';
-        else cardStatus = '<span class="card-status-badge card-active">✅ Cartão Ativo</span>';
+        const canWithdraw = userKycStatus === 'verified' && balanceNow >= MIN_WITHDRAWAL;
+        const canConfigureWithdrawal = userKycStatus === 'verified';
         
         let html = `
             <div class="app-container">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <div><i class="fas fa-music" style="color:#d4af37"></i> <span style="color:#e6d5a8;">${window.userFullName || currentUser.email}</span></div>
+                    <div><i class="fas fa-music" style="color:#d4af37"></i> <span style="color:#e6d5a8;">${window.userFullName || currentUser.email}</span> ${kycBadge}</div>
                     <button id="logoutBtn" style="background:#222216; border:1px solid #d4af37; padding:8px 18px; border-radius:40px; color:#d4af37; cursor:pointer;"><i class="fas fa-sign-out-alt"></i> Sair</button>
                 </div>
                 
-                <!-- CARTÃO DIGITAL COM PRIVACIDADE -->
+                <!-- CARTÃO DIGITAL -->
                 <div class="digital-card">
-                    ${cardStatus}
                     <div class="card-chip"></div>
-                    <div class="card-number-display">${displayNumber}</div>
+                    <div class="card-number-display">${maskedNumber}</div>
                     <div class="card-details-row">
                         <div class="card-detail-item">
                             <div class="card-detail-label">VALIDADE</div>
-                            <div class="card-detail-value">${displayExpiry}</div>
+                            <div class="card-detail-value">${userCardData?.expiry || '**/**'}</div>
                         </div>
                         <div class="card-detail-item">
-                            <div class="card-detail-label">CVV</div>
-                            <div class="card-detail-value">${displayCVV}</div>
+                            <div class="card-detail-label">CVV/CVC</div>
+                            <div class="card-detail-value" id="cvvValue">${displayCVV}</div>
                         </div>
                     </div>
-                    <button id="toggleCardVisibility" class="toggle-card-btn">
-                        <i class="fas ${isCardVisible ? 'fa-eye-slash' : 'fa-eye'}"></i> 
-                        ${isCardVisible ? 'Ocultar Dados' : 'Exibir Dados do Cartão'}
-                    </button>
+                    ${userCardData ? `<button id="toggleCvvBtn" class="toggle-card-btn"><i class="fas ${isCvvVisible ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isCvvVisible ? 'Ocultar CVV' : 'Exibir CVV'}</button>` : '<button id="btnBuyCard" class="toggle-card-btn"><i class="fas fa-credit-card"></i> Adquirir Cartão (5.000 Kz)</button>'}
                 </div>
                 
                 <!-- MOEDAS -->
@@ -628,28 +650,74 @@
                 </div>
                 
                 <div class="action-grid">
-                    <button id="btnBuyCard" class="btn-gold"><i class="fas fa-credit-card"></i> ${userCardData ? 'Cartão Ativo' : 'Comprar Cartão'}</button>
                     <button id="btnTransfer" class="btn-gold"><i class="fas fa-exchange-alt"></i> Transferir</button>
-                    <button id="btnDeposit" class="btn-outline"><i class="fas fa-upload"></i> Depositar</button>
-                    <button id="btnWithdraw" class="btn-outline"><i class="fas fa-download"></i> Sacar</button>
+                    <button id="btnDeposit" class="btn-gold"><i class="fas fa-upload"></i> Depositar</button>
+                    <button id="btnWithdraw" class="btn-outline" ${!canWithdraw ? 'disabled' : ''}><i class="fas fa-download"></i> Sacar</button>
                 </div>
                 
-                <!-- CONFIGURAÇÕES DE SAQUE -->
+                <!-- CONFIGURAÇÕES DE SAQUE (BLOQUEADAS ATÉ KYC VERIFIED) -->
                 <div class="settings-section">
                     <div class="settings-title"><i class="fas fa-university"></i> Contas para Saque</div>
                     <div class="input-group">
                         <label><i class="fas fa-building-columns"></i> IBAN (Angola/Internacional)</label>
-                        <input type="text" id="ibanInput" placeholder="AO06 0000 0000 0000 0000 0000 0" value="${window.linkedIBAN || ''}">
-                        <div class="iban-preview" id="ibanPreview">${window.linkedIBAN ? '✅ IBAN vinculado: ' + window.linkedIBAN : 'Nenhum IBAN vinculado'}</div>
+                        <input type="text" id="ibanInput" placeholder="AO06 0000 0000 0000 0000 0000 0" value="${window.linkedIBAN || ''}" ${!canConfigureWithdrawal ? 'disabled' : ''}>
                     </div>
                     <div class="input-group">
                         <label><i class="fab fa-paypal"></i> PayPal Email</label>
-                        <input type="email" id="paypalInput" placeholder="seu-email@exemplo.com" value="${window.linkedPaypal || ''}">
+                        <input type="email" id="paypalInput" placeholder="seu-email@exemplo.com" value="${window.linkedPaypal || ''}" ${!canConfigureWithdrawal ? 'disabled' : ''}>
                     </div>
-                    <button id="saveWithdrawalSettings" class="btn-gold" style="width:100%; margin-top:10px;"><i class="fas fa-save"></i> Salvar Configurações</button>
-                </div>
-            </div>
-        `;
+                    <button id="saveWithdrawalSettings" class="btn-gold" style="width:100%; margin-top:10px;" ${!canConfigureWithdrawal ? 'disabled' : ''}><i class="fas fa-save"></i> Salvar Configurações</button>
+                    ${!canConfigureWithdrawal ? '<p style="color:#e67e22; font-size:0.75rem; margin-top:10px;"><i class="fas fa-lock"></i> Complete a verificação KYC para configurar contas de saque</p>' : ''}
+                </div>`;
+        
+        // Seção KYC para usuários não verificados
+        if (userKycStatus !== 'verified' && userKycStatus !== 'pending_review' && currentUser.email !== ADMIN_EMAIL) {
+            html += `
+                <div class="kyc-section">
+                    <h3 style="color:#d4af37;"><i class="fas fa-id-card"></i> Verificação de Identidade (KYC)</h3>
+                    <p style="color:#b9a46b;">Para sacar seus royalties, complete a verificação:</p>
+                    <button id="openKycBtn" class="btn-gold" style="margin:15px auto;"><i class="fas fa-camera"></i> Enviar Selfie + Documento</button>
+                </div>`;
+        }
+        
+        // Painel ADMIN
+        if (isAdmin) {
+            const pendingKycSnap = await db.collection('users').where('kycStatus', '==', 'pending_review').get();
+            const pendingWithdrawalsSnap = await db.collection('withdrawals').where('status', '==', 'pending').get();
+            let pendingKyc = [], pendingWithdrawals = [];
+            pendingKycSnap.forEach(d => pendingKyc.push({ id: d.id, ...d.data() }));
+            pendingWithdrawalsSnap.forEach(d => pendingWithdrawals.push({ id: d.id, ...d.data() }));
+            
+            html += `<div class="settings-section" style="margin-top:20px;">
+                        <div class="settings-title"><i class="fas fa-crown"></i> Painel Administrador</div>`;
+            
+            html += `<h4 style="color:#d4af37;">🆔 KYC Pendentes (${pendingKyc.length})</h4>`;
+            for (const user of pendingKyc) {
+                html += `<div style="border:1px solid #d4af37; border-radius:24px; padding:15px; margin:12px 0;">
+                            <strong>${user.email}</strong><br>
+                            ${user.kycDocuments?.selfie ? `<img src="${user.kycDocuments.selfie}" class="kyc-preview-img" onclick="window.open(this.src)"> Selfie` : ''}
+                            ${user.kycDocuments?.idFront ? `<img src="${user.kycDocuments.idFront}" class="kyc-preview-img" onclick="window.open(this.src)"> Documento Frente` : ''}
+                            ${user.kycDocuments?.idBack ? `<img src="${user.kycDocuments.idBack}" class="kyc-preview-img" onclick="window.open(this.src)"> Documento Verso` : ''}
+                            <div style="margin-top:10px;">
+                                <button class="approveKycBtn" data-uid="${user.id}" style="background:#27ae60; border:none; padding:8px 20px; border-radius:40px;">✔ Aprovar</button>
+                                <button class="rejectKycBtn" data-uid="${user.id}" style="background:#c0392b; border:none; padding:8px 20px; border-radius:40px;">✖ Rejeitar</button>
+                            </div>
+                         </div>`;
+            }
+            
+            html += `<h4 style="color:#d4af37; margin-top:20px;">💰 Saques Pendentes (${pendingWithdrawals.length})</h4>`;
+            for (const w of pendingWithdrawals) {
+                html += `<div style="border:1px solid #d4af37; border-radius:24px; padding:15px; margin:12px 0;">
+                            <strong>${w.userEmail}</strong><br>
+                            Valor: ${formatMoney(w.amount, w.currency)}<br>
+                            Destino: ${w.method === 'iban' ? '🏦 IBAN' : '💳 PayPal'} - ${w.destination}
+                            <div style="margin-top:10px;">
+                                <button class="approveWithdrawBtn" data-id="${w.id}" data-uid="${w.userId}" data-amount="${w.amount}" data-currency="${w.currency}" style="background:#27ae60; border:none; padding:8px 20px; border-radius:40px;">✔ Aprovar Saque</button>
+                            </div>
+                         </div>`;
+            }
+            html += `</div>`;
+        }
         
         document.getElementById('appRoot').innerHTML = html;
         
@@ -658,12 +726,9 @@
             btn.addEventListener('click', () => { currentCurrency = btn.getAttribute('data-cur'); renderDashboard(); });
         });
         
-        document.getElementById('toggleCardVisibility')?.addEventListener('click', () => {
-            if (!userCardData) {
-                showToast('Você precisa adquirir um cartão primeiro!');
-                return;
-            }
-            isCardVisible = !isCardVisible;
+        document.getElementById('toggleCvvBtn')?.addEventListener('click', () => {
+            if (!userCardData) return;
+            isCvvVisible = !isCvvVisible;
             renderDashboard();
         });
         
@@ -672,6 +737,7 @@
         document.getElementById('btnDeposit')?.addEventListener('click', () => openDepositModal());
         document.getElementById('btnWithdraw')?.addEventListener('click', () => openWithdrawModal());
         document.getElementById('logoutBtn')?.addEventListener('click', () => auth.signOut());
+        document.getElementById('openKycBtn')?.addEventListener('click', () => openKycModal());
         
         document.getElementById('saveWithdrawalSettings')?.addEventListener('click', async () => {
             const iban = document.getElementById('ibanInput').value;
@@ -679,174 +745,158 @@
             await saveWithdrawalSettings(currentUser.uid, iban, paypal);
             renderDashboard();
         });
+        
+        if (isAdmin) {
+            document.querySelectorAll('.approveKycBtn').forEach(btn => {
+                btn.addEventListener('click', async () => { await adminApproveKYC(btn.getAttribute('data-uid')); renderDashboard(); });
+            });
+            document.querySelectorAll('.rejectKycBtn').forEach(btn => {
+                btn.addEventListener('click', async () => { await adminRejectKYC(btn.getAttribute('data-uid')); renderDashboard(); });
+            });
+            document.querySelectorAll('.approveWithdrawBtn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const userId = btn.getAttribute('data-uid');
+                    const amount = parseFloat(btn.getAttribute('data-amount'));
+                    const currency = btn.getAttribute('data-currency');
+                    const userRef = db.collection('users').doc(userId);
+                    const userDoc = await userRef.get();
+                    const balances = userDoc.data().balances;
+                    balances[currency] = (balances[currency] || 0) - amount;
+                    await userRef.update({ balances });
+                    await db.collection('withdrawals').doc(btn.getAttribute('data-id')).update({ status: 'approved' });
+                    showToast(`✅ Saque de ${formatMoney(amount, currency)} aprovado!`, false);
+                    renderDashboard();
+                });
+            });
+        }
     }
     
     // ============================================
-    // MODAL DE TRANSFERÊNCIA
+    // MODAIS
     // ============================================
     async function openTransferModal() {
-        if (!userCardData) { showToast('Você precisa ter um cartão ativo para realizar transferências!'); return; }
-        
+        if (!userCardData) { showToast('Você precisa ter um cartão ativo para transferências!', true); return; }
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content">
-            <h3 style="color:#d4af37;"><i class="fas fa-paper-plane"></i> Transferir</h3>
-            <input id="transferEmail" placeholder="Email do destinatário">
-            <input id="transferAmount" type="number" placeholder="Valor">
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;"><i class="fas fa-paper-plane"></i> Transferir</h3>
+            <input id="transferEmail" placeholder="Email do destinatário"><input id="transferAmount" type="number" placeholder="Valor">
             <select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-            <div style="display:flex; gap:12px; margin-top:20px;">
-                <button id="confirmTransfer" class="btn-gold">Enviar</button>
-                <button id="closeModal" class="btn-outline">Cancelar</button>
-            </div>
-        </div>`;
+            <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmTransfer" class="btn-gold">Enviar</button><button id="closeModal" class="btn-outline">Cancelar</button></div></div>`;
         document.body.appendChild(modal); modal.style.display = 'flex';
-        
         document.getElementById('confirmTransfer').onclick = async () => {
             const toEmail = document.getElementById('transferEmail').value;
             const amount = parseFloat(document.getElementById('transferAmount').value);
             const currency = document.getElementById('transferCurrency').value;
-            if (!toEmail || isNaN(amount) || amount <= 0) { showToast('Dados inválidos'); return; }
-            if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
-            
+            if (!toEmail || isNaN(amount) || amount <= 0) { showToast('Dados inválidos', true); return; }
+            if (userBalances[currency] < amount) { showToast('Saldo insuficiente', true); return; }
             const usersSnap = await db.collection('users').where('email', '==', toEmail).get();
-            if (usersSnap.empty) { showToast('Destinatário não encontrado'); return; }
-            
+            if (usersSnap.empty) { showToast('Destinatário não encontrado', true); return; }
             const targetUser = usersSnap.docs[0];
             const targetBalances = targetUser.data().balances;
             targetBalances[currency] = (targetBalances[currency] || 0) + amount;
             userBalances[currency] -= amount;
-            
             await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
             await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
-            showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`);
+            showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`, false);
             modal.remove(); renderDashboard();
         };
         document.getElementById('closeModal').onclick = () => modal.remove();
     }
     
-    // ============================================
-    // MODAL DE DEPÓSITO
-    // ============================================
     async function openDepositModal() {
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content">
-            <h3 style="color:#d4af37;"><i class="fas fa-upload"></i> Solicitar Depósito</h3>
-            <input id="depositAmount" type="number" placeholder="Valor">
-            <select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-            <textarea id="depositProof" placeholder="Comprovativo de pagamento" rows="3"></textarea>
-            <div style="display:flex; gap:12px; margin-top:20px;">
-                <button id="sendDeposit" class="btn-gold">Solicitar</button>
-                <button id="closeDeposit" class="btn-outline">Fechar</button>
-            </div>
-        </div>`;
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;"><i class="fas fa-upload"></i> Solicitar Depósito</h3>
+            <input id="depositAmount" type="number" placeholder="Valor"><select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <textarea id="depositProof" placeholder="Comprovativo de pagamento (foto/print)" rows="3"></textarea>
+            <div style="display:flex; gap:12px; margin-top:20px;"><button id="sendDeposit" class="btn-gold">Solicitar</button><button id="closeDeposit" class="btn-outline">Fechar</button></div></div>`;
         document.body.appendChild(modal); modal.style.display = 'flex';
-        
         document.getElementById('sendDeposit').onclick = async () => {
             const amount = parseFloat(document.getElementById('depositAmount').value);
             const currency = document.getElementById('depositCurrency').value;
             const proof = document.getElementById('depositProof').value;
-            if (isNaN(amount) || amount <= 0) return;
-            
-            await db.collection('deposits').add({
-                userId: currentUser.uid, userEmail: currentUser.email,
-                amount, currency, proof, status: 'pending',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            showToast(`📤 Pedido de depósito de ${formatMoney(amount, currency)} enviado.`);
+            if (isNaN(amount) || amount <= 0) { showToast('Valor inválido', true); return; }
+            await db.collection('deposits').add({ userId: currentUser.uid, userEmail: currentUser.email, amount, currency, proof, status: 'pending', timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+            showToast(`📤 Pedido de depósito de ${formatMoney(amount, currency)} enviado.`, false);
             modal.remove();
         };
         document.getElementById('closeDeposit').onclick = () => modal.remove();
     }
     
-    // ============================================
-    // MODAL DE SAQUE
-    // ============================================
     async function openWithdrawModal() {
-        if (!window.linkedIBAN && !window.linkedPaypal) {
-            showToast('Configure um IBAN ou PayPal nas Configurações de Saque primeiro!');
-            return;
-        }
-        
+        if (userKycStatus !== 'verified') { showToast('Complete a verificação KYC para sacar!', true); return; }
+        if (!window.linkedIBAN && !window.linkedPaypal) { showToast('Configure um IBAN ou PayPal nas Configurações de Saque primeiro!', true); return; }
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content">
-            <h3 style="color:#d4af37;"><i class="fas fa-download"></i> Solicitar Saque</h3>
-            <input id="withdrawAmount" type="number" placeholder="Valor">
-            <select id="withdrawCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-            <select id="withdrawMethod">
-                <option value="iban" ${window.linkedIBAN ? '' : 'disabled'}>🏦 IBAN: ${window.linkedIBAN || 'Não configurado'}</option>
-                <option value="paypal" ${window.linkedPaypal ? '' : 'disabled'}>💳 PayPal: ${window.linkedPaypal || 'Não configurado'}</option>
-            </select>
-            <div style="display:flex; gap:12px; margin-top:20px;">
-                <button id="confirmWithdraw" class="btn-gold">Solicitar Saque</button>
-                <button id="closeWithdraw" class="btn-outline">Fechar</button>
-            </div>
-        </div>`;
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;"><i class="fas fa-download"></i> Solicitar Saque</h3>
+            <input id="withdrawAmount" type="number" placeholder="Valor (mínimo ${formatMoney(MIN_WITHDRAWAL, 'AOA')})"><select id="withdrawCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <select id="withdrawMethod"><option value="iban" ${window.linkedIBAN ? '' : 'disabled'}>🏦 IBAN: ${window.linkedIBAN || 'Não configurado'}</option><option value="paypal" ${window.linkedPaypal ? '' : 'disabled'}>💳 PayPal: ${window.linkedPaypal || 'Não configurado'}</option></select>
+            <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmWithdraw" class="btn-gold">Solicitar Saque</button><button id="closeWithdraw" class="btn-outline">Fechar</button></div></div>`;
         document.body.appendChild(modal); modal.style.display = 'flex';
-        
         document.getElementById('confirmWithdraw').onclick = async () => {
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
             const currency = document.getElementById('withdrawCurrency').value;
             const method = document.getElementById('withdrawMethod').value;
-            if (isNaN(amount) || amount <= 0) { showToast('Valor inválido'); return; }
-            if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
-            
-            await db.collection('withdrawals').add({
-                userId: currentUser.uid, userEmail: currentUser.email,
-                amount, currency, method,
-                destination: method === 'iban' ? window.linkedIBAN : window.linkedPaypal,
-                status: 'pending',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            showToast(`📤 Pedido de saque de ${formatMoney(amount, currency)} enviado para análise.`);
-            modal.remove();
+            await requestWithdrawal(amount, currency, method);
+            modal.remove(); renderDashboard();
         };
         document.getElementById('closeWithdraw').onclick = () => modal.remove();
     }
     
+    function openKycModal() {
+        let stream = null;
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;"><i class="fas fa-id-card"></i> Verificação KYC</h3>
+            <p style="color:#d4af37;">Selfie com a câmera</p>
+            <div class="camera-preview" style="width:100%; height:250px; background:#000; border-radius:24px; overflow:hidden;"><video id="cameraVideo" autoplay playsinline style="width:100%; height:100%; object-fit:cover;"></video></div>
+            <button id="captureSelfieBtn" class="btn-gold" style="margin:10px 0;"><i class="fas fa-camera"></i> Tirar Selfie</button>
+            <canvas id="selfieCanvas" style="display:none;"></canvas><img id="selfiePreview" style="max-width:100%; border-radius:16px; display:none;">
+            <p style="margin-top:15px;">Documento de Identidade (Frente)</p><input type="file" id="idFrontInput" accept="image/*">
+            <p>Documento Verso (opcional)</p><input type="file" id="idBackInput" accept="image/*">
+            <div style="display:flex; gap:12px; margin-top:20px;"><button id="submitKycBtn" class="btn-gold">Enviar Verificação</button><button id="closeKycModal" class="btn-outline">Fechar</button></div></div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        const video = document.getElementById('cameraVideo');
+        navigator.mediaDevices.getUserMedia({ video: true }).then(s => { stream = s; video.srcObject = s; }).catch(e => showToast('Erro ao acessar câmera: ' + e.message, true));
+        document.getElementById('captureSelfieBtn').onclick = () => {
+            const canvas = document.getElementById('selfieCanvas');
+            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const preview = document.getElementById('selfiePreview');
+            preview.src = canvas.toDataURL('image/jpeg');
+            preview.style.display = 'block';
+            showToast('Selfie capturada!', false);
+        };
+        document.getElementById('submitKycBtn').onclick = async () => {
+            const canvas = document.getElementById('selfieCanvas');
+            if (!canvas.width) { showToast('Tire uma selfie primeiro', true); return; }
+            const selfieBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
+            const selfieFile = new File([selfieBlob], 'selfie.jpg', { type: 'image/jpeg' });
+            const idFrontFile = document.getElementById('idFrontInput').files[0];
+            if (!idFrontFile) { showToast('Selecione o documento de identificação', true); return; }
+            const idBackFile = document.getElementById('idBackInput').files[0];
+            await submitKYC(selfieFile, idFrontFile, idBackFile);
+            if (stream) stream.getTracks().forEach(track => track.stop());
+            modal.remove();
+        };
+        document.getElementById('closeKycModal').onclick = () => { if (stream) stream.getTracks().forEach(track => track.stop()); modal.remove(); };
+    }
+    
     // ============================================
-    // TELA DE LOGIN
+    // LOGIN E REGISTRO
     // ============================================
     function renderLogin() {
         document.getElementById('appRoot').innerHTML = `
             <div style="max-width:460px; margin: 5vh auto; background:#12100b; border-radius:56px; padding:38px 28px; border:1px solid #d4af37;">
-                <div style="text-align:center;">
-                    <i class="fas fa-music" style="font-size:3rem; color:#d4af37;"></i>
-                    <h2 style="color:#d4af37;">MAM CASH</h2>
-                    <p style="color:#b99f5a;">Distribuidora Musical • Carteira Digital</p>
-                </div>
+                <div style="text-align:center;"><i class="fas fa-music" style="font-size:3rem; color:#d4af37;"></i><h2 style="color:#d4af37;">MAM Distribuidora</h2><p style="color:#b99f5a;">Sistema Financeiro Profissional</p></div>
                 <input id="loginEmail" placeholder="Email" style="width:100%; margin:16px 0 12px; padding:14px; background:#2a241b; border-radius:60px; color:white;">
                 <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha" style="width:100%; padding:14px; background:#2a241b; border-radius:60px;"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
                 <button id="doLogin" class="btn-gold" style="width:100%; margin-top:16px;">Entrar</button>
                 <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
                 <div id="forgotPasswordBtn" style="text-align:center; margin-top:16px; cursor:pointer; color:#d4af37;"><i class="fas fa-key"></i> Esqueci minha senha</div>
             </div>`;
-        
-        document.getElementById('toggleLoginPass')?.addEventListener('click', () => {
-            const inp = document.getElementById('loginPassword');
-            inp.type = inp.type === 'password' ? 'text' : 'password';
-        });
-        
-        document.getElementById('doLogin').onclick = async () => {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            if (!email || !password) { showToast('Preencha email e senha'); return; }
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-                showToast('Login realizado!');
-                renderDashboard();
-            } catch(e) { showToast(e.message); }
-        };
-        
+        document.getElementById('toggleLoginPass')?.addEventListener('click', () => { const inp = document.getElementById('loginPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
+        document.getElementById('doLogin').onclick = async () => { try { await auth.signInWithEmailAndPassword(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value); renderDashboard(); } catch(e) { showToast(e.message, true); } };
         document.getElementById('goToRegister').onclick = () => renderRegister();
-        document.getElementById('forgotPasswordBtn').onclick = () => {
-            const email = document.getElementById('loginEmail').value;
-            if (!email) { showToast('Digite seu email no campo acima'); return; }
-            auth.sendPasswordResetEmail(email).then(() => showToast('Email de recuperação enviado!')).catch(e => showToast(e.message));
-        };
+        document.getElementById('forgotPasswordBtn').onclick = () => { const email = document.getElementById('loginEmail').value; if(email) auth.sendPasswordResetEmail(email).then(()=>showToast('Email de recuperação enviado!')).catch(e=>showToast(e.message,true)); else showToast('Digite seu email', true); };
     }
     
-    // ============================================
-    // TELA DE REGISTRO
-    // ============================================
     function renderRegister() {
         let countryOptions = countriesWithCodes.map(c => `<option value="${c.name}" ${c.name === 'Angola' ? 'selected' : ''}>${c.name}</option>`).join('');
         document.getElementById('appRoot').innerHTML = `
@@ -856,69 +906,47 @@
                 <input id="regLastName" placeholder="Sobrenome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
                 <input id="regEmail" placeholder="Email" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
                 <select id="regCountry" class="country-select">${countryOptions}</select>
-                <div class="phone-container">
-                    <span id="phoneCode" class="phone-code">+244</span>
-                    <input id="regPhone" class="phone-number" placeholder="999 999 999">
-                </div>
+                <div class="phone-container"><span id="phoneCode" class="phone-code">+244</span><input id="regPhone" class="phone-number" placeholder="999 999 999"></div>
                 <div class="password-wrapper"><input id="regPassword" type="password" placeholder="Senha (min 6)"><button type="button" id="toggleRegPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
                 <div class="password-wrapper"><input id="regConfirmPassword" type="password" placeholder="Confirmar Senha"><button type="button" id="toggleRegConfirm" class="toggle-password"><i class="fas fa-eye"></i></button></div>
                 <button id="doRegister" class="btn-gold" style="width:100%; margin-top:16px;">Registrar</button>
                 <button id="backToLogin" class="btn-outline" style="width:100%; margin-top:12px;">Voltar ao Login</button>
             </div>`;
-        
-        document.getElementById('toggleRegPass')?.addEventListener('click', () => {
-            const inp = document.getElementById('regPassword');
-            inp.type = inp.type === 'password' ? 'text' : 'password';
-        });
-        document.getElementById('toggleRegConfirm')?.addEventListener('click', () => {
-            const inp = document.getElementById('regConfirmPassword');
-            inp.type = inp.type === 'password' ? 'text' : 'password';
-        });
-        
+        document.getElementById('toggleRegPass')?.addEventListener('click', () => { const inp = document.getElementById('regPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
+        document.getElementById('toggleRegConfirm')?.addEventListener('click', () => { const inp = document.getElementById('regConfirmPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
         document.getElementById('doRegister').onclick = async () => {
             const firstName = document.getElementById('regFirstName').value;
             const lastName = document.getElementById('regLastName').value;
             const email = document.getElementById('regEmail').value;
-            const country = document.getElementById('regCountry').value;
             const phoneCode = document.getElementById('phoneCode').innerText;
             const phoneNumber = document.getElementById('regPhone').value;
             const fullPhone = `${phoneCode} ${phoneNumber}`;
             const password = document.getElementById('regPassword').value;
             const confirm = document.getElementById('regConfirmPassword').value;
-            
-            if (!firstName || !lastName || !email || !phoneNumber || !password) { showToast('Preencha todos os campos'); return; }
-            if (password !== confirm) { showToast('Senhas não coincidem'); return; }
-            if (password.length < 6) { showToast('Senha mínima 6 caracteres'); return; }
-            
+            if (!firstName || !lastName || !email || !phoneNumber || !password) { showToast('Preencha todos os campos', true); return; }
+            if (password !== confirm) { showToast('Senhas não coincidem', true); return; }
+            if (password.length < 6) { showToast('Senha mínima 6 caracteres', true); return; }
             try {
                 const userCred = await auth.createUserWithEmailAndPassword(email, password);
                 await db.collection('users').doc(userCred.user.uid).set({
-                    firstName, lastName, email, country, phone: fullPhone,
-                    balances: { AOA: 0, USD: 0, BRL: 0 },
-                    cardActivated: false, kycStatus: 'approved',
-                    linkedIBAN: '', linkedPaypal: '',
+                    firstName, lastName, email, phone: fullPhone,
+                    balances: { AOA: 0, USD: 0, BRL: 0 }, cardActivated: false,
+                    kycStatus: 'pending', linkedIBAN: '', linkedPaypal: '',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                showToast('Conta criada com sucesso!');
+                await sendWelcomeEmail(email, `${firstName} ${lastName}`);
+                showToast('Conta criada! Complete o KYC para começar.', false);
                 renderLogin();
-            } catch(e) { showToast(e.message); }
+            } catch(e) { showToast(e.message, true); }
         };
         document.getElementById('backToLogin').onclick = () => renderLogin();
-        
-        // Atualizar código do país
         document.getElementById('regCountry').addEventListener('change', (e) => {
             const country = countriesWithCodes.find(c => c.name === e.target.value);
             if (country) document.getElementById('phoneCode').innerText = country.code;
         });
     }
     
-    // ============================================
-    // AUTH STATE LISTENER
-    // ============================================
-    auth.onAuthStateChanged(async user => {
-        if (user) { currentUser = user; await renderDashboard(); }
-        else { currentUser = null; renderLogin(); }
-    });
+    auth.onAuthStateChanged(async user => { currentUser = user; await renderDashboard(); });
 </script>
 </body>
 </html>
