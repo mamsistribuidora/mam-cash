@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MAM Cash • Plataforma Financeira Premium</title>
+    <title>MAM Cash • Carteira Digital Profissional | Distribuidora Musical</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
-    <!-- EmailJS -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- CryptoJS para tokenização segura -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -21,163 +21,149 @@
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
         }
         body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #0a0f0a 0%, #0c0b05 100%);
             min-height: 100vh;
-            padding: 0;
+            padding: 20px 16px 40px;
             position: relative;
             overflow-x: hidden;
         }
-        
-        /* Header Fixo */
-        .fixed-header {
+        body::before {
+            content: "🎵 🎶 💰 💵 💶 💷";
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-            border-bottom: 2px solid #D4AF37;
-            padding: 16px 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            width: 100%;
+            height: 100%;
+            font-size: 70px;
+            opacity: 0.03;
+            pointer-events: none;
+            white-space: pre;
+            overflow: hidden;
+            letter-spacing: 30px;
+            line-height: 1.8;
+            animation: floatMoney 40s infinite linear;
+            z-index: 0;
         }
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        @keyframes floatMoney {
+            0% { transform: translateY(0px) translateX(0px); }
+            100% { transform: translateY(-200px) translateX(50px); }
         }
-        .shield-icon {
-            font-size: 32px;
-            color: #D4AF37;
-            text-shadow: 0 0 10px rgba(212,175,55,0.5);
-        }
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #D4AF37;
-            letter-spacing: 2px;
-            text-shadow: 0 0 8px rgba(212,175,55,0.3);
-        }
-        .logo-sub {
-            font-size: 0.7rem;
-            color: #b9a46b;
-            letter-spacing: 1px;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: #D4AF37;
-        }
-        
-        /* Conteúdo principal com padding para o header */
-        .main-content {
-            padding-top: 90px;
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-bottom: 80px;
+        .app-container {
             max-width: 680px;
             margin: 0 auto;
-        }
-        
-        /* Cartão Premium - Design Profissional */
-        .premium-card {
-            background: linear-gradient(135deg, #0f0f0f 0%, #2c2c2c 100%);
-            border-radius: 24px;
-            padding: 28px 24px;
-            margin-bottom: 28px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid rgba(212, 175, 55, 0.3);
             position: relative;
-            transition: transform 0.3s ease;
+            z-index: 2;
         }
-        .premium-card:hover {
-            transform: translateY(-2px);
+        /* Cartão Digital Premium */
+        .digital-card {
+            background: linear-gradient(135deg, #1a160c 0%, #0c0a04 100%);
+            border-radius: 32px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            box-shadow: 0 30px 45px -12px rgba(0,0,0,0.9), 0 0 0 1px rgba(212,175,55,0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .digital-card::before {
+            content: "💳";
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 50px;
+            opacity: 0.3;
         }
         .card-chip {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #d4af37, #b8941e);
+            border-radius: 12px;
             margin-bottom: 30px;
+            position: relative;
         }
-        .chip-icon {
-            font-size: 42px;
-            color: #D4AF37;
-            text-shadow: 0 0 5px rgba(212,175,55,0.8);
+        .card-chip::after {
+            content: "💠";
+            position: absolute;
+            top: 5px;
+            left: 12px;
+            font-size: 20px;
+            opacity: 0.7;
         }
-        .card-network {
-            font-size: 14px;
-            color: #D4AF37;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .card-number {
-            font-size: 1.4rem;
+        .card-number-display {
+            font-size: 1.6rem;
             letter-spacing: 3px;
             font-weight: 600;
-            color: #D4AF37;
-            text-shadow: 0 0 5px rgba(212,175,55,0.5);
-            margin-bottom: 25px;
+            color: #f5e2b0;
+            margin-bottom: 20px;
             font-family: monospace;
-            word-break: break-word;
+            word-break: break-all;
         }
-        .card-holder {
+        .card-details-row {
             display: flex;
-            justify-content: space-between;
+            gap: 30px;
             margin-bottom: 20px;
         }
-        .holder-label {
+        .card-detail-item {
+            flex: 1;
+        }
+        .card-detail-label {
             font-size: 0.7rem;
-            color: rgba(212,175,55,0.7);
-            text-transform: uppercase;
+            color: #d4af37;
+            opacity: 0.7;
             letter-spacing: 1px;
         }
-        .holder-name {
+        .card-detail-value {
             font-size: 1rem;
-            font-weight: 600;
-            color: #D4AF37;
-            text-shadow: 0 0 3px rgba(212,175,55,0.3);
-            text-transform: uppercase;
-        }
-        .card-footer-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-        .expiry {
-            color: #D4AF37;
-        }
-        .expiry-label {
-            font-size: 0.6rem;
-            color: rgba(212,175,55,0.6);
-        }
-        .expiry-value {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .contactless-icon {
-            font-size: 24px;
-            color: #D4AF37;
-            transform: rotate(90deg);
-        }
-        .card-brand {
-            font-size: 28px;
             font-weight: bold;
-            color: #D4AF37;
-            letter-spacing: 3px;
+            color: #fff;
+            font-family: monospace;
         }
-        
-        /* Outros estilos */
+        .toggle-card-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid #d4af37;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: #d4af37;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .toggle-card-btn:hover {
+            background: #d4af37;
+            color: #0a0a0a;
+        }
+        .card-status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .card-active {
+            background: #2ecc71;
+            color: #0a0a0a;
+        }
+        .card-inactive {
+            background: #e67e22;
+            color: #fff;
+        }
+        .card-pending {
+            background: #f39c12;
+            color: #0a0a0a;
+        }
+        /* Abas de moeda */
         .currency-tabs {
             display: flex;
             gap: 12px;
-            background: #1a1a1a;
+            background: #12100c;
             padding: 8px;
             border-radius: 60px;
             margin-bottom: 20px;
-            border: 1px solid #D4AF3740;
+            border: 1px solid #3a321c;
         }
         .currency-btn {
             flex: 1;
@@ -195,28 +181,23 @@
             gap: 8px;
         }
         .currency-btn.active {
-            background: #D4AF37;
+            background: #d4af37;
             color: #0a0a0a;
             box-shadow: 0 4px 15px rgba(212,175,55,0.4);
         }
         .balance-box {
-            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            background: linear-gradient(145deg, #0e0c07, #080703);
             border-radius: 28px;
             padding: 22px;
             text-align: center;
             margin-bottom: 20px;
-            border: 1px solid #D4AF3740;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.3);
+            border: 1px solid #d4af3740;
         }
         .balance-amount {
             font-size: 2.9rem;
             font-weight: 800;
-            color: #D4AF37;
+            color: #f5c542;
             text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-        .balance-label {
-            font-size: 0.8rem;
-            color: #D4AF37;
         }
         .action-grid {
             display: grid;
@@ -225,7 +206,7 @@
             margin-bottom: 28px;
         }
         .btn-gold {
-            background: linear-gradient(95deg, #D4AF37, #b8941e);
+            background: linear-gradient(95deg, #d4af37, #b8941e);
             border: none;
             padding: 15px;
             border-radius: 48px;
@@ -237,20 +218,58 @@
             gap: 10px;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.3);
         }
-        .btn-gold:hover { transform: scale(0.97); background: linear-gradient(95deg, #c6a12e, #a57e18); }
+        .btn-gold:hover { transform: scale(0.97); }
         .btn-outline {
             background: transparent;
-            border: 1.5px solid #D4AF37;
+            border: 1.5px solid #d4af37;
             padding: 15px;
             border-radius: 48px;
-            color: #D4AF37;
+            color: #d4af37;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
         }
-        .btn-outline:hover { background: #D4AF3715; }
+        .settings-section {
+            background: #12100b;
+            border-radius: 28px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid #2a2416;
+        }
+        .settings-title {
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            color: #b9a46b;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 14px 18px;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        .iban-preview {
+            background: #1a1710;
+            padding: 12px;
+            border-radius: 16px;
+            margin-top: 10px;
+            font-family: monospace;
+            color: #d4af37;
+        }
         .modal {
             display: none;
             position: fixed;
@@ -263,56 +282,29 @@
             z-index: 2000;
         }
         .modal-content {
-            background: #1a1a1a;
+            background: #1a1710;
             max-width: 94%;
-            width: 480px;
-            max-height: 85vh;
-            overflow-y: auto;
-            border-radius: 32px;
+            width: 500px;
+            border-radius: 48px;
             padding: 32px;
-            border-top: 4px solid #D4AF37;
-            box-shadow: 0 30px 50px black;
-            color: #ffffff;
-        }
-        .modal-content input, .modal-content select, .modal-content textarea {
-            width: 100%;
-            padding: 14px 18px;
-            margin: 12px 0;
-            background: #2c2c2c;
-            border: 1px solid #D4AF3760;
-            border-radius: 60px;
-            color: #ffffff;
-            font-size: 0.95rem;
-        }
-        .modal-content input::placeholder, .modal-content textarea::placeholder {
-            color: #888;
-        }
-        .admin-panel {
-            background: #1a1a1a;
-            border-radius: 32px;
-            padding: 22px;
-            margin-top: 24px;
-            border: 1px solid #D4AF3740;
-            color: #ffffff;
+            border-top: 4px solid #d4af37;
         }
         .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1a1a1a;
-            color: #D4AF37;
+            background: #1f1b12;
+            color: #ffdf9c;
             padding: 12px 28px;
             border-radius: 60px;
-            border-left: 5px solid #D4AF37;
+            border-left: 5px solid #d4af37;
             z-index: 3000;
             display: none;
             font-weight: bold;
-            box-shadow: 0 8px 20px black;
         }
         .password-wrapper {
             position: relative;
-            width: 100%;
         }
         .password-wrapper input {
             padding-right: 45px;
@@ -323,102 +315,55 @@
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #D4AF37;
+            color: #d4af37;
             background: transparent;
             border: none;
-            font-size: 1.1rem;
         }
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
-            border-top: 1px solid #D4AF3740;
-            padding: 12px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #D4AF37;
-            z-index: 1000;
-        }
-        .camera-preview {
+        .country-select {
             width: 100%;
-            height: 300px;
-            background: #000;
-            border-radius: 24px;
-            overflow: hidden;
-            margin: 12px 0;
+            padding: 14px 18px;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #fff;
         }
-        .camera-preview video, .camera-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .phone-container {
+            display: flex;
+            gap: 12px;
         }
-        .image-preview {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 16px;
-            margin: 10px 0;
-        }
-        .kyc-status {
-            background: #1a1a1a;
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 20px;
+        .phone-code {
+            width: 100px;
+            padding: 14px;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #d4af37;
             text-align: center;
-            color: #ffffff;
         }
-        .forgot-link {
-            text-align: center;
-            margin-top: 16px;
-            cursor: pointer;
-            color: #D4AF37;
-            font-size: 0.85rem;
-            text-decoration: underline;
-        }
-        input, select, textarea {
-            color: #ffffff !important;
-        }
-        option {
-            background: #2c2c2c;
-            color: #ffffff;
+        .phone-number {
+            flex: 1;
+            padding: 14px;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #fff;
         }
         @media (max-width: 500px) {
             .balance-amount { font-size: 2rem; }
-            .card-number { font-size: 1rem; letter-spacing: 2px; }
-            .logo-text { font-size: 1.2rem; }
+            .card-number-display { font-size: 1.1rem; }
+            .phone-container { flex-direction: column; }
+            .phone-code { width: 100%; }
         }
     </style>
 </head>
 <body>
-<!-- Header Fixo -->
-<div class="fixed-header">
-    <div class="logo-container">
-        <i class="fas fa-shield-alt shield-icon"></i>
-        <div>
-            <div class="logo-text">MAM CASH</div>
-            <div class="logo-sub">Plataforma Financeira Premium</div>
-        </div>
-    </div>
-    <div class="user-info" id="userInfoHeader">
-        <i class="fas fa-user-circle"></i>
-        <span id="userNameHeader">Conta</span>
-    </div>
-</div>
-
-<div class="main-content" id="appRoot"></div>
-<div class="footer" id="footer">
-    from: MAM & Filhos (Matias Arsénio Manuel)
-</div>
+<div id="appRoot"></div>
 <div id="toastMessage" class="toast"></div>
 
 <script>
-    // EmailJS Config
-    (function() {
-        emailjs.init("YOUR_PUBLIC_KEY"); // Usuário deve substituir pela chave pública do EmailJS
-    })();
-    
-    // Firebase Config
+    // ============================================
+    // CONFIGURAÇÃO FIREBASE (NÃO ALTERAR)
+    // ============================================
     const firebaseConfig = {
         apiKey: 'AIzaSyC90uEwso8ZP3s7tLvV_z88ZbUijXLOpPU',
         authDomain: 'project-73108ea9-d1b2-4ac3-8fb.firebaseapp.com',
@@ -432,19 +377,34 @@
     const db = firebase.firestore();
     const storage = firebase.storage();
 
+    // ============================================
+    // CONSTANTES E VARIÁVEIS GLOBAIS
+    // ============================================
     const ADMIN_EMAIL = "mamfilhos29@gmail.com";
-    let exchangeRates = { AOA_USD: 0.00115, USD_AOA: 870, AOA_BRL: 0.0062, BRL_AOA: 161, USD_BRL: 5.35, BRL_USD: 0.187 };
+    const ENCRYPTION_KEY = "MAM_DISTRIBUIDORA_SECURE_KEY_2024";
     
     let currentUser = null;
     let currentCurrency = 'AOA';
     let userBalances = { AOA: 0, USD: 0, BRL: 0 };
-    let cardActivated = false;
     let userCardData = null;
+    let isCardVisible = false;
     let pending2FACode = null;
-    let pending2FAType = null;
-    let pendingLoginEmail = null;
-    let pendingActionCallback = null;
     
+    // Chave para tokenização dos dados do cartão (simula tokenização real)
+    let cardToken = null;
+    
+    // Países com códigos telefônicos
+    const countriesWithCodes = [
+        { name: "Angola", code: "+244" }, { name: "Brasil", code: "+55" }, { name: "Portugal", code: "+351" },
+        { name: "Estados Unidos", code: "+1" }, { name: "Reino Unido", code: "+44" }, { name: "Alemanha", code: "+49" },
+        { name: "França", code: "+33" }, { name: "Espanha", code: "+34" }, { name: "Itália", code: "+39" },
+        { name: "Moçambique", code: "+258" }, { name: "Cabo Verde", code: "+238" }, { name: "São Tomé", code: "+239" },
+        { name: "Guiné-Bissau", code: "+245" }, { name: "Timor-Leste", code: "+670" }
+    ];
+    
+    // ============================================
+    // FUNÇÕES AUXILIARES
+    // ============================================
     function showToast(msg) {
         const toast = document.getElementById('toastMessage');
         toast.innerText = msg;
@@ -454,15 +414,40 @@
     
     function formatMoney(value, currency) {
         if (isNaN(value)) value = 0;
-        const opts = { style: 'currency', currency: currency, minimumFractionDigits: 2 };
-        if (currency === 'AOA') opts.currency = 'AOA';
-        return new Intl.NumberFormat('pt-AO', opts).format(value);
+        return new Intl.NumberFormat('pt-AO', { style: 'currency', currency: currency, minimumFractionDigits: 2 }).format(value);
     }
     
+    // ============================================
+    // VALIDAÇÃO DE IBAN (Padrão Internacional)
+    // ============================================
+    function validateIBAN(iban) {
+        const cleanIBAN = iban.replace(/\s/g, '').toUpperCase();
+        // Regex para IBAN (mínimo 15, máximo 34 caracteres)
+        const ibanRegex = /^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/;
+        if (!ibanRegex.test(cleanIBAN)) return false;
+        
+        // Validação específica para Angola (AO)
+        if (cleanIBAN.startsWith('AO')) {
+            return cleanIBAN.length === 25;
+        }
+        return cleanIBAN.length >= 15 && cleanIBAN.length <= 34;
+    }
+    
+    // ============================================
+    // VALIDAÇÃO DE EMAIL DO PAYPAL
+    // ============================================
+    function validatePaypalEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    // ============================================
+    // GERAÇÃO DE CARTÃO DIGITAL COM TOKENIZAÇÃO
+    // ============================================
     function generateCardNumber() {
         let num = '';
         for (let i = 0; i < 16; i++) num += Math.floor(Math.random() * 10);
-        return num.match(/.{4}/g).join(' ');
+        return num;
     }
     
     function generateCVV() {
@@ -476,280 +461,295 @@
         return `${month}/${year.toString().slice(-2)}`;
     }
     
-    async function sendEmailCode(email, code) {
-        // Simulação de envio de email - na prática usar EmailJS
-        showToast(`📧 Código ${code} enviado para ${email} (simulação)`);
-        return true;
+    // Tokenização dos dados sensíveis do cartão
+    function tokenizeCardData(cardNumber, cvv, expiry) {
+        const rawData = `${cardNumber}|${cvv}|${expiry}`;
+        return CryptoJS.AES.encrypt(rawData, ENCRYPTION_KEY).toString();
     }
     
-    function request2FA(callback) {
-        pendingActionCallback = callback;
-        const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content">
-            <h3 style="color:#D4AF37;"><i class="fas fa-shield-alt"></i> Verificação de Segurança 2FA</h3>
-            <p style="margin:15px 0; color:#ccc;">Escolha como receber o código de verificação:</p>
-            <button id="2faEmailBtn" class="btn-gold" style="width:100%; margin:8px 0;"><i class="fas fa-envelope"></i> Receber por E-mail</button>
-            <button id="2faSmsBtn" class="btn-outline" style="width:100%; margin:8px 0;"><i class="fas fa-phone"></i> Receber por SMS</button>
-            <button id="close2faBtn" class="btn-outline" style="width:100%; margin-top:16px;">Cancelar</button>
-        </div>`;
-        document.body.appendChild(modal); modal.style.display = 'flex';
-        
-        document.getElementById('2faEmailBtn').onclick = async () => {
-            const code = Math.floor(100000 + Math.random() * 900000).toString();
-            pending2FACode = code;
-            await sendEmailCode(currentUser.email, code);
-            modal.remove();
-            showToast(`Código enviado para ${currentUser.email}. Verifique seu e-mail.`);
-            prompt2FACode();
-        };
-        document.getElementById('2faSmsBtn').onclick = async () => {
-            const doc = await db.collection('users').doc(currentUser.uid).get();
-            const phone = doc.exists ? doc.data().phone : '';
-            if(!phone) { showToast('Número de telefone não cadastrado. Use e-mail.'); return; }
-            const code = Math.floor(100000 + Math.random() * 900000).toString();
-            pending2FACode = code;
-            showToast(`📱 Código ${code} enviado para ${phone} (simulação)`);
-            modal.remove();
-            prompt2FACode();
-        };
-        document.getElementById('close2faBtn').onclick = () => modal.remove();
+    function detokenizeCardData(token) {
+        if (!token) return null;
+        const bytes = CryptoJS.AES.decrypt(token, ENCRYPTION_KEY);
+        const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+        if (!decrypted) return null;
+        const [cardNumber, cvv, expiry] = decrypted.split('|');
+        return { cardNumber, cvv, expiry };
     }
     
-    function prompt2FACode() {
-        const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content">
-            <h3 style="color:#D4AF37;">Digite o código de verificação</h3>
-            <input type="text" id="codeInput" placeholder="Código de 6 dígitos" style="text-align:center; font-size:1.5rem;">
-            <button id="verifyCodeBtn2fa" class="btn-gold" style="width:100%; margin-top:16px;">Verificar</button>
-            <button id="cancelCodeBtn" class="btn-outline" style="width:100%; margin-top:12px;">Cancelar</button>
-        </div>`;
-        document.body.appendChild(modal); modal.style.display = 'flex';
-        
-        document.getElementById('verifyCodeBtn2fa').onclick = () => {
-            const code = document.getElementById('codeInput').value;
-            if(code === pending2FACode) {
-                modal.remove();
-                if(pendingActionCallback) {
-                    pendingActionCallback();
-                    pendingActionCallback = null;
-                }
-                showToast('✅ Verificação concluída!');
-            } else {
-                showToast('❌ Código inválido!');
-            }
-        };
-        document.getElementById('cancelCodeBtn').onclick = () => modal.remove();
+    function maskCardNumber(cardNumber) {
+        if (!cardNumber) return '**** **** **** ****';
+        const last4 = cardNumber.slice(-4);
+        return `**** **** **** ${last4}`;
     }
     
+    // ============================================
+    // CARREGAR DADOS DO USUÁRIO
+    // ============================================
     async function loadUserData(uid) {
         const doc = await db.collection('users').doc(uid).get();
         if (doc.exists) {
             const data = doc.data();
             userBalances = { AOA: data.balances?.AOA ?? 0, USD: data.balances?.USD ?? 0, BRL: data.balances?.BRL ?? 0 };
-            cardActivated = data.cardActivated || false;
+            userCardData = data.cardToken ? detokenizeCardData(data.cardToken) : null;
+            cardToken = data.cardToken || null;
             window.userKycStatus = data.kycStatus || 'pending';
-            window.userCardData = data.cardData || null;
-            window.userFullName = `${data.firstName || ''} ${data.lastName || ''}`.toUpperCase();
-            document.getElementById('userNameHeader').innerText = window.userFullName.split(' ')[0] || 'Usuário';
+            window.linkedIBAN = data.linkedIBAN || '';
+            window.linkedPaypal = data.linkedPaypal || '';
+            window.userFullName = `${data.firstName || ''} ${data.lastName || ''}`;
         }
     }
     
-    async function updateFirestoreBalances(uid) {
-        await db.collection('users').doc(uid).update({ balances: userBalances });
+    async function saveWithdrawalSettings(uid, iban, paypalEmail) {
+        if (iban && !validateIBAN(iban)) {
+            showToast('IBAN inválido. Verifique o formato.');
+            return false;
+        }
+        if (paypalEmail && !validatePaypalEmail(paypalEmail)) {
+            showToast('Email do PayPal inválido.');
+            return false;
+        }
+        await db.collection('users').doc(uid).update({
+            linkedIBAN: iban || '',
+            linkedPaypal: paypalEmail || ''
+        });
+        window.linkedIBAN = iban || '';
+        window.linkedPaypal = paypalEmail || '';
+        showToast('✅ Configurações de saque salvas com sucesso!');
+        return true;
     }
     
+    // ============================================
+    // COMPRAR/ATIVAR CARTÃO
+    // ============================================
     async function requestCardPurchase(uid) {
-        if (cardActivated) { showToast('Cartão já está ativo'); return false; }
-        if (window.userKycStatus !== 'approved') { showToast('É necessário ter a identidade verificada pelo ADMIN primeiro!'); return false; }
+        if (userCardData) { showToast('Cartão já está ativo'); return false; }
+        if (window.userKycStatus !== 'approved') { showToast('Complete a verificação KYC primeiro!'); return false; }
         if (userBalances.AOA < 5000 && currentUser.email !== ADMIN_EMAIL) {
-            showToast(`Saldo insuficiente em AOA. Taxa: ${formatMoney(5000, 'AOA')}`);
+            showToast(`Saldo insuficiente. Taxa: ${formatMoney(5000, 'AOA')}`);
             return false;
         }
         
-        request2FA(async () => {
-            if (currentUser.email === ADMIN_EMAIL) {
-                const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
-                await db.collection('users').doc(uid).update({ cardActivated: true, cardData: cardData });
-                cardActivated = true;
-                window.userCardData = cardData;
-                showToast('✨ Cartão ADMIN gerado com sucesso!');
-                renderDashboard();
-                return;
-            }
-            
-            await db.collection('cardRequests').add({
-                userId: uid, userEmail: currentUser.email, status: 'pending', fee: 5000,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        const newCardNumber = generateCardNumber();
+        const newCVV = generateCVV();
+        const newExpiry = generateExpiry();
+        const token = tokenizeCardData(newCardNumber, newCVV, newExpiry);
+        
+        if (currentUser.email === ADMIN_EMAIL) {
+            await db.collection('users').doc(uid).update({ 
+                cardToken: token, 
+                cardActivated: true 
             });
-            showToast('✅ Pedido de cartão enviado. Aguarde aprovação do ADMIN.');
-        });
-    }
-    
-    async function adminApproveCard(userId, fee) {
-        const userRef = db.collection('users').doc(userId);
-        const userDoc = await userRef.get();
-        if (!userDoc.exists) return;
-        const balances = userDoc.data().balances || { AOA: 0, USD: 0, BRL: 0 };
-        if (balances.AOA < fee) { showToast('Saldo insuficiente para taxa'); return; }
-        const newBalances = { ...balances };
-        newBalances.AOA = balances.AOA - fee;
-        const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
-        await userRef.update({ balances: newBalances, cardActivated: true, cardData: cardData });
-        const reqQuery = await db.collection('cardRequests').where('userId', '==', userId).where('status', '==', 'pending').get();
-        reqQuery.forEach(doc => doc.ref.update({ status: 'approved' }));
-        showToast(`💳 Cartão aprovado! Taxa: ${formatMoney(fee, 'AOA')}`);
-        if (currentUser && currentUser.uid === userId) {
-            userBalances = newBalances;
-            cardActivated = true;
-            window.userCardData = cardData;
+            userCardData = { cardNumber: newCardNumber, cvv: newCVV, expiry: newExpiry };
+            cardToken = token;
+            showToast('✨ Cartão ADMIN gerado com sucesso!');
             renderDashboard();
+            return true;
         }
-    }
-    
-    async function exchangeCurrency(from, to, amount) {
-        if (amount <= 0) return false;
-        let rate = 1;
-        const rates = { 'AOA_USD': exchangeRates.AOA_USD, 'USD_AOA': exchangeRates.USD_AOA, 'AOA_BRL': exchangeRates.AOA_BRL, 'BRL_AOA': exchangeRates.BRL_AOA, 'USD_BRL': exchangeRates.USD_BRL, 'BRL_USD': exchangeRates.BRL_USD };
-        rate = rates[`${from}_${to}`];
-        if (!rate) { showToast('Par não suportado'); return false; }
-        if (userBalances[from] < amount) { showToast(`Saldo insuficiente em ${from}`); return false; }
-        const converted = amount * rate;
-        userBalances[from] -= amount;
-        userBalances[to] += converted;
-        await updateFirestoreBalances(currentUser.uid);
-        showToast(`🔄 Conversão: ${formatMoney(amount, from)} → ${formatMoney(converted, to)}`);
+        
+        const newBalances = { ...userBalances };
+        newBalances.AOA = userBalances.AOA - 5000;
+        await db.collection('users').doc(uid).update({
+            balances: newBalances,
+            cardToken: token,
+            cardActivated: true
+        });
+        userBalances = newBalances;
+        userCardData = { cardNumber: newCardNumber, cvv: newCVV, expiry: newExpiry };
+        cardToken = token;
+        showToast(`💳 Cartão adquirido! Taxa: ${formatMoney(5000, 'AOA')}`);
         renderDashboard();
         return true;
     }
     
+    // ============================================
+    // RENDERIZAÇÃO DO DASHBOARD
+    // ============================================
     async function renderDashboard() {
         if (!currentUser) { renderLogin(); return; }
         await loadUserData(currentUser.uid);
         const isAdmin = (currentUser.email === ADMIN_EMAIL);
         const balanceNow = userBalances[currentCurrency] || 0;
-        let cardStatusText = 'BLOQUEADO';
-        let cardStatusClass = 'status-inactive';
-        if (window.userKycStatus === 'pending') cardStatusText = 'AGUARDANDO KYC';
-        else if (window.userKycStatus === 'pending_review') cardStatusText = 'KYC EM ANÁLISE';
-        else if (window.userKycStatus === 'approved' && !cardActivated) cardStatusText = 'KYC APROVADO • CARTÃO PENDENTE';
-        else if (cardActivated) { cardStatusText = 'ATIVO • PREMIUM'; cardStatusClass = 'status-active'; }
+        
+        // Dados do cartão com máscara
+        const maskedNumber = userCardData ? maskCardNumber(userCardData.cardNumber) : '**** **** **** ****';
+        const maskedCVV = userCardData ? '***' : '***';
+        const maskedExpiry = userCardData ? '**/**' : '**/**';
+        const actualNumber = userCardData?.cardNumber || '';
+        const actualCVV = userCardData?.cvv || '';
+        const actualExpiry = userCardData?.expiry || '';
+        
+        const displayNumber = isCardVisible && userCardData ? actualNumber : maskedNumber;
+        const displayCVV = isCardVisible && userCardData ? actualCVV : maskedCVV;
+        const displayExpiry = isCardVisible && userCardData ? actualExpiry : maskedExpiry;
+        
+        let cardStatus = '';
+        if (!userCardData && window.userKycStatus !== 'approved') cardStatus = '<span class="card-status-badge card-pending">🔒 KYC Pendente</span>';
+        else if (!userCardData) cardStatus = '<span class="card-status-badge card-inactive">💳 Cartão Disponível (5.000 Kz)</span>';
+        else cardStatus = '<span class="card-status-badge card-active">✅ Cartão Ativo</span>';
         
         let html = `
-            <div class="premium-card">
-                <div class="card-chip">
-                    <i class="fas fa-microchip chip-icon"></i>
-                    <span class="card-network">MAM BLACK</span>
+            <div class="app-container">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <div><i class="fas fa-music" style="color:#d4af37"></i> <span style="color:#e6d5a8;">${window.userFullName || currentUser.email}</span></div>
+                    <button id="logoutBtn" style="background:#222216; border:1px solid #d4af37; padding:8px 18px; border-radius:40px; color:#d4af37; cursor:pointer;"><i class="fas fa-sign-out-alt"></i> Sair</button>
                 </div>
-                <div class="card-number">${window.userCardData ? window.userCardData.number : '****  ****  ****  ****'}</div>
-                <div class="card-holder">
-                    <div>
-                        <div class="holder-label">Titular do Cartão</div>
-                        <div class="holder-name">${window.userFullName || 'CARREGANDO...'}</div>
+                
+                <!-- CARTÃO DIGITAL COM PRIVACIDADE -->
+                <div class="digital-card">
+                    ${cardStatus}
+                    <div class="card-chip"></div>
+                    <div class="card-number-display">${displayNumber}</div>
+                    <div class="card-details-row">
+                        <div class="card-detail-item">
+                            <div class="card-detail-label">VALIDADE</div>
+                            <div class="card-detail-value">${displayExpiry}</div>
+                        </div>
+                        <div class="card-detail-item">
+                            <div class="card-detail-label">CVV</div>
+                            <div class="card-detail-value">${displayCVV}</div>
+                        </div>
                     </div>
-                    <div class="expiry">
-                        <div class="expiry-label">Validade</div>
-                        <div class="expiry-value">${window.userCardData ? window.userCardData.expiry : '**/**'}</div>
+                    <button id="toggleCardVisibility" class="toggle-card-btn">
+                        <i class="fas ${isCardVisible ? 'fa-eye-slash' : 'fa-eye'}"></i> 
+                        ${isCardVisible ? 'Ocultar Dados' : 'Exibir Dados do Cartão'}
+                    </button>
+                </div>
+                
+                <!-- MOEDAS -->
+                <div class="currency-tabs">
+                    <button class="currency-btn ${currentCurrency === 'AOA' ? 'active' : ''}" data-cur="AOA"><i class="fas fa-coins"></i> Kwanza</button>
+                    <button class="currency-btn ${currentCurrency === 'USD' ? 'active' : ''}" data-cur="USD"><i class="fas fa-dollar-sign"></i> USD</button>
+                    <button class="currency-btn ${currentCurrency === 'BRL' ? 'active' : ''}" data-cur="BRL"><i class="fas fa-real"></i> Real</button>
+                </div>
+                
+                <div class="balance-box">
+                    <div style="font-size:0.8rem; color:#d4af37;">Saldo disponível</div>
+                    <div class="balance-amount">${formatMoney(balanceNow, currentCurrency)}</div>
+                </div>
+                
+                <div class="action-grid">
+                    <button id="btnBuyCard" class="btn-gold"><i class="fas fa-credit-card"></i> ${userCardData ? 'Cartão Ativo' : 'Comprar Cartão'}</button>
+                    <button id="btnTransfer" class="btn-gold"><i class="fas fa-exchange-alt"></i> Transferir</button>
+                    <button id="btnDeposit" class="btn-outline"><i class="fas fa-upload"></i> Depositar</button>
+                    <button id="btnWithdraw" class="btn-outline"><i class="fas fa-download"></i> Sacar</button>
+                </div>
+                
+                <!-- CONFIGURAÇÕES DE SAQUE -->
+                <div class="settings-section">
+                    <div class="settings-title"><i class="fas fa-university"></i> Contas para Saque</div>
+                    <div class="input-group">
+                        <label><i class="fas fa-building-columns"></i> IBAN (Angola/Internacional)</label>
+                        <input type="text" id="ibanInput" placeholder="AO06 0000 0000 0000 0000 0000 0" value="${window.linkedIBAN || ''}">
+                        <div class="iban-preview" id="ibanPreview">${window.linkedIBAN ? '✅ IBAN vinculado: ' + window.linkedIBAN : 'Nenhum IBAN vinculado'}</div>
                     </div>
+                    <div class="input-group">
+                        <label><i class="fab fa-paypal"></i> PayPal Email</label>
+                        <input type="email" id="paypalInput" placeholder="seu-email@exemplo.com" value="${window.linkedPaypal || ''}">
+                    </div>
+                    <button id="saveWithdrawalSettings" class="btn-gold" style="width:100%; margin-top:10px;"><i class="fas fa-save"></i> Salvar Configurações</button>
                 </div>
-                <div class="card-footer-card">
-                    <i class="fas fa-wifi contactless-icon"></i>
-                    <div class="card-brand">MAM</div>
-                </div>
             </div>
-            
-            <div class="currency-tabs">
-                <button class="currency-btn ${currentCurrency === 'AOA' ? 'active' : ''}" data-cur="AOA"><i class="fas fa-coins"></i> Kwanza (AOA)</button>
-                <button class="currency-btn ${currentCurrency === 'USD' ? 'active' : ''}" data-cur="USD"><i class="fas fa-dollar-sign"></i> USD</button>
-                <button class="currency-btn ${currentCurrency === 'BRL' ? 'active' : ''}" data-cur="BRL"><i class="fas fa-real"></i> BRL</button>
-            </div>
-            <div class="balance-box">
-                <div class="balance-label">Saldo disponível</div>
-                <div class="balance-amount">${formatMoney(balanceNow, currentCurrency)}</div>
-            </div>
-            <div class="action-grid">
-                <button id="btnTransfer" class="btn-gold"><i class="fas fa-exchange-alt"></i> Transferir</button>
-                <button id="btnDeposit" class="btn-gold"><i class="fas fa-upload"></i> Depositar</button>
-                <button id="btnExchange" class="btn-outline"><i class="fas fa-chart-line"></i> Câmbio</button>
-                <button id="btnBuyCard" class="btn-outline"><i class="fas fa-credit-card"></i> ${cardActivated ? 'Cartão Ativo' : 'Comprar Cartão'}</button>
-            </div>`;
+        `;
         
-        if (isAdmin) {
-            const pendingCardsSnap = await db.collection('cardRequests').where('status', '==', 'pending').get();
-            let pendingCards = [];
-            pendingCardsSnap.forEach(d => pendingCards.push({id: d.id, ...d.data()}));
-            html += `<div class="admin-panel"><h3 style="color:#D4AF37;"><i class="fas fa-crown"></i> Painel Administrador</h3>`;
-            html += `<h4 style="margin:16px 0 8px;">💳 Pedidos de Cartão</h4>`;
-            if(pendingCards.length===0) html+=`<p>Sem pedidos pendentes</p>`;
-            pendingCards.forEach(card => {
-                html += `<div style="background:#2c2c2c; padding:12px; margin:8px 0; border-radius:20px;">
-                            <div>👤 ${card.userEmail}</div>
-                            <button class="approveCardBtn" data-uid="${card.userId}" data-fee="${card.fee}" style="background:#D4AF37; border:none; padding:8px 20px; border-radius:40px; margin-top:8px; color:#0a0a0a; font-weight:bold;">💳 Gerar Cartão (Cobrar ${formatMoney(card.fee, 'AOA')})</button>
-                         </div>`;
-            });
-            html += `</div>`;
-        }
         document.getElementById('appRoot').innerHTML = html;
         
+        // Eventos
         document.querySelectorAll('.currency-btn').forEach(btn => {
             btn.addEventListener('click', () => { currentCurrency = btn.getAttribute('data-cur'); renderDashboard(); });
         });
+        
+        document.getElementById('toggleCardVisibility')?.addEventListener('click', () => {
+            if (!userCardData) {
+                showToast('Você precisa adquirir um cartão primeiro!');
+                return;
+            }
+            isCardVisible = !isCardVisible;
+            renderDashboard();
+        });
+        
+        document.getElementById('btnBuyCard')?.addEventListener('click', () => requestCardPurchase(currentUser.uid));
         document.getElementById('btnTransfer')?.addEventListener('click', () => openTransferModal());
         document.getElementById('btnDeposit')?.addEventListener('click', () => openDepositModal());
-        document.getElementById('btnExchange')?.addEventListener('click', () => openExchangeModal());
-        document.getElementById('btnBuyCard')?.addEventListener('click', () => requestCardPurchase(currentUser.uid));
+        document.getElementById('btnWithdraw')?.addEventListener('click', () => openWithdrawModal());
+        document.getElementById('logoutBtn')?.addEventListener('click', () => auth.signOut());
         
-        if (isAdmin) {
-            document.querySelectorAll('.approveCardBtn').forEach(btn => {
-                btn.addEventListener('click', async () => { await adminApproveCard(btn.getAttribute('data-uid'), parseFloat(btn.getAttribute('data-fee'))); renderDashboard(); });
-            });
-        }
-    }
-    
-    async function openTransferModal() {
-        request2FA(async () => {
-            const modal = document.createElement('div'); modal.className = 'modal';
-            modal.innerHTML = `<div class="modal-content"><h3 style="color:#D4AF37;"><i class="fas fa-paper-plane"></i> Transferir</h3>
-                <input id="transferEmail" placeholder="Email do destinatário"><input id="transferAmount" type="number" placeholder="Valor"><select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-                <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmTransfer" class="btn-gold">Enviar</button><button id="closeModal" class="btn-outline">Cancelar</button></div></div>`;
-            document.body.appendChild(modal); modal.style.display = 'flex';
-            document.getElementById('confirmTransfer').onclick = async () => {
-                const toEmail = document.getElementById('transferEmail').value;
-                const amount = parseFloat(document.getElementById('transferAmount').value);
-                const currency = document.getElementById('transferCurrency').value;
-                if (!toEmail || isNaN(amount) || amount<=0) { showToast('Dados inválidos'); return; }
-                if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
-                const usersSnap = await db.collection('users').where('email', '==', toEmail).get();
-                if (usersSnap.empty) { showToast('Destinatário não encontrado'); return; }
-                const targetUser = usersSnap.docs[0];
-                const targetBalances = targetUser.data().balances;
-                targetBalances[currency] = (targetBalances[currency] || 0) + amount;
-                userBalances[currency] -= amount;
-                await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
-                await updateFirestoreBalances(currentUser.uid);
-                showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`);
-                modal.remove(); renderDashboard();
-            };
-            document.getElementById('closeModal').onclick = () => modal.remove();
+        document.getElementById('saveWithdrawalSettings')?.addEventListener('click', async () => {
+            const iban = document.getElementById('ibanInput').value;
+            const paypal = document.getElementById('paypalInput').value;
+            await saveWithdrawalSettings(currentUser.uid, iban, paypal);
+            renderDashboard();
         });
     }
     
+    // ============================================
+    // MODAL DE TRANSFERÊNCIA
+    // ============================================
+    async function openTransferModal() {
+        if (!userCardData) { showToast('Você precisa ter um cartão ativo para realizar transferências!'); return; }
+        
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content">
+            <h3 style="color:#d4af37;"><i class="fas fa-paper-plane"></i> Transferir</h3>
+            <input id="transferEmail" placeholder="Email do destinatário">
+            <input id="transferAmount" type="number" placeholder="Valor">
+            <select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button id="confirmTransfer" class="btn-gold">Enviar</button>
+                <button id="closeModal" class="btn-outline">Cancelar</button>
+            </div>
+        </div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        
+        document.getElementById('confirmTransfer').onclick = async () => {
+            const toEmail = document.getElementById('transferEmail').value;
+            const amount = parseFloat(document.getElementById('transferAmount').value);
+            const currency = document.getElementById('transferCurrency').value;
+            if (!toEmail || isNaN(amount) || amount <= 0) { showToast('Dados inválidos'); return; }
+            if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
+            
+            const usersSnap = await db.collection('users').where('email', '==', toEmail).get();
+            if (usersSnap.empty) { showToast('Destinatário não encontrado'); return; }
+            
+            const targetUser = usersSnap.docs[0];
+            const targetBalances = targetUser.data().balances;
+            targetBalances[currency] = (targetBalances[currency] || 0) + amount;
+            userBalances[currency] -= amount;
+            
+            await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
+            await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
+            showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`);
+            modal.remove(); renderDashboard();
+        };
+        document.getElementById('closeModal').onclick = () => modal.remove();
+    }
+    
+    // ============================================
+    // MODAL DE DEPÓSITO
+    // ============================================
     async function openDepositModal() {
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3 style="color:#D4AF37;"><i class="fas fa-university"></i> Depósito</h3>
-            <select id="depositMethod"><option value="Angola">🏦 Angola (Multicaixa/IBAN)</option><option value="Crypto">💎 USDT (TRC20)</option><option value="PayPal">💳 PayPal / Cartão Visa</option></select>
-            <input id="depositAmount" placeholder="Valor"><select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-            <textarea id="depositProof" placeholder="Comprovativo / hash / print"></textarea>
-            <div style="display:flex; gap:12px;"><button id="sendDeposit" class="btn-gold">Solicitar</button><button id="closeDeposit" class="btn-outline">Fechar</button></div></div>`;
-        document.body.appendChild(modal); modal.style.display='flex';
+        modal.innerHTML = `<div class="modal-content">
+            <h3 style="color:#d4af37;"><i class="fas fa-upload"></i> Solicitar Depósito</h3>
+            <input id="depositAmount" type="number" placeholder="Valor">
+            <select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <textarea id="depositProof" placeholder="Comprovativo de pagamento" rows="3"></textarea>
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button id="sendDeposit" class="btn-gold">Solicitar</button>
+                <button id="closeDeposit" class="btn-outline">Fechar</button>
+            </div>
+        </div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        
         document.getElementById('sendDeposit').onclick = async () => {
-            const method = document.getElementById('depositMethod').value;
             const amount = parseFloat(document.getElementById('depositAmount').value);
             const currency = document.getElementById('depositCurrency').value;
             const proof = document.getElementById('depositProof').value;
-            if(isNaN(amount) || amount<=0) return;
+            if (isNaN(amount) || amount <= 0) return;
+            
             await db.collection('deposits').add({
-                userId: currentUser.uid, userEmail: currentUser.email, amount, currency, method, proof,
-                status: 'pending', timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                userId: currentUser.uid, userEmail: currentUser.email,
+                amount, currency, proof, status: 'pending',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
             showToast(`📤 Pedido de depósito de ${formatMoney(amount, currency)} enviado.`);
             modal.remove();
@@ -757,66 +757,166 @@
         document.getElementById('closeDeposit').onclick = () => modal.remove();
     }
     
-    async function openExchangeModal() {
+    // ============================================
+    // MODAL DE SAQUE
+    // ============================================
+    async function openWithdrawModal() {
+        if (!window.linkedIBAN && !window.linkedPaypal) {
+            showToast('Configure um IBAN ou PayPal nas Configurações de Saque primeiro!');
+            return;
+        }
+        
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3 style="color:#D4AF37;">💰 Câmbio MAM Cash</h3>
-            <select id="fromCurr"><option>AOA</option><option>USD</option><option>BRL</option></select> → <select id="toCurr"><option>USD</option><option>AOA</option><option>BRL</option></select>
-            <input id="exchangeAmount" placeholder="Montante">
-            <button id="doExchange" class="btn-gold">Converter</button><button id="closeEx" class="btn-outline">Fechar</button></div>`;
-        document.body.appendChild(modal); modal.style.display='flex';
-        document.getElementById('doExchange').onclick = async () => {
-            await exchangeCurrency(document.getElementById('fromCurr').value, document.getElementById('toCurr').value, parseFloat(document.getElementById('exchangeAmount').value));
+        modal.innerHTML = `<div class="modal-content">
+            <h3 style="color:#d4af37;"><i class="fas fa-download"></i> Solicitar Saque</h3>
+            <input id="withdrawAmount" type="number" placeholder="Valor">
+            <select id="withdrawCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <select id="withdrawMethod">
+                <option value="iban" ${window.linkedIBAN ? '' : 'disabled'}>🏦 IBAN: ${window.linkedIBAN || 'Não configurado'}</option>
+                <option value="paypal" ${window.linkedPaypal ? '' : 'disabled'}>💳 PayPal: ${window.linkedPaypal || 'Não configurado'}</option>
+            </select>
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button id="confirmWithdraw" class="btn-gold">Solicitar Saque</button>
+                <button id="closeWithdraw" class="btn-outline">Fechar</button>
+            </div>
+        </div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        
+        document.getElementById('confirmWithdraw').onclick = async () => {
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const currency = document.getElementById('withdrawCurrency').value;
+            const method = document.getElementById('withdrawMethod').value;
+            if (isNaN(amount) || amount <= 0) { showToast('Valor inválido'); return; }
+            if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
+            
+            await db.collection('withdrawals').add({
+                userId: currentUser.uid, userEmail: currentUser.email,
+                amount, currency, method,
+                destination: method === 'iban' ? window.linkedIBAN : window.linkedPaypal,
+                status: 'pending',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast(`📤 Pedido de saque de ${formatMoney(amount, currency)} enviado para análise.`);
             modal.remove();
         };
-        document.getElementById('closeEx').onclick = () => modal.remove();
+        document.getElementById('closeWithdraw').onclick = () => modal.remove();
     }
     
-    function forgotPassword() {
-        const email = prompt("Digite seu e-mail para recuperar a senha:");
-        if (email && email.includes('@')) {
-            auth.sendPasswordResetEmail(email).then(() => {
-                showToast(`📧 Link de recuperação enviado para ${email}`);
-            }).catch(error => {
-                showToast('Erro: ' + error.message);
-            });
-        } else if (email) {
-            showToast('E-mail inválido');
-        }
-    }
-    
+    // ============================================
+    // TELA DE LOGIN
+    // ============================================
     function renderLogin() {
         document.getElementById('appRoot').innerHTML = `
-            <div style="max-width:460px; margin: 20px auto; background:#1a1a1a; border-radius:56px; padding:38px 28px; border:1px solid #D4AF37;">
-                <div style="text-align:center;"><i class="fas fa-shield-alt" style="font-size:3rem; color:#D4AF37;"></i><h2 style="color:#D4AF37; margin-top:8px;">MAM CASH</h2><p style="color:#b9a46b;">Sua plataforma financeira premium</p></div>
-                <div id="loginView">
-                    <input id="loginEmail" placeholder="Email" style="width:100%; margin:12px 0; padding:14px; background:#2c2c2c; border-radius:60px; color:white; border:1px solid #D4AF3760;">
-                    <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha" style="background:#2c2c2c; border:1px solid #D4AF3760;"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
-                    <button id="doLogin" class="btn-gold" style="width:100%; margin-top:16px;">Entrar</button>
-                    <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
-                    <div class="forgot-link" id="forgotPasswordBtn"><i class="fas fa-key"></i> Esqueci minha senha</div>
+            <div style="max-width:460px; margin: 5vh auto; background:#12100b; border-radius:56px; padding:38px 28px; border:1px solid #d4af37;">
+                <div style="text-align:center;">
+                    <i class="fas fa-music" style="font-size:3rem; color:#d4af37;"></i>
+                    <h2 style="color:#d4af37;">MAM CASH</h2>
+                    <p style="color:#b99f5a;">Distribuidora Musical • Carteira Digital</p>
                 </div>
+                <input id="loginEmail" placeholder="Email" style="width:100%; margin:16px 0 12px; padding:14px; background:#2a241b; border-radius:60px; color:white;">
+                <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha" style="width:100%; padding:14px; background:#2a241b; border-radius:60px;"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                <button id="doLogin" class="btn-gold" style="width:100%; margin-top:16px;">Entrar</button>
+                <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
+                <div id="forgotPasswordBtn" style="text-align:center; margin-top:16px; cursor:pointer; color:#d4af37;"><i class="fas fa-key"></i> Esqueci minha senha</div>
             </div>`;
         
-        document.getElementById('toggleLoginPass')?.addEventListener('click', () => { const inp = document.getElementById('loginPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
-        document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => forgotPassword());
+        document.getElementById('toggleLoginPass')?.addEventListener('click', () => {
+            const inp = document.getElementById('loginPassword');
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        });
+        
         document.getElementById('doLogin').onclick = async () => {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-            if(!email || !password) { showToast('Preencha email e senha'); return; }
+            if (!email || !password) { showToast('Preencha email e senha'); return; }
             try {
                 await auth.signInWithEmailAndPassword(email, password);
                 showToast('Login realizado!');
                 renderDashboard();
             } catch(e) { showToast(e.message); }
         };
-        document.getElementById('goToRegister').onclick = () => {
-            showToast('Registro disponível via console Firebase. Contate o administrador.');
+        
+        document.getElementById('goToRegister').onclick = () => renderRegister();
+        document.getElementById('forgotPasswordBtn').onclick = () => {
+            const email = document.getElementById('loginEmail').value;
+            if (!email) { showToast('Digite seu email no campo acima'); return; }
+            auth.sendPasswordResetEmail(email).then(() => showToast('Email de recuperação enviado!')).catch(e => showToast(e.message));
         };
-        document.getElementById('userNameHeader').innerText = 'Entrar';
     }
     
+    // ============================================
+    // TELA DE REGISTRO
+    // ============================================
+    function renderRegister() {
+        let countryOptions = countriesWithCodes.map(c => `<option value="${c.name}" ${c.name === 'Angola' ? 'selected' : ''}>${c.name}</option>`).join('');
+        document.getElementById('appRoot').innerHTML = `
+            <div style="max-width:480px; margin: 3vh auto; background:#12100b; border-radius:56px; padding:32px 28px; border:1px solid #d4af37;">
+                <h2 style="color:#d4af37; text-align:center;">Criar Conta</h2>
+                <input id="regFirstName" placeholder="Nome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
+                <input id="regLastName" placeholder="Sobrenome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
+                <input id="regEmail" placeholder="Email" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
+                <select id="regCountry" class="country-select">${countryOptions}</select>
+                <div class="phone-container">
+                    <span id="phoneCode" class="phone-code">+244</span>
+                    <input id="regPhone" class="phone-number" placeholder="999 999 999">
+                </div>
+                <div class="password-wrapper"><input id="regPassword" type="password" placeholder="Senha (min 6)"><button type="button" id="toggleRegPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                <div class="password-wrapper"><input id="regConfirmPassword" type="password" placeholder="Confirmar Senha"><button type="button" id="toggleRegConfirm" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                <button id="doRegister" class="btn-gold" style="width:100%; margin-top:16px;">Registrar</button>
+                <button id="backToLogin" class="btn-outline" style="width:100%; margin-top:12px;">Voltar ao Login</button>
+            </div>`;
+        
+        document.getElementById('toggleRegPass')?.addEventListener('click', () => {
+            const inp = document.getElementById('regPassword');
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        });
+        document.getElementById('toggleRegConfirm')?.addEventListener('click', () => {
+            const inp = document.getElementById('regConfirmPassword');
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        });
+        
+        document.getElementById('doRegister').onclick = async () => {
+            const firstName = document.getElementById('regFirstName').value;
+            const lastName = document.getElementById('regLastName').value;
+            const email = document.getElementById('regEmail').value;
+            const country = document.getElementById('regCountry').value;
+            const phoneCode = document.getElementById('phoneCode').innerText;
+            const phoneNumber = document.getElementById('regPhone').value;
+            const fullPhone = `${phoneCode} ${phoneNumber}`;
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirmPassword').value;
+            
+            if (!firstName || !lastName || !email || !phoneNumber || !password) { showToast('Preencha todos os campos'); return; }
+            if (password !== confirm) { showToast('Senhas não coincidem'); return; }
+            if (password.length < 6) { showToast('Senha mínima 6 caracteres'); return; }
+            
+            try {
+                const userCred = await auth.createUserWithEmailAndPassword(email, password);
+                await db.collection('users').doc(userCred.user.uid).set({
+                    firstName, lastName, email, country, phone: fullPhone,
+                    balances: { AOA: 0, USD: 0, BRL: 0 },
+                    cardActivated: false, kycStatus: 'approved',
+                    linkedIBAN: '', linkedPaypal: '',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showToast('Conta criada com sucesso!');
+                renderLogin();
+            } catch(e) { showToast(e.message); }
+        };
+        document.getElementById('backToLogin').onclick = () => renderLogin();
+        
+        // Atualizar código do país
+        document.getElementById('regCountry').addEventListener('change', (e) => {
+            const country = countriesWithCodes.find(c => c.name === e.target.value);
+            if (country) document.getElementById('phoneCode').innerText = country.code;
+        });
+    }
+    
+    // ============================================
+    // AUTH STATE LISTENER
+    // ============================================
     auth.onAuthStateChanged(async user => {
-        if(user) { currentUser = user; await renderDashboard(); }
+        if (user) { currentUser = user; await renderDashboard(); }
         else { currentUser = null; renderLogin(); }
     });
 </script>
