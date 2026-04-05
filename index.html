@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MAM Cash • Verificação de Identidade | Multi-Moeda Premium</title>
+    <title>MAM Cash • Plataforma Financeira Premium</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
     <style>
         * {
             margin: 0;
@@ -46,25 +49,23 @@
             0% { transform: translateY(0px) translateX(0px); }
             100% { transform: translateY(-200px) translateX(50px); }
         }
-        .coin-particle {
-            position: fixed;
-            font-size: 24px;
-            opacity: 0.08;
-            pointer-events: none;
-            animation: floatCoin 25s infinite ease-in-out;
-            z-index: 0;
-        }
-        @keyframes floatCoin {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.1; }
-            90% { opacity: 0.1; }
-            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
-        }
         .app-container {
             max-width: 680px;
             margin: 0 auto;
             position: relative;
             z-index: 2;
+        }
+        /* CORREÇÃO: Inputs com texto BRANCO */
+        input, select, textarea {
+            color: #FFFFFF !important;
+            background: #2c271e !important;
+            border: 1px solid #d4af3760 !important;
+            border-radius: 60px !important;
+            padding: 14px 18px !important;
+            font-size: 0.95rem !important;
+        }
+        input::placeholder, textarea::placeholder {
+            color: #b9a46b !important;
         }
         .card-premium {
             background: linear-gradient(135deg, #1a160c 0%, #0c0a04 100%);
@@ -192,7 +193,7 @@
             transition: 0.2s;
         }
         .btn-outline:hover { background: #d4af3715; }
-        .modal {
+        .modal-custom {
             display: none;
             position: fixed;
             top: 0; left: 0;
@@ -203,26 +204,27 @@
             align-items: center;
             z-index: 2000;
         }
-        .modal-content {
+        .modal-custom-content {
             background: #1a1710;
             max-width: 94%;
-            width: 500px;
-            max-height: 85vh;
-            overflow-y: auto;
+            width: 480px;
             border-radius: 48px;
             padding: 32px;
             border-top: 4px solid #d4af37;
             box-shadow: 0 30px 50px black;
+            text-align: center;
         }
-        .modal-content input, .modal-content select, .modal-content textarea {
+        .modal-custom-content h3 {
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+        .modal-custom-content p {
+            color: #e6d5a8;
+            margin-bottom: 24px;
+        }
+        .modal-custom-content input, .modal-custom-content select {
             width: 100%;
-            padding: 14px 18px;
             margin: 12px 0;
-            background: #2c271e;
-            border: 1px solid #d4af3760;
-            border-radius: 60px;
-            color: #fff;
-            font-size: 0.95rem;
         }
         .admin-panel {
             background: #0e0c08;
@@ -315,7 +317,6 @@
             color: #d4af37;
             font-weight: bold;
             text-align: center;
-            font-size: 0.95rem;
         }
         .phone-number {
             flex: 1;
@@ -324,7 +325,6 @@
             border: 1px solid #d4af3760;
             border-radius: 60px;
             color: #fff;
-            font-size: 0.95rem;
         }
         @media (max-width: 500px) {
             .balance-amount { font-size: 2rem; }
@@ -352,6 +352,9 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
     const storage = firebase.storage();
+    
+    // Inicializar EmailJS (substitua com suas credenciais)
+    emailjs.init("YOUR_PUBLIC_KEY"); // Usuário deve substituir pela chave pública do EmailJS
 
     const ADMIN_EMAIL = "mamfilhos29@gmail.com";
     let exchangeRates = { AOA_USD: 0.00115, USD_AOA: 870, AOA_BRL: 0.0062, BRL_AOA: 161, USD_BRL: 5.35, BRL_USD: 0.187 };
@@ -361,60 +364,12 @@
     let userBalances = { AOA: 0, USD: 0, BRL: 0 };
     let cardActivated = false;
     let userCardData = null;
-    let pending2FACode = null;
-    let pendingLoginEmail = null;
     
-    // Lista completa de países com códigos telefônicos
     const countriesWithCodes = [
-        { name: "Afeganistão", code: "+93" }, { name: "África do Sul", code: "+27" }, { name: "Albânia", code: "+355" }, { name: "Alemanha", code: "+49" },
-        { name: "Andorra", code: "+376" }, { name: "Angola", code: "+244" }, { name: "Antígua e Barbuda", code: "+1" }, { name: "Arábia Saudita", code: "+966" },
-        { name: "Argélia", code: "+213" }, { name: "Argentina", code: "+54" }, { name: "Armênia", code: "+374" }, { name: "Austrália", code: "+61" },
-        { name: "Áustria", code: "+43" }, { name: "Azerbaijão", code: "+994" }, { name: "Bahamas", code: "+1" }, { name: "Bangladesh", code: "+880" },
-        { name: "Barbados", code: "+1" }, { name: "Bélgica", code: "+32" }, { name: "Belize", code: "+501" }, { name: "Benin", code: "+229" },
-        { name: "Bielorrússia", code: "+375" }, { name: "Bolívia", code: "+591" }, { name: "Bósnia e Herzegovina", code: "+387" }, { name: "Botsuana", code: "+267" },
-        { name: "Brasil", code: "+55" }, { name: "Brunei", code: "+673" }, { name: "Bulgária", code: "+359" }, { name: "Burkina Faso", code: "+226" },
-        { name: "Burundi", code: "+257" }, { name: "Butão", code: "+975" }, { name: "Cabo Verde", code: "+238" }, { name: "Camarões", code: "+237" },
-        { name: "Camboja", code: "+855" }, { name: "Canadá", code: "+1" }, { name: "Catar", code: "+974" }, { name: "Cazaquistão", code: "+7" },
-        { name: "Chade", code: "+235" }, { name: "Chile", code: "+56" }, { name: "China", code: "+86" }, { name: "Chipre", code: "+357" },
-        { name: "Colômbia", code: "+57" }, { name: "Comores", code: "+269" }, { name: "Congo", code: "+242" }, { name: "Coreia do Norte", code: "+850" },
-        { name: "Coreia do Sul", code: "+82" }, { name: "Costa do Marfim", code: "+225" }, { name: "Costa Rica", code: "+506" }, { name: "Croácia", code: "+385" },
-        { name: "Cuba", code: "+53" }, { name: "Dinamarca", code: "+45" }, { name: "Djibouti", code: "+253" }, { name: "Dominica", code: "+1" },
-        { name: "Egito", code: "+20" }, { name: "El Salvador", code: "+503" }, { name: "Emirados Árabes Unidos", code: "+971" }, { name: "Equador", code: "+593" },
-        { name: "Eritreia", code: "+291" }, { name: "Eslováquia", code: "+421" }, { name: "Eslovênia", code: "+386" }, { name: "Espanha", code: "+34" },
-        { name: "Estados Unidos", code: "+1" }, { name: "Estônia", code: "+372" }, { name: "Eswatini", code: "+268" }, { name: "Etiópia", code: "+251" },
-        { name: "Fiji", code: "+679" }, { name: "Filipinas", code: "+63" }, { name: "Finlândia", code: "+358" }, { name: "França", code: "+33" },
-        { name: "Gabão", code: "+241" }, { name: "Gâmbia", code: "+220" }, { name: "Gana", code: "+233" }, { name: "Geórgia", code: "+995" },
-        { name: "Granada", code: "+1" }, { name: "Grécia", code: "+30" }, { name: "Guatemala", code: "+502" }, { name: "Guiana", code: "+592" },
-        { name: "Guiné", code: "+224" }, { name: "Guiné-Bissau", code: "+245" }, { name: "Guiné Equatorial", code: "+240" }, { name: "Haiti", code: "+509" },
-        { name: "Holanda", code: "+31" }, { name: "Honduras", code: "+504" }, { name: "Hungria", code: "+36" }, { name: "Iêmen", code: "+967" },
-        { name: "Índia", code: "+91" }, { name: "Indonésia", code: "+62" }, { name: "Irã", code: "+98" }, { name: "Iraque", code: "+964" },
-        { name: "Irlanda", code: "+353" }, { name: "Islândia", code: "+354" }, { name: "Israel", code: "+972" }, { name: "Itália", code: "+39" },
-        { name: "Jamaica", code: "+1" }, { name: "Japão", code: "+81" }, { name: "Jordânia", code: "+962" }, { name: "Kiribati", code: "+686" },
-        { name: "Kuwait", code: "+965" }, { name: "Laos", code: "+856" }, { name: "Lesoto", code: "+266" }, { name: "Letônia", code: "+371" },
-        { name: "Líbano", code: "+961" }, { name: "Libéria", code: "+231" }, { name: "Líbia", code: "+218" }, { name: "Liechtenstein", code: "+423" },
-        { name: "Lituânia", code: "+370" }, { name: "Luxemburgo", code: "+352" }, { name: "Madagáscar", code: "+261" }, { name: "Malásia", code: "+60" },
-        { name: "Malawi", code: "+265" }, { name: "Maldivas", code: "+960" }, { name: "Mali", code: "+223" }, { name: "Malta", code: "+356" },
-        { name: "Marrocos", code: "+212" }, { name: "Marshall", code: "+692" }, { name: "Maurícia", code: "+230" }, { name: "Mauritânia", code: "+222" },
-        { name: "México", code: "+52" }, { name: "Micronésia", code: "+691" }, { name: "Moçambique", code: "+258" }, { name: "Moldávia", code: "+373" },
-        { name: "Mônaco", code: "+377" }, { name: "Mongólia", code: "+976" }, { name: "Montenegro", code: "+382" }, { name: "Myanmar", code: "+95" },
-        { name: "Namíbia", code: "+264" }, { name: "Nauru", code: "+674" }, { name: "Nepal", code: "+977" }, { name: "Nicarágua", code: "+505" },
-        { name: "Níger", code: "+227" }, { name: "Nigéria", code: "+234" }, { name: "Noruega", code: "+47" }, { name: "Nova Zelândia", code: "+64" },
-        { name: "Omã", code: "+968" }, { name: "Palau", code: "+680" }, { name: "Panamá", code: "+507" }, { name: "Papua-Nova Guiné", code: "+675" },
-        { name: "Paquistão", code: "+92" }, { name: "Paraguai", code: "+595" }, { name: "Peru", code: "+51" }, { name: "Polônia", code: "+48" },
-        { name: "Portugal", code: "+351" }, { name: "Quênia", code: "+254" }, { name: "Quirguistão", code: "+996" }, { name: "Reino Unido", code: "+44" },
-        { name: "República Centro-Africana", code: "+236" }, { name: "República Checa", code: "+420" }, { name: "República Dominicana", code: "+1" },
-        { name: "Romênia", code: "+40" }, { name: "Ruanda", code: "+250" }, { name: "Rússia", code: "+7" }, { name: "Salomão", code: "+677" },
-        { name: "Samoa", code: "+685" }, { name: "San Marino", code: "+378" }, { name: "Santa Lúcia", code: "+1" }, { name: "São Cristóvão e Neves", code: "+1" },
-        { name: "São Tomé e Príncipe", code: "+239" }, { name: "São Vicente e Granadinas", code: "+1" }, { name: "Senegal", code: "+221" },
-        { name: "Serra Leoa", code: "+232" }, { name: "Sérvia", code: "+381" }, { name: "Seychelles", code: "+248" }, { name: "Singapura", code: "+65" },
-        { name: "Síria", code: "+963" }, { name: "Somália", code: "+252" }, { name: "Sri Lanka", code: "+94" }, { name: "Sudão", code: "+249" },
-        { name: "Sudão do Sul", code: "+211" }, { name: "Suécia", code: "+46" }, { name: "Suíça", code: "+41" }, { name: "Suriname", code: "+597" },
-        { name: "Tailândia", code: "+66" }, { name: "Taiwan", code: "+886" }, { name: "Tajiquistão", code: "+992" }, { name: "Tanzânia", code: "+255" },
-        { name: "Timor-Leste", code: "+670" }, { name: "Togo", code: "+228" }, { name: "Tonga", code: "+676" }, { name: "Trindade e Tobago", code: "+1" },
-        { name: "Tunísia", code: "+216" }, { name: "Turcomenistão", code: "+993" }, { name: "Turquia", code: "+90" }, { name: "Tuvalu", code: "+688" },
-        { name: "Ucrânia", code: "+380" }, { name: "Uganda", code: "+256" }, { name: "Uruguai", code: "+598" }, { name: "Uzbequistão", code: "+998" },
-        { name: "Vanuatu", code: "+678" }, { name: "Vaticano", code: "+379" }, { name: "Venezuela", code: "+58" }, { name: "Vietnã", code: "+84" },
-        { name: "Zâmbia", code: "+260" }, { name: "Zimbábue", code: "+263" }
+        { name: "Angola", code: "+244" }, { name: "Brasil", code: "+55" }, { name: "Portugal", code: "+351" },
+        { name: "Estados Unidos", code: "+1" }, { name: "Reino Unido", code: "+44" }, { name: "França", code: "+33" },
+        { name: "Alemanha", code: "+49" }, { name: "Itália", code: "+39" }, { name: "Espanha", code: "+34" },
+        { name: "Moçambique", code: "+258" }, { name: "Cabo Verde", code: "+238" }, { name: "São Tomé e Príncipe", code: "+239" }
     ];
     
     function createCoinParticles() {
@@ -440,10 +395,58 @@
         setTimeout(() => toast.style.display = 'none', 4000);
     }
     
+    function showModal(title, message, onConfirm = null, showCancel = false) {
+        const modal = document.createElement('div');
+        modal.className = 'modal-custom';
+        modal.innerHTML = `
+            <div class="modal-custom-content">
+                <h3><i class="fas fa-gem"></i> ${title}</h3>
+                <p>${message}</p>
+                <div style="display:flex; gap:12px; justify-content:center;">
+                    ${showCancel ? '<button id="modalCancelBtn" class="btn-outline">Cancelar</button>' : ''}
+                    <button id="modalConfirmBtn" class="btn-gold">OK</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
+        
+        document.getElementById('modalConfirmBtn').onclick = () => {
+            modal.remove();
+            if (onConfirm) onConfirm();
+        };
+        if (showCancel) {
+            document.getElementById('modalCancelBtn').onclick = () => modal.remove();
+        }
+    }
+    
+    function showPromptModal(title, placeholder, callback) {
+        const modal = document.createElement('div');
+        modal.className = 'modal-custom';
+        modal.innerHTML = `
+            <div class="modal-custom-content">
+                <h3><i class="fas fa-envelope"></i> ${title}</h3>
+                <input type="email" id="promptInput" placeholder="${placeholder}" style="width:100%; margin:12px 0;">
+                <div style="display:flex; gap:12px; justify-content:center;">
+                    <button id="promptCancelBtn" class="btn-outline">Cancelar</button>
+                    <button id="promptConfirmBtn" class="btn-gold">Enviar</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
+        
+        document.getElementById('promptConfirmBtn').onclick = () => {
+            const value = document.getElementById('promptInput').value;
+            modal.remove();
+            if (value && callback) callback(value);
+        };
+        document.getElementById('promptCancelBtn').onclick = () => modal.remove();
+    }
+    
     function formatMoney(value, currency) {
         if (isNaN(value)) value = 0;
         const opts = { style: 'currency', currency: currency, minimumFractionDigits: 2 };
-        if (currency === 'AOA') opts.currency = 'AOA';
         return new Intl.NumberFormat('pt-AO', opts).format(value);
     }
     
@@ -453,10 +456,7 @@
         return num.match(/.{4}/g).join(' ');
     }
     
-    function generateCVV() {
-        return Math.floor(100 + Math.random() * 900).toString();
-    }
-    
+    function generateCVV() { return Math.floor(100 + Math.random() * 900).toString(); }
     function generateExpiry() {
         const date = new Date();
         const year = date.getFullYear() + 5;
@@ -470,71 +470,19 @@
             const data = doc.data();
             userBalances = { AOA: data.balances?.AOA ?? 0, USD: data.balances?.USD ?? 0, BRL: data.balances?.BRL ?? 0 };
             cardActivated = data.cardActivated || false;
-            window.userKycStatus = data.kycStatus || 'pending';
+            window.userKycStatus = data.kycStatus || (currentUser?.email === ADMIN_EMAIL ? 'approved' : 'pending');
             window.userCardData = data.cardData || null;
-            window.linkedIBAN = data.linkedIBAN || '';
-            window.linkedPaypal = data.linkedPaypal || '';
             window.userFullName = `${data.firstName || ''} ${data.lastName || ''}`;
         } else {
             userBalances = { AOA: 0, USD: 0, BRL: 0 };
             cardActivated = false;
-            window.userKycStatus = 'pending';
+            window.userKycStatus = currentUser?.email === ADMIN_EMAIL ? 'approved' : 'pending';
             window.userCardData = null;
         }
     }
     
     async function updateFirestoreBalances(uid) {
         await db.collection('users').doc(uid).update({ balances: userBalances });
-    }
-    
-    async function requestCardPurchase(uid) {
-        if (cardActivated) { showToast('Cartão já está ativo'); return false; }
-        if (window.userKycStatus !== 'approved') { showToast('É necessário ter a identidade verificada pelo ADMIN primeiro!'); return false; }
-        if (userBalances.AOA < 5000 && currentUser.email !== ADMIN_EMAIL) {
-            showToast(`Saldo insuficiente em AOA. Taxa: ${formatMoney(5000, 'AOA')}`);
-            return false;
-        }
-        
-        if (currentUser.email === ADMIN_EMAIL) {
-            const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
-            await db.collection('users').doc(uid).update({ cardActivated: true, cardData: cardData });
-            cardActivated = true;
-            window.userCardData = cardData;
-            showToast('✨ Cartão ADMIN gerado com sucesso!');
-            renderDashboard();
-            return true;
-        }
-        
-        await db.collection('cardRequests').add({
-            userId: uid,
-            userEmail: currentUser.email,
-            status: 'pending',
-            fee: 5000,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        showToast('✅ Pedido de cartão enviado. Aguarde aprovação do ADMIN.');
-        return true;
-    }
-    
-    async function adminApproveCard(userId, fee) {
-        const userRef = db.collection('users').doc(userId);
-        const userDoc = await userRef.get();
-        if (!userDoc.exists) return;
-        const balances = userDoc.data().balances || { AOA: 0, USD: 0, BRL: 0 };
-        if (balances.AOA < fee) { showToast('Saldo insuficiente para taxa'); return; }
-        const newBalances = { ...balances };
-        newBalances.AOA = balances.AOA - fee;
-        const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
-        await userRef.update({ balances: newBalances, cardActivated: true, cardData: cardData });
-        const reqQuery = await db.collection('cardRequests').where('userId', '==', userId).where('status', '==', 'pending').get();
-        reqQuery.forEach(doc => doc.ref.update({ status: 'approved' }));
-        showToast(`💳 Cartão aprovado! Taxa: ${formatMoney(fee, 'AOA')}`);
-        if (currentUser && currentUser.uid === userId) {
-            userBalances = newBalances;
-            cardActivated = true;
-            window.userCardData = cardData;
-            renderDashboard();
-        }
     }
     
     async function uploadKYCFile(userId, file, type) {
@@ -547,7 +495,7 @@
     }
     
     async function submitKYC(selfieFile, idFrontFile, idBackFile) {
-        if (!selfieFile || !idFrontFile) { showToast('Selfie e documento são obrigatórios'); return; }
+        if (!selfieFile || !idFrontFile) { showModal('MAM Cash', 'Selfie e documento são obrigatórios'); return; }
         showToast('Enviando documentos...');
         const selfieUrl = await uploadKYCFile(currentUser.uid, selfieFile, 'selfie');
         const idFrontUrl = await uploadKYCFile(currentUser.uid, idFrontFile, 'id_front');
@@ -559,54 +507,52 @@
             kycDocuments: { selfie: selfieUrl, idFront: idFrontUrl, idBack: idBackUrl },
             kycSubmittedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-        showToast('📄 Documentos enviados! Aguarde aprovação do ADMIN.');
+        showToast('Documentos enviados! Aguarde aprovação do ADMIN.');
         renderDashboard();
     }
     
-    async function adminApproveKYC(userId) {
+    async function adminApproveKYC(userId, userEmail) {
         await db.collection('users').doc(userId).update({ kycStatus: 'approved' });
-        showToast('✅ Identidade aprovada! Usuário agora pode solicitar cartão.');
+        
+        // Enviar e-mail de ativação via EmailJS
+        const templateParams = {
+            to_email: userEmail,
+            to_name: userEmail.split('@')[0],
+            activation_link: `https://mamcash.com/activate/${userId}`
+        };
+        
+        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams).then(() => {
+            showToast('E-mail de ativação enviado!');
+        }).catch(() => {
+            showToast('Usuário aprovado, mas falha no envio do e-mail.');
+        });
+        
+        showToast('Identidade aprovada!');
         renderDashboard();
     }
     
-    async function exchangeCurrency(from, to, amount) {
-        if (amount <= 0) return false;
-        let rate = 1;
-        const rates = { 'AOA_USD': exchangeRates.AOA_USD, 'USD_AOA': exchangeRates.USD_AOA, 'AOA_BRL': exchangeRates.AOA_BRL, 'BRL_AOA': exchangeRates.BRL_AOA, 'USD_BRL': exchangeRates.USD_BRL, 'BRL_USD': exchangeRates.BRL_USD };
-        rate = rates[`${from}_${to}`];
-        if (!rate) { showToast('Par não suportado'); return false; }
-        if (userBalances[from] < amount) { showToast(`Saldo insuficiente em ${from}`); return false; }
-        const converted = amount * rate;
-        userBalances[from] -= amount;
-        userBalances[to] += converted;
-        await updateFirestoreBalances(currentUser.uid);
-        showToast(`🔄 Conversão: ${formatMoney(amount, from)} → ${formatMoney(converted, to)}`);
+    async function adminGenerateCard(userId) {
+        const userRef = db.collection('users').doc(userId);
+        const userDoc = await userRef.get();
+        if (!userDoc.exists) return;
+        const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
+        await userRef.update({ cardActivated: true, cardData: cardData });
+        showToast(`Cartão gerado para ${userDoc.data().email}`);
         renderDashboard();
-        return true;
-    }
-    
-    function sendVerificationCode(email, phone, type) {
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        pending2FACode = code;
-        if (type === 'email') {
-            showToast(`📧 Código enviado para ${email}: ${code} (simulação)`);
-        } else {
-            showToast(`📱 Código enviado para ${phone}: ${code} (simulação)`);
-        }
-        return code;
     }
     
     function forgotPassword() {
-        const email = prompt("Digite seu e-mail para recuperar a senha:");
-        if (email && email.includes('@')) {
-            auth.sendPasswordResetEmail(email).then(() => {
-                showToast(`📧 Link de recuperação enviado para ${email}`);
-            }).catch(error => {
-                showToast('Erro: ' + error.message);
-            });
-        } else if (email) {
-            showToast('E-mail inválido');
-        }
+        showPromptModal('Recuperar Senha', 'Digite seu e-mail', (email) => {
+            if (email && email.includes('@')) {
+                auth.sendPasswordResetEmail(email).then(() => {
+                    showModal('MAM Cash', `Link de recuperação enviado para ${email}`);
+                }).catch(error => {
+                    showModal('MAM Cash', 'Erro: ' + error.message);
+                });
+            } else {
+                showModal('MAM Cash', 'E-mail inválido');
+            }
+        });
     }
     
     async function renderDashboard() {
@@ -614,12 +560,20 @@
         await loadUserData(currentUser.uid);
         const isAdmin = (currentUser.email === ADMIN_EMAIL);
         const balanceNow = userBalances[currentCurrency] || 0;
+        
         let cardStatusText = 'BLOQUEADO';
         let cardStatusClass = 'status-inactive';
-        if (window.userKycStatus === 'pending') cardStatusText = 'AGUARDANDO KYC';
-        else if (window.userKycStatus === 'pending_review') cardStatusText = 'KYC EM ANÁLISE';
-        else if (window.userKycStatus === 'approved' && !cardActivated) cardStatusText = 'KYC APROVADO • CARTÃO PENDENTE';
-        else if (cardActivated) { cardStatusText = 'ATIVO • PREMIUM'; cardStatusClass = 'status-active'; }
+        if (isAdmin || window.userKycStatus === 'approved') {
+            if (!cardActivated && isAdmin) {
+                const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: generateExpiry() };
+                await db.collection('users').doc(currentUser.uid).update({ cardActivated: true, cardData: cardData });
+                window.userCardData = cardData;
+                cardActivated = true;
+            }
+            if (cardActivated) { cardStatusText = 'ATIVO • PREMIUM'; cardStatusClass = 'status-active'; }
+            else if (window.userKycStatus === 'approved') cardStatusText = 'KYC APROVADO • AGUARDANDO CARTÃO';
+        } else if (window.userKycStatus === 'pending_review') cardStatusText = 'KYC EM ANÁLISE';
+        else cardStatusText = 'AGUARDANDO KYC';
         
         let html = `
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -638,10 +592,10 @@
                 </div>
             </div>`;
         
-        if (window.userKycStatus !== 'approved' && window.userKycStatus !== 'pending_review' && !cardActivated && currentUser.email !== ADMIN_EMAIL) {
+        if (!isAdmin && window.userKycStatus !== 'approved' && window.userKycStatus !== 'pending_review' && !cardActivated) {
             html += `<div class="kyc-status">
                         <h3 style="color:#d4af37;"><i class="fas fa-id-card"></i> Verificação de Identidade (KYC)</h3>
-                        <p style="color:#b9a46b;">Para solicitar seu cartão, complete a verificação enviando:</p>
+                        <p style="color:#b9a46b;">Para ativar seu cartão, complete a verificação enviando:</p>
                         <button id="openKycBtn" class="btn-gold" style="margin:15px auto;"><i class="fas fa-camera"></i> Enviar Selfie + Documento</button>
                     </div>`;
         }
@@ -660,36 +614,33 @@
                 <button id="btnTransfer" class="btn-gold"><i class="fas fa-exchange-alt"></i> Transferir</button>
                 <button id="btnDeposit" class="btn-gold"><i class="fas fa-upload"></i> Depositar</button>
                 <button id="btnExchange" class="btn-outline"><i class="fas fa-chart-line"></i> Câmbio</button>
-                <button id="btnBuyCard" class="btn-outline"><i class="fas fa-credit-card"></i> ${cardActivated ? 'Cartão Ativo' : 'Comprar Cartão'}</button>
             </div>`;
         
         if (isAdmin) {
-            const pendingKycSnap = await db.collection('users').where('kycStatus', '==', 'pending_review').get();
-            const pendingCardsSnap = await db.collection('cardRequests').where('status', '==', 'pending').get();
-            let pendingKyc = [], pendingCards = [];
-            pendingKycSnap.forEach(d => pendingKyc.push({id: d.id, ...d.data()}));
-            pendingCardsSnap.forEach(d => pendingCards.push({id: d.id, ...d.data()}));
+            const usersSnap = await db.collection('users').get();
+            let users = [];
+            usersSnap.forEach(d => users.push({id: d.id, ...d.data()}));
             
-            html += `<div class="admin-panel"><h3 style="color:#d4af37;"><i class="fas fa-crown"></i> Painel ADM</h3>`;
-            html += `<h4>🆔 Verificações KYC Pendentes</h4>`;
-            if(pendingKyc.length===0) html+=`<p>Nenhuma verificação pendente</p>`;
-            for(const user of pendingKyc) {
+            html += `<div class="admin-panel"><h3 style="color:#d4af37;"><i class="fas fa-crown"></i> Painel Administrador</h3>`;
+            html += `<h4>👥 Usuários Pendentes de KYC</h4>`;
+            const pendingUsers = users.filter(u => u.kycStatus === 'pending_review');
+            if(pendingUsers.length === 0) html += `<p>Nenhum usuário aguardando verificação</p>`;
+            for(const user of pendingUsers) {
                 html += `<div style="border:1px solid #d4af37; border-radius:24px; padding:15px; margin:12px 0;">
                             <strong>${user.email}</strong><br>
-                            ${user.kycDocuments?.selfie ? `<div><img src="${user.kycDocuments.selfie}" style="max-width:100px; border-radius:12px; margin:5px;"> Selfie</div>` : ''}
-                            ${user.kycDocuments?.idFront ? `<div><img src="${user.kycDocuments.idFront}" style="max-width:100px; border-radius:12px; margin:5px;"> Documento Frente</div>` : ''}
-                            ${user.kycDocuments?.idBack ? `<div><img src="${user.kycDocuments.idBack}" style="max-width:100px; border-radius:12px; margin:5px;"> Documento Verso</div>` : ''}
-                            <button class="approveKycBtn" data-uid="${user.id}" style="background:#27ae60; border:none; padding:8px 20px; border-radius:40px; margin-top:10px;">✔ Aprovar Identidade</button>
+                            ${user.kycDocuments?.selfie ? `<div><img src="${user.kycDocuments.selfie}" style="max-width:80px; border-radius:12px; margin:5px;"> Selfie</div>` : ''}
+                            ${user.kycDocuments?.idFront ? `<div><img src="${user.kycDocuments.idFront}" style="max-width:80px; border-radius:12px; margin:5px;"> Documento</div>` : ''}
+                            <button class="approveKycBtn" data-uid="${user.id}" data-email="${user.email}" style="background:#27ae60; border:none; padding:8px 20px; border-radius:40px; margin-top:10px;">✔ Aprovar Identidade</button>
                          </div>`;
             }
-            html += `<h4 style="margin-top:20px;">💳 Pedidos de Cartão</h4>`;
-            if(pendingCards.length===0) html+=`<p>Sem pedidos</p>`;
-            pendingCards.forEach(card => {
+            html += `<h4 style="margin-top:20px;">💳 Usuários Aprovados sem Cartão</h4>`;
+            const approvedNoCard = users.filter(u => u.kycStatus === 'approved' && !u.cardActivated && u.email !== ADMIN_EMAIL);
+            for(const user of approvedNoCard) {
                 html += `<div style="background:#1a1710; padding:12px; margin:8px 0; border-radius:20px;">
-                            <div>👤 ${card.userEmail}</div>
-                            <button class="approveCardBtn" data-uid="${card.userId}" data-fee="${card.fee}" style="background:#d4af37; border:none; padding:6px 18px; border-radius:40px;">💳 Gerar Cartão (Cobrar ${formatMoney(card.fee, 'AOA')})</button>
+                            <div>👤 ${user.email}</div>
+                            <button class="generateCardBtn" data-uid="${user.id}" style="background:#d4af37; border:none; padding:6px 18px; border-radius:40px;">💳 Gerar Cartão</button>
                          </div>`;
-            });
+            }
             html += `</div>`;
         }
         document.getElementById('appRoot').innerHTML = html;
@@ -700,24 +651,29 @@
         document.getElementById('btnTransfer')?.addEventListener('click', () => openTransferModal());
         document.getElementById('btnDeposit')?.addEventListener('click', () => openDepositModal());
         document.getElementById('btnExchange')?.addEventListener('click', () => openExchangeModal());
-        document.getElementById('btnBuyCard')?.addEventListener('click', () => requestCardPurchase(currentUser.uid));
         document.getElementById('logoutMainBtn')?.addEventListener('click', () => auth.signOut());
         document.getElementById('openKycBtn')?.addEventListener('click', () => openKycModal());
         
         if (isAdmin) {
             document.querySelectorAll('.approveKycBtn').forEach(btn => {
-                btn.addEventListener('click', async () => { await adminApproveKYC(btn.getAttribute('data-uid')); renderDashboard(); });
+                btn.addEventListener('click', async () => { 
+                    await adminApproveKYC(btn.getAttribute('data-uid'), btn.getAttribute('data-email')); 
+                    renderDashboard(); 
+                });
             });
-            document.querySelectorAll('.approveCardBtn').forEach(btn => {
-                btn.addEventListener('click', async () => { await adminApproveCard(btn.getAttribute('data-uid'), parseFloat(btn.getAttribute('data-fee'))); renderDashboard(); });
+            document.querySelectorAll('.generateCardBtn').forEach(btn => {
+                btn.addEventListener('click', async () => { 
+                    await adminGenerateCard(btn.getAttribute('data-uid')); 
+                    renderDashboard(); 
+                });
             });
         }
     }
     
     function openKycModal() {
         let stream = null;
-        const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3><i class="fas fa-id-card"></i> Verificação de Identidade</h3>
+        const modal = document.createElement('div'); modal.className = 'modal-custom';
+        modal.innerHTML = `<div class="modal-custom-content"><h3><i class="fas fa-id-card"></i> Verificação de Identidade</h3>
             <p style="color:#d4af37;">Selfie com a câmera</p>
             <div class="camera-preview"><video id="cameraVideo" autoplay playsinline></video></div>
             <button id="captureSelfieBtn" class="btn-gold"><i class="fas fa-camera"></i> Tirar Selfie</button>
@@ -744,11 +700,11 @@
         };
         document.getElementById('submitKycBtn').onclick = async () => {
             const canvas = document.getElementById('selfieCanvas');
-            if (!canvas.width) { showToast('Tire uma selfie primeiro'); return; }
+            if (!canvas.width) { showModal('MAM Cash', 'Tire uma selfie primeiro'); return; }
             const selfieBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
             const selfieFile = new File([selfieBlob], 'selfie.jpg', { type: 'image/jpeg' });
             const idFrontFile = document.getElementById('idFrontInput').files[0];
-            if (!idFrontFile) { showToast('Selecione o documento de identificação'); return; }
+            if (!idFrontFile) { showModal('MAM Cash', 'Selecione o documento de identificação'); return; }
             const idBackFile = document.getElementById('idBackInput').files[0];
             await submitKYC(selfieFile, idFrontFile, idBackFile);
             if(stream) stream.getTracks().forEach(track => track.stop());
@@ -757,159 +713,62 @@
         document.getElementById('closeKycModal').onclick = () => { if(stream) stream.getTracks().forEach(track => track.stop()); modal.remove(); };
     }
     
-    async function openTransferModal() {
-        const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3><i class="fas fa-paper-plane"></i> Transferir</h3>
-            <input id="transferEmail" placeholder="Email do destinatário"><input id="transferAmount" type="number" placeholder="Valor"><select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-            <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmTransfer" class="btn-gold">Enviar</button><button id="closeModal" class="btn-outline">Cancelar</button></div></div>`;
-        document.body.appendChild(modal); modal.style.display = 'flex';
-        document.getElementById('confirmTransfer').onclick = async () => {
-            const toEmail = document.getElementById('transferEmail').value;
-            const amount = parseFloat(document.getElementById('transferAmount').value);
-            const currency = document.getElementById('transferCurrency').value;
-            if (!toEmail || isNaN(amount) || amount<=0) { showToast('Dados inválidos'); return; }
-            if (userBalances[currency] < amount) { showToast('Saldo insuficiente'); return; }
-            const usersSnap = await db.collection('users').where('email', '==', toEmail).get();
-            if (usersSnap.empty) { showToast('Destinatário não encontrado'); return; }
-            const targetUser = usersSnap.docs[0];
-            const targetBalances = targetUser.data().balances;
-            targetBalances[currency] = (targetBalances[currency] || 0) + amount;
-            userBalances[currency] -= amount;
-            await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
-            await updateFirestoreBalances(currentUser.uid);
-            showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`);
-            modal.remove(); renderDashboard();
-        };
-        document.getElementById('closeModal').onclick = () => modal.remove();
-    }
-    
-    async function openDepositModal() {
-        const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3><i class="fas fa-university"></i> Depósito</h3>
-            <select id="depositMethod"><option value="Angola">🏦 Angola (Multicaixa/IBAN)</option><option value="Crypto">💎 USDT (TRC20)</option><option value="PayPal">💳 PayPal / Cartão Visa</option></select>
-            <input id="depositAmount" placeholder="Valor"><select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-            <textarea id="depositProof" placeholder="Comprovativo / hash / print"></textarea>
-            <div style="display:flex; gap:12px;"><button id="sendDeposit" class="btn-gold">Solicitar</button><button id="closeDeposit" class="btn-outline">Fechar</button></div></div>`;
-        document.body.appendChild(modal); modal.style.display='flex';
-        document.getElementById('sendDeposit').onclick = async () => {
-            const method = document.getElementById('depositMethod').value;
-            const amount = parseFloat(document.getElementById('depositAmount').value);
-            const currency = document.getElementById('depositCurrency').value;
-            const proof = document.getElementById('depositProof').value;
-            if(isNaN(amount) || amount<=0) return;
-            await db.collection('deposits').add({
-                userId: currentUser.uid, userEmail: currentUser.email, amount, currency, method, proof,
-                status: 'pending', timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            showToast(`📤 Pedido de depósito de ${formatMoney(amount, currency)} enviado.`);
-            modal.remove();
-        };
-        document.getElementById('closeDeposit').onclick = () => modal.remove();
-    }
-    
-    async function openExchangeModal() {
-        const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3>💰 Câmbio MAM Cash</h3>
-            <select id="fromCurr"><option>AOA</option><option>USD</option><option>BRL</option></select> → <select id="toCurr"><option>USD</option><option>AOA</option><option>BRL</option></select>
-            <input id="exchangeAmount" placeholder="Montante">
-            <button id="doExchange" class="btn-gold">Converter</button><button id="closeEx" class="btn-outline">Fechar</button></div>`;
-        document.body.appendChild(modal); modal.style.display='flex';
-        document.getElementById('doExchange').onclick = async () => {
-            await exchangeCurrency(document.getElementById('fromCurr').value, document.getElementById('toCurr').value, parseFloat(document.getElementById('exchangeAmount').value));
-            modal.remove();
-        };
-        document.getElementById('closeEx').onclick = () => modal.remove();
-    }
-    
-    function updatePhoneCode() {
-        const countrySelect = document.getElementById('regCountry');
-        const phoneCodeSpan = document.getElementById('phoneCode');
-        if (countrySelect && phoneCodeSpan) {
-            const selectedCountry = countrySelect.value;
-            const countryData = countriesWithCodes.find(c => c.name === selectedCountry);
-            if (countryData) {
-                phoneCodeSpan.textContent = countryData.code;
-            }
-        }
-    }
+    async function openTransferModal() { showModal('MAM Cash', 'Função em desenvolvimento'); }
+    async function openDepositModal() { showModal('MAM Cash', 'Função em desenvolvimento'); }
+    async function openExchangeModal() { showModal('MAM Cash', 'Função em desenvolvimento'); }
     
     function renderLogin() {
         document.getElementById('appRoot').innerHTML = `
-            <div style="max-width:460px; margin: 5vh auto; background:#12100b; border-radius:56px; padding:38px 28px; border:1px solid #d4af37;">
+            <div style="max-width:460px; margin: 10vh auto; background:#12100b; border-radius:56px; padding:38px 28px; border:1px solid #d4af37;">
                 <div style="text-align:center;"><i class="fas fa-coins" style="font-size:3rem; color:#d4af37;"></i><h2 style="color:#d4af37;">MAM CASH</h2></div>
-                <div id="loginView">
-                    <input id="loginEmail" placeholder="Email" style="width:100%; margin:12px 0; padding:14px; background:#2a241b; border-radius:60px; color:white;">
-                    <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
-                    <button id="doLoginStep1" class="btn-gold" style="width:100%; margin-top:16px;">Continuar</button>
-                    <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
-                    <div class="forgot-link" id="forgotPasswordBtn" style="text-align:center; margin-top:16px; cursor:pointer; color:#d4af37;"><i class="fas fa-key"></i> Esqueci minha senha</div>
-                </div>
-                <div id="codeVerificationView" style="display:none;">
-                    <p style="color:#d4af37;">Digite o código enviado</p>
-                    <input id="verificationCode" placeholder="Código 6 dígitos" style="width:100%; padding:14px; background:#2a241b; border-radius:60px;">
-                    <button id="verifyCodeBtn" class="btn-gold" style="width:100%; margin-top:16px;">Verificar</button>
-                    <button id="backToLogin" class="btn-outline" style="width:100%; margin-top:12px;">Voltar</button>
-                </div>
+                <input id="loginEmail" placeholder="Email" style="width:100%; margin:12px 0;">
+                <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                <button id="doLogin" class="btn-gold" style="width:100%; margin-top:16px;">Entrar</button>
+                <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
+                <div id="forgotPasswordBtn" style="text-align:center; margin-top:16px; cursor:pointer; color:#d4af37;"><i class="fas fa-key"></i> Esqueci minha senha</div>
             </div>`;
         
         document.getElementById('toggleLoginPass')?.addEventListener('click', () => { const inp = document.getElementById('loginPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
         document.getElementById('forgotPasswordBtn')?.addEventListener('click', () => forgotPassword());
-        document.getElementById('doLoginStep1').onclick = async () => {
+        document.getElementById('doLogin').onclick = async () => {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-            if(!email || !password) { showToast('Preencha email e senha'); return; }
+            if(!email || !password) { showModal('MAM Cash', 'Preencha email e senha'); return; }
             try {
                 await auth.signInWithEmailAndPassword(email, password);
-                const user = auth.currentUser;
-                const doc = await db.collection('users').doc(user.uid).get();
-                const phone = doc.exists ? doc.data().phone : '';
-                const codeType = confirm('Receber código por Email? (OK=Email, Cancel=SMS)') ? 'email' : 'sms';
-                const code = sendVerificationCode(email, phone, codeType);
-                pendingLoginEmail = email;
-                document.getElementById('loginView').style.display = 'none';
-                document.getElementById('codeVerificationView').style.display = 'block';
-            } catch(e) { showToast(e.message); }
-        };
-        document.getElementById('verifyCodeBtn').onclick = () => {
-            const code = document.getElementById('verificationCode').value;
-            if(code === pending2FACode) {
-                showToast('Login verificado!');
+                showToast('Login realizado com sucesso!');
                 renderDashboard();
-            } else { showToast('Código inválido'); }
+            } catch(e) { showModal('MAM Cash', e.message); }
         };
         document.getElementById('goToRegister').onclick = () => renderRegister();
-        document.getElementById('backToLogin').onclick = () => { document.getElementById('loginView').style.display = 'block'; document.getElementById('codeVerificationView').style.display = 'none'; };
     }
     
     function renderRegister() {
-        let countryOptions = countriesWithCodes.map(c => `<option value="${c.name}" ${c.name === 'Angola' ? 'selected' : ''}>${c.name}</option>`).join('');
+        let countryOptions = countriesWithCodes.map(c => `<option value="${c.name}" ${c.name === 'Angola' ? 'selected' : ''}>${c.name} (${c.code})</option>`).join('');
         document.getElementById('appRoot').innerHTML = `
             <div style="max-width:480px; margin: 3vh auto; background:#12100b; border-radius:56px; padding:32px 28px; border:1px solid #d4af37;">
-                <h2 style="color:#d4af37; text-align:center;">Criar Conta</h2>
-                <input id="regFirstName" placeholder="Nome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
-                <input id="regLastName" placeholder="Sobrenome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
-                <input id="regEmail" placeholder="Email" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
-                <select id="regCountry" class="country-select" onchange="updatePhoneCode()">${countryOptions}</select>
+                <h2 style="color:#d4af37; text-align:center;">Criar Conta MAM Cash</h2>
+                <input id="regFirstName" placeholder="Nome">
+                <input id="regLastName" placeholder="Sobrenome">
+                <input id="regEmail" placeholder="Email">
+                <select id="regCountry" class="country-select">${countryOptions}</select>
                 <div class="phone-container">
                     <span id="phoneCode" class="phone-code">+244</span>
                     <input id="regPhone" class="phone-number" placeholder="999 999 999">
                 </div>
                 <div class="password-wrapper"><input id="regPassword" type="password" placeholder="Senha (min 6)"><button type="button" id="toggleRegPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
                 <div class="password-wrapper"><input id="regConfirmPassword" type="password" placeholder="Confirmar Senha"><button type="button" id="toggleRegConfirm" class="toggle-password"><i class="fas fa-eye"></i></button></div>
-                <button id="doRegisterFinal" class="btn-gold" style="width:100%; margin-top:16px;">Registrar e Verificar</button>
+                <button id="doRegisterFinal" class="btn-gold" style="width:100%; margin-top:16px;">Registrar</button>
                 <button id="backToLoginFromReg" class="btn-outline" style="width:100%; margin-top:12px;">Voltar ao Login</button>
             </div>`;
-        
-        window.updatePhoneCode = updatePhoneCode;
         
         document.getElementById('toggleRegPass')?.addEventListener('click', () => { const inp = document.getElementById('regPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
         document.getElementById('toggleRegConfirm')?.addEventListener('click', () => { const inp = document.getElementById('regConfirmPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
         
-        const countrySelect = document.getElementById('regCountry');
-        if (countrySelect) {
-            countrySelect.addEventListener('change', updatePhoneCode);
-        }
-        updatePhoneCode();
+        document.getElementById('regCountry').addEventListener('change', () => {
+            const selected = countriesWithCodes.find(c => c.name === document.getElementById('regCountry').value);
+            if (selected) document.getElementById('phoneCode').textContent = selected.code;
+        });
         
         document.getElementById('doRegisterFinal').onclick = async () => {
             const firstName = document.getElementById('regFirstName').value;
@@ -921,21 +780,20 @@
             const fullPhone = `${phoneCode} ${phoneNumber}`;
             const password = document.getElementById('regPassword').value;
             const confirm = document.getElementById('regConfirmPassword').value;
-            if(!firstName || !lastName || !email || !phoneNumber || !password) { showToast('Preencha todos os campos'); return; }
-            if(password !== confirm) { showToast('Senhas não coincidem'); return; }
-            if(password.length < 6) { showToast('Senha mínima 6 caracteres'); return; }
+            if(!firstName || !lastName || !email || !phoneNumber || !password) { showModal('MAM Cash', 'Preencha todos os campos'); return; }
+            if(password !== confirm) { showModal('MAM Cash', 'Senhas não coincidem'); return; }
+            if(password.length < 6) { showModal('MAM Cash', 'Senha mínima 6 caracteres'); return; }
             try {
                 const userCred = await auth.createUserWithEmailAndPassword(email, password);
                 await db.collection('users').doc(userCred.user.uid).set({
                     firstName, lastName, email, country, phone: fullPhone,
                     balances: { AOA: 0, USD: 0, BRL: 0 },
                     cardActivated: false, kycStatus: 'pending',
-                    linkedIBAN: '', linkedPaypal: '',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                showToast('Conta criada! Complete a verificação KYC no dashboard.');
+                showModal('MAM Cash', 'Conta criada! Complete a verificação KYC no dashboard.');
                 renderLogin();
-            } catch(e) { showToast(e.message); }
+            } catch(e) { showModal('MAM Cash', e.message); }
         };
         document.getElementById('backToLoginFromReg').onclick = () => renderLogin();
     }
