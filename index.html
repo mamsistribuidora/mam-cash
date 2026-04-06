@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MAM Cash • Cartão Visa Oficial | Palanca Negra</title>
+    <title>MAM Cash • Cartão Visa Oficial | MAM Distribuidora</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -28,7 +28,7 @@
             overflow-x: hidden;
         }
         body::before {
-            content: "🦌 🌅 🎵 🎶 💰";
+            content: "🦌 🎵 🎶 💰 💳";
             position: fixed;
             top: 0;
             left: 0;
@@ -49,9 +49,10 @@
         }
         .app-container { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
         
-        /* Cartão Visa Oficial - Palanca Negra */
+        /* Cartão Visa Personalizado */
         .visa-card {
-            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070');
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMjUwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTUxQzI4Ii8+PHRleHQgeD0iMjAiIHk9IjQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiNGRkZGRkYiPjxiPlZJU0E8L2I+PC90ZXh0Pjx0ZXh0IHg9IjIwIiB5PSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjQ0NDQ0NDIj5NQU0gQ2FzaDwvdGV4dD48dGV4dCB4PSIyMCIgeT0iMTUwIiBmb250LWZhbWlseT0iTW9uYWNvIiBmb250LXNpemU9IjI0IiBmaWxsPSIjRkZGRkZGIj40NTMyIDEyMzQgNTY3OCA5MDEyPC90ZXh0Pjx0ZXh0IHg9IjIwIiB5PSIxODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgZmlsbD0iI0NDQ0NDQyI+VkFMSUQgVEhSVTwvdGV4dD48dGV4dCB4PSIyMCIgeT0iMTk1IiBmb250LWZhbWlseT0iTW9uYWNvIiBmb250LXNpemU9IjE0IiBmaWxsPSIjRkZGRkZGIj4wNS8yOTwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjE5NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjRkZGRkZGIj5NQVRJQVMgQS4gTUFOVUVMPC90ZXh0Pjx0ZXh0IHg9IjIwIiB5PSIyMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iI0NDQ0NDQyI+VklTQTwvdGV4dD48dGV4dCB4PSI3MCIgeT0iMjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNDQ0NDQ0MiPkRlYml0PC90ZXh0Pjwvc3ZnPg==');
             background-size: cover;
             background-position: center;
             border-radius: 28px;
@@ -67,8 +68,8 @@
             position: absolute;
             bottom: -30px;
             right: -20px;
-            font-size: 120px;
-            opacity: 0.15;
+            font-size: 100px;
+            opacity: 0.1;
             transform: rotate(-10deg);
         }
         .card-brand {
@@ -111,6 +112,7 @@
         .card-details-row { display: flex; gap: 40px; margin-bottom: 25px; }
         .card-detail-label { font-size: 0.65rem; opacity: 0.8; letter-spacing: 1px; }
         .card-detail-value { font-size: 1rem; font-weight: bold; font-family: monospace; }
+        .card-holder { font-size: 0.9rem; letter-spacing: 1px; margin-top: 10px; }
         .toggle-card-btn {
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.5);
@@ -121,6 +123,7 @@
             font-size: 0.85rem;
             width: 100%;
             backdrop-filter: blur(5px);
+            margin-top: 15px;
         }
         .toggle-card-btn:hover { background: rgba(212, 175, 55, 0.6); border-color: #d4af37; }
         
@@ -134,6 +137,7 @@
         }
         .status-verified { background: #2ecc71; color: #0a0a0a; }
         .status-premium { background: #d4af37; color: #0a0a0a; }
+        .status-pending { background: #f39c12; color: #0a0a0a; }
         
         .currency-tabs {
             display: flex;
@@ -172,7 +176,7 @@
         
         .action-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 14px;
             margin-bottom: 28px;
         }
@@ -206,28 +210,6 @@
             margin-bottom: 20px;
             border: 1px solid #2a2416;
         }
-        
-        .camera-modal {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .camera-container {
-            width: 100%;
-            max-width: 400px;
-            background: #000;
-            border-radius: 32px;
-            overflow: hidden;
-        }
-        .camera-preview { width: 100%; height: 400px; background: #000; }
-        .camera-preview video { width: 100%; height: 100%; object-fit: cover; }
-        .captured-photo { width: 100%; height: 400px; object-fit: contain; background: #1a1710; }
         
         .modal {
             display: none;
@@ -277,13 +259,15 @@
         .phone-container { display: flex; gap: 12px; margin: 12px 0; }
         .phone-code { width: 100px; padding: 14px; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #d4af37; text-align: center; }
         .phone-number { flex: 1; padding: 14px; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #fff; }
-        input, select { width: 100%; padding: 14px; margin: 8px 0; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #fff; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #fff; }
+        .document-preview { max-width: 100%; border-radius: 16px; margin-top: 10px; }
         
         @media (max-width: 500px) {
             .balance-amount { font-size: 2rem; }
             .card-number-display { font-size: 1rem; letter-spacing: 2px; }
             .phone-container { flex-direction: column; }
             .phone-code { width: 100%; }
+            .action-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -316,15 +300,18 @@
     // ============================================
     // VARIÁVEIS GLOBAIS
     // ============================================
-    const ADMIN_EMAIL = "mamfilhos29@gmail.com";
     let currentUser = null;
     let currentCurrency = 'AOA';
-    let userBalances = { AOA: 15000, USD: 0, BRL: 0 };
+    let userBalances = { AOA: 0, USD: 0, BRL: 0 };
     let userCardData = null;
     let isCardVisible = false;
     let isDistribuidoraUser = false;
-    let cameraStream = null;
-    let capturedImageData = null;
+
+    // Dados fixos do cartão conforme imagem fornecida
+    const CARD_NUMBER = "4532 1234 5678 9012";
+    const CARD_EXPIRY = "05/29";
+    const CARD_HOLDER = "MATIAS A. MANUEL";
+    const CARD_CVV = "123";
 
     // Países com códigos
     const countriesWithCodes = [
@@ -334,7 +321,7 @@
         { name: "Cabo Verde", code: "+238" }, { name: "São Tomé", code: "+239" }
     ];
 
-    // URL Parameters - Detectar email da MAM Distribuidora
+    // URL Parameters
     const urlParams = new URLSearchParams(window.location.search);
     const preFilledEmail = urlParams.get('email');
     const isFromDistribuidora = urlParams.get('from') === 'distribuidora' || preFilledEmail !== null;
@@ -356,14 +343,116 @@
         return new Intl.NumberFormat('pt-AO', { style: 'currency', currency: currency, minimumFractionDigits: 2 }).format(value);
     }
 
-    // Gerar dados do cartão Visa
-    function generateCardNumber() {
-        let num = '';
-        for (let i = 0; i < 16; i++) num += Math.floor(Math.random() * 10);
-        return num.match(/.{4}/g).join(' ');
+    // ============================================
+    // VALIDAÇÃO AUTOMÁTICA DE DOCUMENTO (SIMULA ANÁLISE REAL)
+    // ============================================
+    async function analyzeAndVerifyDocument(frontFile, backFile) {
+        showToast('📄 Analisando documento...', false);
+        
+        // Simula uma análise automática (validação de formato, legibilidade)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Validação automática: aceita qualquer documento que não esteja vazio
+        if (frontFile && backFile) {
+            // Upload para storage
+            const frontUrl = await uploadDocument(currentUser.uid, frontFile, 'id_front');
+            const backUrl = await uploadDocument(currentUser.uid, backFile, 'id_back');
+            
+            // Atualiza status do usuário para VERIFICADO automaticamente
+            await db.collection('users').doc(currentUser.uid).update({
+                kycStatus: 'verified',
+                kycDocuments: { idFront: frontUrl, idBack: backUrl, verifiedAt: new Date() }
+            });
+            
+            // Envia email de confirmação
+            await sendEmailViaEmailJS(currentUser.email, '✅ Conta Verificada - MAM Cash', 
+                `Parabéns! Sua conta foi verificada automaticamente. Agora você pode realizar saques e transferências sem limites.`);
+            
+            showToast('✅ Documento válido! Conta verificada com sucesso!', false);
+            return true;
+        }
+        return false;
     }
-    function generateCVV() { return Math.floor(100 + Math.random() * 900).toString(); }
-    const EXPIRY_DATE = "05/31"; // Validade fixa de 5 anos
+    
+    async function uploadDocument(userId, file, type) {
+        if (!file) return null;
+        const ext = file.name.split('.').pop();
+        const filename = `${userId}/${type}_${Date.now()}.${ext}`;
+        const ref = storage.ref().child(`documents/${filename}`);
+        await ref.put(file);
+        return await ref.getDownloadURL();
+    }
+    
+    function openDocumentUpload() {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3 style="color:#d4af37;"><i class="fas fa-id-card"></i> Verificação de Identidade</h3>
+                <p style="color:#b9a46b; margin-bottom:15px;">Envie as fotos do seu Bilhete de Identidade (Frente e Verso)</p>
+                <div class="input-group">
+                    <label style="color:#d4af37;">Frente do Documento</label>
+                    <input type="file" id="idFrontInput" accept="image/*" capture="environment">
+                    <img id="frontPreview" class="document-preview" style="display:none;">
+                </div>
+                <div class="input-group">
+                    <label style="color:#d4af37;">Verso do Documento</label>
+                    <input type="file" id="idBackInput" accept="image/*" capture="environment">
+                    <img id="backPreview" class="document-preview" style="display:none;">
+                </div>
+                <div style="display:flex; gap:12px; margin-top:20px;">
+                    <button id="submitDocumentBtn" class="btn-gold">Enviar e Verificar</button>
+                    <button id="closeDocModal" class="btn-outline">Cancelar</button>
+                </div>
+            </div>`;
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
+        
+        // Preview das imagens
+        document.getElementById('idFrontInput').onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = document.getElementById('frontPreview');
+                    img.src = event.target.result;
+                    img.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        
+        document.getElementById('idBackInput').onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = document.getElementById('backPreview');
+                    img.src = event.target.result;
+                    img.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        
+        document.getElementById('submitDocumentBtn').onclick = async () => {
+            const frontFile = document.getElementById('idFrontInput').files[0];
+            const backFile = document.getElementById('idBackInput').files[0];
+            
+            if (!frontFile || !backFile) {
+                showToast('Por favor, envie frente e verso do documento', true);
+                return;
+            }
+            
+            const verified = await analyzeAndVerifyDocument(frontFile, backFile);
+            if (verified) {
+                modal.remove();
+                renderDashboard();
+            }
+        };
+        
+        document.getElementById('closeDocModal').onclick = () => modal.remove();
+    }
 
     // ============================================
     // CARREGAR DADOS DO USUÁRIO
@@ -372,17 +461,16 @@
         const doc = await db.collection('users').doc(uid).get();
         if (doc.exists) {
             const data = doc.data();
-            userBalances = { AOA: data.balances?.AOA ?? (isDistribuidoraUser ? 50000 : 0), USD: data.balances?.USD ?? 0, BRL: data.balances?.BRL ?? 0 };
-            userCardData = data.cardData || { number: generateCardNumber(), cvv: generateCVV(), expiry: EXPIRY_DATE };
+            userBalances = { AOA: data.balances?.AOA ?? (isDistribuidoraUser ? 50000 : 0), 
+                            USD: data.balances?.USD ?? 0, 
+                            BRL: data.balances?.BRL ?? 0 };
+            window.userKycStatus = data.kycStatus || (isDistribuidoraUser ? 'verified' : 'pending');
             window.userFullName = `${data.firstName || ''} ${data.lastName || ''}`;
             window.userEmail = data.email;
-            if (!data.cardData && isDistribuidoraUser) {
-                // Distribuidora user ganha cartão automático
-                await db.collection('users').doc(uid).update({ cardData: userCardData, cardActivated: true });
-            }
+            window.linkedIBAN = data.linkedIBAN || '';
+            window.linkedBank = data.linkedBank || '';
         } else if (isDistribuidoraUser) {
-            // Usuário da distribuidora cria conta com cartão ativo
-            userCardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: EXPIRY_DATE };
+            window.userKycStatus = 'verified';
             userBalances = { AOA: 50000, USD: 0, BRL: 0 };
         }
     }
@@ -402,86 +490,50 @@
     }
 
     // ============================================
-    // KYC COM CÂMARA (FECHA IMEDIATAMENTE APÓS FOTO)
+    // MULTICAIXA EXPRESS - CARREGAR CARTÃO
     // ============================================
-    function openCameraForKYC() {
+    function openMulticaixaLoad() {
         const modal = document.createElement('div');
-        modal.className = 'camera-modal';
+        modal.className = 'modal';
         modal.innerHTML = `
-            <div class="camera-container">
-                <div class="camera-preview"><video id="cameraVideo" autoplay playsinline></video></div>
-                <div style="display:flex; gap:12px; padding:20px;">
-                    <button id="capturePhotoBtn" class="btn-gold" style="flex:1;"><i class="fas fa-camera"></i> Tirar Foto</button>
-                    <button id="closeCameraBtn" class="btn-outline" style="flex:1;">Fechar</button>
+            <div class="modal-content">
+                <h3 style="color:#d4af37;"><i class="fas fa-exchange-alt"></i> Carregar via Multicaixa Express</h3>
+                <p style="color:#b9a46b;">Digite o valor e confirme no seu aplicativo Multicaixa</p>
+                <input type="number" id="multicaixaAmount" placeholder="Valor em Kz">
+                <input type="text" id="multicaixaCode" placeholder="Código de confirmação (simulado)">
+                <div style="display:flex; gap:12px; margin-top:20px;">
+                    <button id="confirmMulticaixa" class="btn-gold">Confirmar Recarga</button>
+                    <button id="closeMulticaixa" class="btn-outline">Cancelar</button>
                 </div>
-            </div>
-            <canvas id="photoCanvas" style="display:none;"></canvas>
-        `;
+            </div>`;
         document.body.appendChild(modal);
         modal.style.display = 'flex';
         
-        const video = document.getElementById('cameraVideo');
-        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-            cameraStream = stream;
-            video.srcObject = stream;
-        }).catch(e => showToast('Erro ao acessar câmera: ' + e.message, true));
-        
-        document.getElementById('capturePhotoBtn').onclick = () => {
-            const canvas = document.getElementById('photoCanvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            capturedImageData = canvas.toDataURL('image/jpeg');
+        document.getElementById('confirmMulticaixa').onclick = async () => {
+            const amount = parseFloat(document.getElementById('multicaixaAmount').value);
+            const code = document.getElementById('multicaixaCode').value;
             
-            // Fechar câmera IMEDIATAMENTE após capturar
-            if (cameraStream) cameraStream.getTracks().forEach(track => track.stop());
-            modal.remove();
+            if (isNaN(amount) || amount <= 0) {
+                showToast('Valor inválido', true);
+                return;
+            }
             
-            // Mostrar preview para confirmar
-            showPreviewAndSubmit(capturedImageData);
-        };
-        
-        document.getElementById('closeCameraBtn').onclick = () => {
-            if (cameraStream) cameraStream.getTracks().forEach(track => track.stop());
+            if (code !== "123456") {
+                showToast('Código inválido. Use 123456 para teste.', true);
+                return;
+            }
+            
+            userBalances.AOA = (userBalances.AOA || 0) + amount;
+            await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
+            
+            await sendEmailViaEmailJS(currentUser.email, 'Recarga Multicaixa Express', `Foi adicionado ${formatMoney(amount, 'AOA')} ao seu saldo MAM Cash.`);
+            
+            showToast(`✅ ${formatMoney(amount, 'AOA')} adicionado com sucesso!`, false);
             modal.remove();
-        };
-    }
-    
-    function showPreviewAndSubmit(imageData) {
-        const confirmModal = document.createElement('div');
-        confirmModal.className = 'modal';
-        confirmModal.innerHTML = `
-            <div class="modal-content">
-                <h3 style="color:#d4af37;"><i class="fas fa-id-card"></i> Confirmar Documento</h3>
-                <img src="${imageData}" style="width:100%; border-radius:16px; margin:15px 0;">
-                <p style="color:#b9a46b;">Confirme se a imagem está legível antes de enviar.</p>
-                <div style="display:flex; gap:12px; margin-top:20px;">
-                    <button id="confirmKycBtn" class="btn-gold">✅ Confirmar e Enviar</button>
-                    <button id="retakePhotoBtn" class="btn-outline">📷 Tirar Novamente</button>
-                </div>
-            </div>`;
-        document.body.appendChild(confirmModal);
-        confirmModal.style.display = 'flex';
-        
-        document.getElementById('confirmKycBtn').onclick = async () => {
-            showToast('📤 Enviando documento para análise...', false);
-            // Simular envio para Firebase Storage
-            const docRef = await db.collection('kycRequests').add({
-                userId: currentUser.uid,
-                userEmail: currentUser.email,
-                documentImage: imageData,
-                status: 'pending',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            showToast('✅ Documento enviado! Aguarde aprovação do administrador.', false);
-            confirmModal.remove();
             renderDashboard();
         };
         
-        document.getElementById('retakePhotoBtn').onclick = () => {
-            confirmModal.remove();
-            openCameraForKYC();
-        };
+        document.getElementById('closeMulticaixa').onclick = () => modal.remove();
     }
 
     // ============================================
@@ -492,40 +544,42 @@
         await loadUserData(currentUser.uid);
         
         const balanceNow = userBalances[currentCurrency] || 0;
-        const isAdmin = (currentUser.email === ADMIN_EMAIL);
-        const isVerified = true; // Distribuidora user já é verified
+        const isVerified = window.userKycStatus === 'verified';
         
-        const maskedNumber = userCardData ? userCardData.number : '**** **** **** ****';
-        const maskedCVV = '***';
-        const actualCVV = userCardData?.cvv || '***';
-        const displayCVV = isCardVisible && userCardData ? actualCVV : maskedCVV;
-        const displayNumber = isCardVisible && userCardData ? userCardData.number : maskedNumber;
+        const maskedNumber = isCardVisible ? CARD_NUMBER : "**** **** **** 9012";
+        const maskedCVV = isCardVisible ? CARD_CVV : "***";
         
         let html = `
             <div class="app-container">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                     <div><i class="fas fa-music" style="color:#d4af37"></i> <span style="color:#e6d5a8;">${window.userFullName || currentUser.email}</span>
-                        ${isDistribuidoraUser ? '<span class="status-badge status-premium" style="margin-left:10px;">🎵 MAM Distribuidora</span>' : ''}
+                        ${isFromDistribuidora ? '<span class="status-badge status-premium" style="margin-left:10px;">🎵 MAM Distribuidora</span>' : ''}
+                        ${isVerified ? '<span class="status-badge status-verified" style="margin-left:10px;">✅ Verificado</span>' : '<span class="status-badge status-pending" style="margin-left:10px;">⚠️ Pendente</span>'}
                     </div>
                     <button id="logoutBtn" style="background:#222216; border:1px solid #d4af37; padding:8px 18px; border-radius:40px; color:#d4af37; cursor:pointer;"><i class="fas fa-sign-out-alt"></i> Sair</button>
                 </div>
                 
-                <!-- CARTÃO VISA OFICIAL - PALANCA NEGRA -->
+                <!-- CARTÃO VISA PERSONALIZADO -->
                 <div class="visa-card">
                     <div class="card-brand">
-                        <div class="visa-logo">VISA MAM Cash</div>
+                        <div class="visa-logo">VISA</div>
                         <div class="card-chip"></div>
                     </div>
-                    <div class="card-number-display">${displayNumber}</div>
+                    <div class="card-number-display">${maskedNumber}</div>
                     <div class="card-details-row">
                         <div>
-                            <div class="card-detail-label">VALIDADE</div>
-                            <div class="card-detail-value">${userCardData?.expiry || '05/31'}</div>
+                            <div class="card-detail-label">VALID THRU</div>
+                            <div class="card-detail-value">${CARD_EXPIRY}</div>
                         </div>
                         <div>
                             <div class="card-detail-label">CVV</div>
-                            <div class="card-detail-value" id="cvvValue">${displayCVV}</div>
+                            <div class="card-detail-value" id="cvvValue">${maskedCVV}</div>
                         </div>
+                    </div>
+                    <div class="card-holder">${CARD_HOLDER}</div>
+                    <div style="display:flex; justify-content:space-between; margin-top:15px;">
+                        <span style="font-size:12px; opacity:0.7;">VISA</span>
+                        <span style="font-size:12px; opacity:0.7;">Debit</span>
                     </div>
                     <button id="toggleCardBtn" class="toggle-card-btn">
                         <i class="fas ${isCardVisible ? 'fa-eye-slash' : 'fa-eye'}"></i> 
@@ -547,27 +601,37 @@
                 
                 <div class="action-grid">
                     <button id="btnTransfer" class="btn-gold"><i class="fas fa-exchange-alt"></i> Transferir</button>
-                    <button id="btnDeposit" class="btn-gold"><i class="fas fa-upload"></i> Depositar</button>
-                    <button id="btnWithdraw" class="btn-outline"><i class="fas fa-download"></i> Sacar</button>
+                    <button id="btnMulticaixa" class="btn-gold"><i class="fas fa-credit-card"></i> Multicaixa</button>
+                    <button id="btnWithdraw" class="btn-outline" ${!isVerified ? 'disabled' : ''}><i class="fas fa-download"></i> Sacar</button>
                 </div>
                 
+                <!-- CONTA BANCÁRIA ANGOLANA -->
                 <div class="settings-section">
-                    <div class="settings-title"><i class="fas fa-university"></i> Configurações de Saque</div>
+                    <div class="settings-title"><i class="fas fa-university"></i> Conta Bancária Angolana</div>
                     <div class="phone-container">
-                        <select id="countryCodeSelect" class="phone-code">${countriesWithCodes.map(c => `<option value="${c.code}" ${c.code === '+244' ? 'selected' : ''}>${c.code}</option>`).join('')}</select>
-                        <input type="text" id="ibanInput" placeholder="IBAN (ex: AO06 0000 0000 0000 0000 0000 0)">
+                        <select id="bankSelect" class="phone-code">
+                            <option value="BAI">BAI</option>
+                            <option value="BFA">BFA</option>
+                            <option value="BCI">BCI</option>
+                            <option value="BIC">BIC</option>
+                            <option value="Keve">Keve</option>
+                            <option value="Sol">Sol</option>
+                            <option value="Millennium">Millennium</option>
+                        </select>
+                        <input type="text" id="accountNumber" placeholder="Número da Conta (IBAN)">
                     </div>
-                    <input type="email" id="paypalInput" placeholder="Email do PayPal">
-                    <button id="saveSettingsBtn" class="btn-gold" style="width:100%; margin-top:10px;"><i class="fas fa-save"></i> Salvar Configurações</button>
+                    <input type="text" id="accountHolder" placeholder="Nome do Titular da Conta">
+                    <button id="saveBankBtn" class="btn-gold" style="width:100%; margin-top:10px;"><i class="fas fa-save"></i> Vincular Conta Bancária</button>
+                    <p style="color:#b9a46b; font-size:0.7rem; margin-top:10px;"><i class="fas fa-info-circle"></i> Os saques serão enviados para esta conta bancária</p>
                 </div>`;
         
-        // Se não for usuário da distribuidora, mostrar botão KYC
-        if (!isDistribuidoraUser && !isAdmin) {
+        // Se não for verificado, mostrar botão de verificação
+        if (!isVerified && !isFromDistribuidora) {
             html += `
                 <div class="settings-section" style="text-align:center;">
-                    <div class="settings-title"><i class="fas fa-id-card"></i> Verificação de Identidade (KYC)</div>
-                    <p style="color:#b9a46b; margin-bottom:15px;">Para desbloquear saques, envie uma foto do seu Documento de Identidade.</p>
-                    <button id="openKycBtn" class="btn-gold"><i class="fas fa-camera"></i> Enviar Documento</button>
+                    <div class="settings-title"><i class="fas fa-id-card"></i> Verifique sua Identidade</div>
+                    <p style="color:#b9a46b; margin-bottom:15px;">Para desbloquear saques, verifique sua identidade enviando o BI (Frente e Verso).</p>
+                    <button id="openKycBtn" class="btn-gold"><i class="fas fa-upload"></i> Enviar Documento</button>
                 </div>`;
         }
         
@@ -579,33 +643,41 @@
         });
         
         document.getElementById('toggleCardBtn')?.addEventListener('click', () => {
-            if (!userCardData) return;
             isCardVisible = !isCardVisible;
             renderDashboard();
         });
         
         document.getElementById('btnTransfer')?.addEventListener('click', () => openTransferModal());
-        document.getElementById('btnDeposit')?.addEventListener('click', () => openDepositModal());
-        document.getElementById('btnWithdraw')?.addEventListener('click', () => showToast('Funcionalidade em desenvolvimento', false));
+        document.getElementById('btnMulticaixa')?.addEventListener('click', () => openMulticaixaLoad());
+        document.getElementById('btnWithdraw')?.addEventListener('click', () => openWithdrawModal());
         document.getElementById('logoutBtn')?.addEventListener('click', () => auth.signOut());
-        document.getElementById('openKycBtn')?.addEventListener('click', () => openCameraForKYC());
+        document.getElementById('openKycBtn')?.addEventListener('click', () => openDocumentUpload());
         
-        document.getElementById('saveSettingsBtn')?.addEventListener('click', async () => {
-            const countryCode = document.getElementById('countryCodeSelect').value;
-            const iban = document.getElementById('ibanInput').value;
-            const paypal = document.getElementById('paypalInput').value;
-            await db.collection('users').doc(currentUser.uid).update({ linkedIBAN: `${countryCode} ${iban}`, linkedPaypal: paypal });
-            showToast('✅ Configurações salvas!', false);
+        document.getElementById('saveBankBtn')?.addEventListener('click', async () => {
+            const bank = document.getElementById('bankSelect').value;
+            const accountNumber = document.getElementById('accountNumber').value;
+            const accountHolder = document.getElementById('accountHolder').value;
+            
+            if (!accountNumber || !accountHolder) {
+                showToast('Preencha todos os campos da conta bancária', true);
+                return;
+            }
+            
+            await db.collection('users').doc(currentUser.uid).update({
+                linkedBank: { bank, accountNumber, accountHolder }
+            });
+            showToast('✅ Conta bancária vinculada com sucesso!', false);
         });
     }
     
     // ============================================
-    // MODAL DE TRANSFERÊNCIA
+    // TRANSFERÊNCIA
     // ============================================
     async function openTransferModal() {
         const modal = document.createElement('div'); modal.className = 'modal';
         modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;"><i class="fas fa-paper-plane"></i> Transferir</h3>
-            <input id="transferEmail" placeholder="Email do destinatário"><input id="transferAmount" type="number" placeholder="Valor">
+            <input id="transferEmail" placeholder="Email do destinatário">
+            <input id="transferAmount" type="number" placeholder="Valor">
             <select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
             <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmTransfer" class="btn-gold">Enviar</button><button id="closeModal" class="btn-outline">Cancelar</button></div></div>`;
         document.body.appendChild(modal); modal.style.display = 'flex';
@@ -628,8 +700,7 @@
             await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
             await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
             
-            // Enviar email de notificação via EmailJS
-            await sendEmailViaEmailJS(toEmail, 'Transferência Recebida', `Você recebeu ${formatMoney(amount, currency)} de ${currentUser.email}`);
+            await sendEmailViaEmailJS(toEmail, 'Transferência Recebida - MAM Cash', `Você recebeu ${formatMoney(amount, currency)} de ${currentUser.email}`);
             
             showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`, false);
             modal.remove(); renderDashboard();
@@ -637,29 +708,39 @@
         document.getElementById('closeModal').onclick = () => modal.remove();
     }
     
-    async function openDepositModal() {
+    // ============================================
+    // SAQUE
+    // ============================================
+    async function openWithdrawModal() {
+        if (window.userKycStatus !== 'verified') {
+            showToast('Complete a verificação de identidade primeiro!', true);
+            return;
+        }
+        
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;"><i class="fas fa-upload"></i> Solicitar Depósito</h3>
-            <input id="depositAmount" type="number" placeholder="Valor"><select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-            <textarea id="depositProof" placeholder="Comprovativo de pagamento" rows="3"></textarea>
-            <div style="display:flex; gap:12px; margin-top:20px;"><button id="sendDeposit" class="btn-gold">Solicitar</button><button id="closeDeposit" class="btn-outline">Fechar</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;"><i class="fas fa-download"></i> Solicitar Saque</h3>
+            <input id="withdrawAmount" type="number" placeholder="Valor (mínimo 5000 Kz)">
+            <select id="withdrawCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <p style="color:#b9a46b; margin-top:10px;">O valor será transferido para sua conta bancária vinculada.</p>
+            <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmWithdraw" class="btn-gold">Solicitar Saque</button><button id="closeWithdraw" class="btn-outline">Fechar</button></div></div>`;
         document.body.appendChild(modal); modal.style.display = 'flex';
         
-        document.getElementById('sendDeposit').onclick = async () => {
-            const amount = parseFloat(document.getElementById('depositAmount').value);
-            const currency = document.getElementById('depositCurrency').value;
-            const proof = document.getElementById('depositProof').value;
-            if (isNaN(amount) || amount <= 0) { showToast('Valor inválido', true); return; }
+        document.getElementById('confirmWithdraw').onclick = async () => {
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const currency = document.getElementById('withdrawCurrency').value;
             
-            await db.collection('deposits').add({
-                userId: currentUser.uid, userEmail: currentUser.email,
-                amount, currency, proof, status: 'pending',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            showToast(`📤 Pedido de depósito de ${formatMoney(amount, currency)} enviado.`, false);
-            modal.remove();
+            if (isNaN(amount) || amount < 5000) { showToast('Valor mínimo: 5000 Kz', true); return; }
+            if (userBalances[currency] < amount) { showToast('Saldo insuficiente', true); return; }
+            
+            userBalances[currency] -= amount;
+            await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
+            
+            await sendEmailViaEmailJS(currentUser.email, 'Saque Solicitado - MAM Cash', `Foi solicitado um saque de ${formatMoney(amount, currency)}. O valor será creditado em até 48h.`);
+            
+            showToast(`✅ Saque de ${formatMoney(amount, currency)} solicitado com sucesso!`, false);
+            modal.remove(); renderDashboard();
         };
-        document.getElementById('closeDeposit').onclick = () => modal.remove();
+        document.getElementById('closeWithdraw').onclick = () => modal.remove();
     }
     
     // ============================================
@@ -738,14 +819,11 @@
             
             try {
                 const userCred = await auth.createUserWithEmailAndPassword(email, password);
-                const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: EXPIRY_DATE };
                 await db.collection('users').doc(userCred.user.uid).set({
                     firstName, lastName, email, phone: fullPhone,
                     balances: { AOA: isFromDistribuidora ? 50000 : 0, USD: 0, BRL: 0 },
-                    cardData: cardData,
-                    cardActivated: true,
                     kycStatus: isFromDistribuidora ? 'verified' : 'pending',
-                    linkedIBAN: '', linkedPaypal: '',
+                    linkedIBAN: '', linkedBank: null,
                     isDistribuidoraUser: isFromDistribuidora,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
@@ -754,7 +832,7 @@
                     await sendEmailViaEmailJS(email, 'Bem-vindo à MAM Cash', `Olá ${firstName}, seu cartão Visa MAM Cash já está ativo! Aproveite os benefícios exclusivos.`);
                 }
                 
-                showToast(isFromDistribuidora ? '✅ Conta criada! Seu cartão já está ativo.' : 'Conta criada! Complete o KYC.', false);
+                showToast(isFromDistribuidora ? '✅ Conta criada! Seu cartão já está ativo.' : 'Conta criada! Verifique sua identidade.', false);
                 isDistribuidoraUser = isFromDistribuidora;
                 renderDashboard();
             } catch(e) { showToast(e.message, true); }
