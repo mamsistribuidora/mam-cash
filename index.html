@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MAM Cash • Cartão Visa Oficial | MAM Distribuidora</title>
+    <title>MAM Cash • Cartão Visa Palanca Negra</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -24,121 +24,183 @@
             background: linear-gradient(135deg, #0a0f0a 0%, #0c0b05 100%);
             min-height: 100vh;
             padding: 20px 16px 40px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        body::before {
-            content: "🦌 🎵 🎶 💰 💳";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            font-size: 70px;
-            opacity: 0.03;
-            pointer-events: none;
-            white-space: pre;
-            overflow: hidden;
-            letter-spacing: 30px;
-            animation: floatMoney 40s infinite linear;
-            z-index: 0;
-        }
-        @keyframes floatMoney {
-            0% { transform: translateY(0px) translateX(0px); }
-            100% { transform: translateY(-200px) translateX(50px); }
         }
         .app-container { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
         
-        /* Cartão Visa Personalizado */
+        /* CARTÃO VISA PALANCA NEGRA - DESIGN PROFISSIONAL */
         .visa-card {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMjUwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTUxQzI4Ii8+PHRleHQgeD0iMjAiIHk9IjQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiNGRkZGRkYiPjxiPlZJU0E8L2I+PC90ZXh0Pjx0ZXh0IHg9IjIwIiB5PSI3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjQ0NDQ0NDIj5NQU0gQ2FzaDwvdGV4dD48dGV4dCB4PSIyMCIgeT0iMTUwIiBmb250LWZhbWlseT0iTW9uYWNvIiBmb250LXNpemU9IjI0IiBmaWxsPSIjRkZGRkZGIj40NTMyIDEyMzQgNTY3OCA5MDEyPC90ZXh0Pjx0ZXh0IHg9IjIwIiB5PSIxODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgZmlsbD0iI0NDQ0NDQyI+VkFMSUQgVEhSVTwvdGV4dD48dGV4dCB4PSIyMCIgeT0iMTk1IiBmb250LWZhbWlseT0iTW9uYWNvIiBmb250LXNpemU9IjE0IiBmaWxsPSIjRkZGRkZGIj4wNS8yOTwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjE5NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjRkZGRkZGIj5NQVRJQVMgQS4gTUFOVUVMPC90ZXh0Pjx0ZXh0IHg9IjIwIiB5PSIyMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iI0NDQ0NDQyI+VklTQTwvdGV4dD48dGV4dCB4PSI3MCIgeT0iMjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiNDQ0NDQ0MiPkRlYml0PC90ZXh0Pjwvc3ZnPg==');
-            background-size: cover;
-            background-position: center;
-            border-radius: 28px;
-            padding: 28px 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 30px 45px -12px rgba(0,0,0,0.9), 0 0 0 1px rgba(212, 175, 55, 0.5);
             position: relative;
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 24px;
             overflow: hidden;
-            color: white;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.3);
+            transition: transform 0.3s ease;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .visa-card::before {
-            content: "🦌";
+        .visa-card:hover { transform: translateY(-3px); }
+        
+        /* Fundo com gradiente + imagem da Palanca Negra */
+        .card-bg-gradient {
             position: absolute;
-            bottom: -30px;
-            right: -20px;
-            font-size: 100px;
-            opacity: 0.1;
-            transform: rotate(-10deg);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+            z-index: 0;
         }
+        .card-bg-palanca {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.pexels.com/photos/2479173/pexels-photo-2479173.jpeg?auto=compress&cs=tinysrgb&w=800');
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            opacity: 0.35;
+            z-index: 1;
+        }
+        /* Fallback: se a imagem não carregar, mostra gradiente angolano */
+        .card-bg-sunset {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 40%, #e67e22, #c0392b, #1a1a2e);
+            opacity: 0.5;
+            z-index: 0;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 10;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 220px;
+        }
+        
         .card-brand {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
+            align-items: flex-start;
+            margin-bottom: 30px;
         }
         .visa-logo {
-            font-size: 2rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            background: linear-gradient(95deg, #fff, #d4af37);
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #fff, #f5c542);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .visa-platinum {
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+        
+        .card-chip-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
         }
         .card-chip {
             width: 45px;
             height: 35px;
-            background: linear-gradient(135deg, #d4af37, #b8941e);
+            background: linear-gradient(135deg, #e8c25d, #b8941e);
             border-radius: 8px;
             position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         .card-chip::after {
-            content: "💠";
+            content: "⚡";
             position: absolute;
             top: 6px;
             left: 12px;
             font-size: 18px;
-            opacity: 0.7;
+            opacity: 0.8;
         }
+        .card-type {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            background: rgba(0,0,0,0.4);
+            padding: 4px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+        
         .card-number-display {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             letter-spacing: 3px;
             font-weight: 600;
             margin-bottom: 25px;
             font-family: monospace;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            word-break: break-all;
         }
-        .card-details-row { display: flex; gap: 40px; margin-bottom: 25px; }
-        .card-detail-label { font-size: 0.65rem; opacity: 0.8; letter-spacing: 1px; }
-        .card-detail-value { font-size: 1rem; font-weight: bold; font-family: monospace; }
-        .card-holder { font-size: 0.9rem; letter-spacing: 1px; margin-top: 10px; }
+        
+        .card-details-row {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+        .card-detail-label {
+            font-size: 0.6rem;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .card-detail-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: monospace;
+        }
+        
         .toggle-card-btn {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.5);
-            padding: 10px 20px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 10px 16px;
             border-radius: 40px;
             color: white;
             cursor: pointer;
-            font-size: 0.85rem;
-            width: 100%;
-            backdrop-filter: blur(5px);
-            margin-top: 15px;
+            font-size: 0.8rem;
+            width: auto;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
         }
-        .toggle-card-btn:hover { background: rgba(212, 175, 55, 0.6); border-color: #d4af37; }
+        .toggle-card-btn:hover {
+            background: rgba(212, 175, 55, 0.5);
+            border-color: #d4af37;
+        }
         
+        /* Status Badge */
         .status-badge {
             display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.7rem;
             font-weight: bold;
-            margin-bottom: 15px;
         }
-        .status-verified { background: #2ecc71; color: #0a0a0a; }
         .status-premium { background: #d4af37; color: #0a0a0a; }
-        .status-pending { background: #f39c12; color: #0a0a0a; }
         
+        /* Moedas */
         .currency-tabs {
             display: flex;
             gap: 12px;
@@ -176,7 +238,7 @@
         
         .action-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 14px;
             margin-bottom: 28px;
         }
@@ -210,6 +272,52 @@
             margin-bottom: 20px;
             border: 1px solid #2a2416;
         }
+        .settings-title { color: #d4af37; margin-bottom: 15px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        
+        .phone-group {
+            display: flex;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .country-code-select {
+            width: 120px;
+            padding: 14px 8px;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #d4af37;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .phone-input {
+            flex: 1;
+            padding: 14px;
+            background: #2c271e;
+            border: 1px solid #d4af3760;
+            border-radius: 60px;
+            color: #fff;
+        }
+        
+        .camera-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .camera-container {
+            width: 100%;
+            max-width: 400px;
+            background: #000;
+            border-radius: 32px;
+            overflow: hidden;
+        }
+        .camera-preview { width: 100%; height: 400px; background: #000; }
+        .camera-preview video { width: 100%; height: 100%; object-fit: cover; }
         
         .modal {
             display: none;
@@ -256,18 +364,13 @@
             background: transparent;
             border: none;
         }
-        .phone-container { display: flex; gap: 12px; margin: 12px 0; }
-        .phone-code { width: 100px; padding: 14px; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #d4af37; text-align: center; }
-        .phone-number { flex: 1; padding: 14px; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #fff; }
-        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #fff; }
-        .document-preview { max-width: 100%; border-radius: 16px; margin-top: 10px; }
+        input, select { width: 100%; padding: 14px; margin: 8px 0; background: #2c271e; border: 1px solid #d4af3760; border-radius: 60px; color: #fff; }
         
         @media (max-width: 500px) {
             .balance-amount { font-size: 2rem; }
             .card-number-display { font-size: 1rem; letter-spacing: 2px; }
-            .phone-container { flex-direction: column; }
-            .phone-code { width: 100%; }
-            .action-grid { grid-template-columns: repeat(2, 1fr); }
+            .phone-group { flex-direction: column; }
+            .country-code-select { width: 100%; }
         }
     </style>
 </head>
@@ -276,9 +379,7 @@
 <div id="toastMessage" class="toast"></div>
 
 <script>
-    // ============================================
-    // FIREBASE CONFIG
-    // ============================================
+    // Firebase Config
     const firebaseConfig = {
         apiKey: 'AIzaSyC90uEwso8ZP3s7tLvV_z88ZbUijXLOpPU',
         authDomain: 'project-73108ea9-d1b2-4ac3-8fb.firebaseapp.com',
@@ -290,304 +391,117 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-    const storage = firebase.storage();
 
-    // ============================================
-    // EMAILJS CONFIG
-    // ============================================
     emailjs.init("vuAVZ5U4lRBZcsIon");
 
-    // ============================================
-    // VARIÁVEIS GLOBAIS
-    // ============================================
     let currentUser = null;
     let currentCurrency = 'AOA';
     let userBalances = { AOA: 0, USD: 0, BRL: 0 };
     let userCardData = null;
     let isCardVisible = false;
     let isDistribuidoraUser = false;
+    let cameraStream = null;
 
-    // Dados fixos do cartão conforme imagem fornecida
-    const CARD_NUMBER = "4532 1234 5678 9012";
-    const CARD_EXPIRY = "05/29";
-    const CARD_HOLDER = "MATIAS A. MANUEL";
-    const CARD_CVV = "123";
-
-    // Países com códigos
-    const countriesWithCodes = [
-        { name: "Angola", code: "+244" }, { name: "Brasil", code: "+55" }, { name: "Portugal", code: "+351" },
-        { name: "Estados Unidos", code: "+1" }, { name: "Reino Unido", code: "+44" }, { name: "Alemanha", code: "+49" },
-        { name: "França", code: "+33" }, { name: "Espanha", code: "+34" }, { name: "Moçambique", code: "+258" },
-        { name: "Cabo Verde", code: "+238" }, { name: "São Tomé", code: "+239" }
+    const countryCodes = [
+        { code: "+244", country: "Angola" }, { code: "+55", country: "Brasil" }, { code: "+351", country: "Portugal" },
+        { code: "+1", country: "EUA" }, { code: "+44", country: "Reino Unido" }, { code: "+33", country: "França" },
+        { code: "+49", country: "Alemanha" }, { code: "+34", country: "Espanha" }, { code: "+39", country: "Itália" },
+        { code: "+258", country: "Moçambique" }, { code: "+238", country: "Cabo Verde" }
     ];
 
-    // URL Parameters
     const urlParams = new URLSearchParams(window.location.search);
     const preFilledEmail = urlParams.get('email');
     const isFromDistribuidora = urlParams.get('from') === 'distribuidora' || preFilledEmail !== null;
 
-    // ============================================
-    // FUNÇÕES AUXILIARES
-    // ============================================
     function showToast(msg, isError = false) {
         const toast = document.getElementById('toastMessage');
         toast.innerText = msg;
         toast.style.backgroundColor = isError ? '#2c1a1a' : '#1f1b12';
-        toast.style.borderLeftColor = isError ? '#e74c3c' : '#d4af37';
         toast.style.display = 'block';
         setTimeout(() => toast.style.display = 'none', 4000);
     }
 
     function formatMoney(value, currency) {
         if (isNaN(value)) value = 0;
-        return new Intl.NumberFormat('pt-AO', { style: 'currency', currency: currency, minimumFractionDigits: 2 }).format(value);
+        return new Intl.NumberFormat('pt-AO', { style: 'currency', currency: currency }).format(value);
     }
 
-    // ============================================
-    // VALIDAÇÃO AUTOMÁTICA DE DOCUMENTO (SIMULA ANÁLISE REAL)
-    // ============================================
-    async function analyzeAndVerifyDocument(frontFile, backFile) {
-        showToast('📄 Analisando documento...', false);
-        
-        // Simula uma análise automática (validação de formato, legibilidade)
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Validação automática: aceita qualquer documento que não esteja vazio
-        if (frontFile && backFile) {
-            // Upload para storage
-            const frontUrl = await uploadDocument(currentUser.uid, frontFile, 'id_front');
-            const backUrl = await uploadDocument(currentUser.uid, backFile, 'id_back');
-            
-            // Atualiza status do usuário para VERIFICADO automaticamente
-            await db.collection('users').doc(currentUser.uid).update({
-                kycStatus: 'verified',
-                kycDocuments: { idFront: frontUrl, idBack: backUrl, verifiedAt: new Date() }
-            });
-            
-            // Envia email de confirmação
-            await sendEmailViaEmailJS(currentUser.email, '✅ Conta Verificada - MAM Cash', 
-                `Parabéns! Sua conta foi verificada automaticamente. Agora você pode realizar saques e transferências sem limites.`);
-            
-            showToast('✅ Documento válido! Conta verificada com sucesso!', false);
-            return true;
-        }
-        return false;
+    function generateCardNumber() {
+        let num = '';
+        for (let i = 0; i < 16; i++) num += Math.floor(Math.random() * 10);
+        return num.match(/.{4}/g).join(' ');
     }
-    
-    async function uploadDocument(userId, file, type) {
-        if (!file) return null;
-        const ext = file.name.split('.').pop();
-        const filename = `${userId}/${type}_${Date.now()}.${ext}`;
-        const ref = storage.ref().child(`documents/${filename}`);
-        await ref.put(file);
-        return await ref.getDownloadURL();
-    }
-    
-    function openDocumentUpload() {
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3 style="color:#d4af37;"><i class="fas fa-id-card"></i> Verificação de Identidade</h3>
-                <p style="color:#b9a46b; margin-bottom:15px;">Envie as fotos do seu Bilhete de Identidade (Frente e Verso)</p>
-                <div class="input-group">
-                    <label style="color:#d4af37;">Frente do Documento</label>
-                    <input type="file" id="idFrontInput" accept="image/*" capture="environment">
-                    <img id="frontPreview" class="document-preview" style="display:none;">
-                </div>
-                <div class="input-group">
-                    <label style="color:#d4af37;">Verso do Documento</label>
-                    <input type="file" id="idBackInput" accept="image/*" capture="environment">
-                    <img id="backPreview" class="document-preview" style="display:none;">
-                </div>
-                <div style="display:flex; gap:12px; margin-top:20px;">
-                    <button id="submitDocumentBtn" class="btn-gold">Enviar e Verificar</button>
-                    <button id="closeDocModal" class="btn-outline">Cancelar</button>
-                </div>
-            </div>`;
-        document.body.appendChild(modal);
-        modal.style.display = 'flex';
-        
-        // Preview das imagens
-        document.getElementById('idFrontInput').onchange = (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const img = document.getElementById('frontPreview');
-                    img.src = event.target.result;
-                    img.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-        
-        document.getElementById('idBackInput').onchange = (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const img = document.getElementById('backPreview');
-                    img.src = event.target.result;
-                    img.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-        
-        document.getElementById('submitDocumentBtn').onclick = async () => {
-            const frontFile = document.getElementById('idFrontInput').files[0];
-            const backFile = document.getElementById('idBackInput').files[0];
-            
-            if (!frontFile || !backFile) {
-                showToast('Por favor, envie frente e verso do documento', true);
-                return;
-            }
-            
-            const verified = await analyzeAndVerifyDocument(frontFile, backFile);
-            if (verified) {
-                modal.remove();
-                renderDashboard();
-            }
-        };
-        
-        document.getElementById('closeDocModal').onclick = () => modal.remove();
-    }
+    function generateCVV() { return Math.floor(100 + Math.random() * 900).toString(); }
+    const EXPIRY_DATE = "05/31";
 
-    // ============================================
-    // CARREGAR DADOS DO USUÁRIO
-    // ============================================
     async function loadUserData(uid) {
         const doc = await db.collection('users').doc(uid).get();
         if (doc.exists) {
             const data = doc.data();
-            userBalances = { AOA: data.balances?.AOA ?? (isDistribuidoraUser ? 50000 : 0), 
-                            USD: data.balances?.USD ?? 0, 
-                            BRL: data.balances?.BRL ?? 0 };
-            window.userKycStatus = data.kycStatus || (isDistribuidoraUser ? 'verified' : 'pending');
+            userBalances = { AOA: data.balances?.AOA ?? 0, USD: data.balances?.USD ?? 0, BRL: data.balances?.BRL ?? 0 };
+            userCardData = data.cardData || null;
             window.userFullName = `${data.firstName || ''} ${data.lastName || ''}`;
-            window.userEmail = data.email;
-            window.linkedIBAN = data.linkedIBAN || '';
-            window.linkedBank = data.linkedBank || '';
+            if (!data.cardData && isDistribuidoraUser) {
+                userCardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: EXPIRY_DATE };
+                await db.collection('users').doc(uid).update({ cardData: userCardData, cardActivated: true });
+            }
         } else if (isDistribuidoraUser) {
-            window.userKycStatus = 'verified';
+            userCardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: EXPIRY_DATE };
             userBalances = { AOA: 50000, USD: 0, BRL: 0 };
         }
     }
 
-    // ============================================
-    // ENVIO DE EMAIL VIA EMAILJS
-    // ============================================
-    async function sendEmailViaEmailJS(to, subject, message) {
-        try {
-            const templateParams = { to_email: to, subject: subject, message: message };
-            await emailjs.send('default_service', 'template_mam_cash', templateParams);
-            return true;
-        } catch (error) {
-            console.error('EmailJS error:', error);
-            return false;
-        }
-    }
-
-    // ============================================
-    // MULTICAIXA EXPRESS - CARREGAR CARTÃO
-    // ============================================
-    function openMulticaixaLoad() {
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3 style="color:#d4af37;"><i class="fas fa-exchange-alt"></i> Carregar via Multicaixa Express</h3>
-                <p style="color:#b9a46b;">Digite o valor e confirme no seu aplicativo Multicaixa</p>
-                <input type="number" id="multicaixaAmount" placeholder="Valor em Kz">
-                <input type="text" id="multicaixaCode" placeholder="Código de confirmação (simulado)">
-                <div style="display:flex; gap:12px; margin-top:20px;">
-                    <button id="confirmMulticaixa" class="btn-gold">Confirmar Recarga</button>
-                    <button id="closeMulticaixa" class="btn-outline">Cancelar</button>
-                </div>
-            </div>`;
-        document.body.appendChild(modal);
-        modal.style.display = 'flex';
-        
-        document.getElementById('confirmMulticaixa').onclick = async () => {
-            const amount = parseFloat(document.getElementById('multicaixaAmount').value);
-            const code = document.getElementById('multicaixaCode').value;
-            
-            if (isNaN(amount) || amount <= 0) {
-                showToast('Valor inválido', true);
-                return;
-            }
-            
-            if (code !== "123456") {
-                showToast('Código inválido. Use 123456 para teste.', true);
-                return;
-            }
-            
-            userBalances.AOA = (userBalances.AOA || 0) + amount;
-            await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
-            
-            await sendEmailViaEmailJS(currentUser.email, 'Recarga Multicaixa Express', `Foi adicionado ${formatMoney(amount, 'AOA')} ao seu saldo MAM Cash.`);
-            
-            showToast(`✅ ${formatMoney(amount, 'AOA')} adicionado com sucesso!`, false);
-            modal.remove();
-            renderDashboard();
-        };
-        
-        document.getElementById('closeMulticaixa').onclick = () => modal.remove();
-    }
-
-    // ============================================
-    // RENDERIZAÇÃO DO DASHBOARD
-    // ============================================
     async function renderDashboard() {
         if (!currentUser) { renderLogin(); return; }
         await loadUserData(currentUser.uid);
         
         const balanceNow = userBalances[currentCurrency] || 0;
-        const isVerified = window.userKycStatus === 'verified';
-        
-        const maskedNumber = isCardVisible ? CARD_NUMBER : "**** **** **** 9012";
-        const maskedCVV = isCardVisible ? CARD_CVV : "***";
+        const maskedNumber = userCardData ? userCardData.number : '**** **** **** ****';
+        const maskedCVV = '***';
+        const displayNumber = isCardVisible && userCardData ? userCardData.number : maskedNumber;
+        const displayCVV = isCardVisible && userCardData ? userCardData.cvv : maskedCVV;
         
         let html = `
             <div class="app-container">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                     <div><i class="fas fa-music" style="color:#d4af37"></i> <span style="color:#e6d5a8;">${window.userFullName || currentUser.email}</span>
-                        ${isFromDistribuidora ? '<span class="status-badge status-premium" style="margin-left:10px;">🎵 MAM Distribuidora</span>' : ''}
-                        ${isVerified ? '<span class="status-badge status-verified" style="margin-left:10px;">✅ Verificado</span>' : '<span class="status-badge status-pending" style="margin-left:10px;">⚠️ Pendente</span>'}
+                        ${isDistribuidoraUser ? '<span class="status-badge status-premium" style="margin-left:10px;">MAM Distribuidora</span>' : ''}
                     </div>
                     <button id="logoutBtn" style="background:#222216; border:1px solid #d4af37; padding:8px 18px; border-radius:40px; color:#d4af37; cursor:pointer;"><i class="fas fa-sign-out-alt"></i> Sair</button>
                 </div>
                 
-                <!-- CARTÃO VISA PERSONALIZADO -->
+                <!-- CARTÃO VISA PALANCA NEGRA -->
                 <div class="visa-card">
-                    <div class="card-brand">
-                        <div class="visa-logo">VISA</div>
-                        <div class="card-chip"></div>
-                    </div>
-                    <div class="card-number-display">${maskedNumber}</div>
-                    <div class="card-details-row">
-                        <div>
-                            <div class="card-detail-label">VALID THRU</div>
-                            <div class="card-detail-value">${CARD_EXPIRY}</div>
+                    <div class="card-bg-gradient"></div>
+                    <div class="card-bg-palanca"></div>
+                    <div class="card-bg-sunset"></div>
+                    <div class="card-content">
+                        <div class="card-brand">
+                            <div class="visa-logo">VISA</div>
+                            <div class="visa-platinum">PLATINUM</div>
                         </div>
-                        <div>
-                            <div class="card-detail-label">CVV</div>
-                            <div class="card-detail-value" id="cvvValue">${maskedCVV}</div>
+                        <div class="card-chip-area">
+                            <div class="card-chip"></div>
+                            <div class="card-type">MAM CASH</div>
                         </div>
+                        <div class="card-number-display">${displayNumber}</div>
+                        <div class="card-details-row">
+                            <div>
+                                <div class="card-detail-label">VALIDADE</div>
+                                <div class="card-detail-value">${userCardData?.expiry || '05/31'}</div>
+                            </div>
+                            <div>
+                                <div class="card-detail-label">CVV</div>
+                                <div class="card-detail-value" id="cvvValue">${displayCVV}</div>
+                            </div>
+                        </div>
+                        <button id="toggleCardBtn" class="toggle-card-btn">
+                            <i class="fas ${isCardVisible ? 'fa-eye-slash' : 'fa-eye'}"></i> 
+                            ${isCardVisible ? 'Ocultar dados' : 'Exibir dados do cartão'}
+                        </button>
                     </div>
-                    <div class="card-holder">${CARD_HOLDER}</div>
-                    <div style="display:flex; justify-content:space-between; margin-top:15px;">
-                        <span style="font-size:12px; opacity:0.7;">VISA</span>
-                        <span style="font-size:12px; opacity:0.7;">Debit</span>
-                    </div>
-                    <button id="toggleCardBtn" class="toggle-card-btn">
-                        <i class="fas ${isCardVisible ? 'fa-eye-slash' : 'fa-eye'}"></i> 
-                        ${isCardVisible ? 'Ocultar Dados' : 'Exibir Dados do Cartão'}
-                    </button>
                 </div>
                 
-                <!-- MOEDAS -->
                 <div class="currency-tabs">
                     <button class="currency-btn ${currentCurrency === 'AOA' ? 'active' : ''}" data-cur="AOA"><i class="fas fa-coins"></i> Kwanza</button>
                     <button class="currency-btn ${currentCurrency === 'USD' ? 'active' : ''}" data-cur="USD"><i class="fas fa-dollar-sign"></i> USD</button>
@@ -601,85 +515,129 @@
                 
                 <div class="action-grid">
                     <button id="btnTransfer" class="btn-gold"><i class="fas fa-exchange-alt"></i> Transferir</button>
-                    <button id="btnMulticaixa" class="btn-gold"><i class="fas fa-credit-card"></i> Multicaixa</button>
-                    <button id="btnWithdraw" class="btn-outline" ${!isVerified ? 'disabled' : ''}><i class="fas fa-download"></i> Sacar</button>
+                    <button id="btnDeposit" class="btn-gold"><i class="fas fa-upload"></i> Depositar</button>
+                    <button id="btnWithdraw" class="btn-outline"><i class="fas fa-download"></i> Sacar</button>
                 </div>
                 
-                <!-- CONTA BANCÁRIA ANGOLANA -->
                 <div class="settings-section">
-                    <div class="settings-title"><i class="fas fa-university"></i> Conta Bancária Angolana</div>
-                    <div class="phone-container">
-                        <select id="bankSelect" class="phone-code">
-                            <option value="BAI">BAI</option>
-                            <option value="BFA">BFA</option>
-                            <option value="BCI">BCI</option>
-                            <option value="BIC">BIC</option>
-                            <option value="Keve">Keve</option>
-                            <option value="Sol">Sol</option>
-                            <option value="Millennium">Millennium</option>
-                        </select>
-                        <input type="text" id="accountNumber" placeholder="Número da Conta (IBAN)">
-                    </div>
-                    <input type="text" id="accountHolder" placeholder="Nome do Titular da Conta">
-                    <button id="saveBankBtn" class="btn-gold" style="width:100%; margin-top:10px;"><i class="fas fa-save"></i> Vincular Conta Bancária</button>
-                    <p style="color:#b9a46b; font-size:0.7rem; margin-top:10px;"><i class="fas fa-info-circle"></i> Os saques serão enviados para esta conta bancária</p>
+                    <div class="settings-title"><i class="fas fa-university"></i> Configurações de Saque</div>
+                    <input type="text" id="ibanInput" placeholder="IBAN (AO06 XXXX XXXX XXXX XXXX XXXX X)">
+                    <input type="email" id="paypalInput" placeholder="Email do PayPal">
+                    <button id="saveSettingsBtn" class="btn-gold" style="width:100%; margin-top:10px;"><i class="fas fa-save"></i> Salvar</button>
                 </div>`;
         
-        // Se não for verificado, mostrar botão de verificação
-        if (!isVerified && !isFromDistribuidora) {
-            html += `
-                <div class="settings-section" style="text-align:center;">
-                    <div class="settings-title"><i class="fas fa-id-card"></i> Verifique sua Identidade</div>
-                    <p style="color:#b9a46b; margin-bottom:15px;">Para desbloquear saques, verifique sua identidade enviando o BI (Frente e Verso).</p>
-                    <button id="openKycBtn" class="btn-gold"><i class="fas fa-upload"></i> Enviar Documento</button>
-                </div>`;
+        if (!isDistribuidoraUser) {
+            html += `<div class="settings-section" style="text-align:center;">
+                        <div class="settings-title"><i class="fas fa-id-card"></i> Verificação KYC</div>
+                        <p style="color:#b9a46b; margin-bottom:15px;">Envie uma foto do seu documento</p>
+                        <button id="openKycBtn" class="btn-gold"><i class="fas fa-camera"></i> Enviar Documento</button>
+                    </div>`;
         }
         
         document.getElementById('appRoot').innerHTML = html;
         
-        // Eventos
         document.querySelectorAll('.currency-btn').forEach(btn => {
             btn.addEventListener('click', () => { currentCurrency = btn.getAttribute('data-cur'); renderDashboard(); });
         });
         
         document.getElementById('toggleCardBtn')?.addEventListener('click', () => {
+            if (!userCardData) return;
             isCardVisible = !isCardVisible;
             renderDashboard();
         });
         
         document.getElementById('btnTransfer')?.addEventListener('click', () => openTransferModal());
-        document.getElementById('btnMulticaixa')?.addEventListener('click', () => openMulticaixaLoad());
-        document.getElementById('btnWithdraw')?.addEventListener('click', () => openWithdrawModal());
+        document.getElementById('btnDeposit')?.addEventListener('click', () => openDepositModal());
+        document.getElementById('btnWithdraw')?.addEventListener('click', () => showToast('Disponível em breve', false));
         document.getElementById('logoutBtn')?.addEventListener('click', () => auth.signOut());
-        document.getElementById('openKycBtn')?.addEventListener('click', () => openDocumentUpload());
-        
-        document.getElementById('saveBankBtn')?.addEventListener('click', async () => {
-            const bank = document.getElementById('bankSelect').value;
-            const accountNumber = document.getElementById('accountNumber').value;
-            const accountHolder = document.getElementById('accountHolder').value;
-            
-            if (!accountNumber || !accountHolder) {
-                showToast('Preencha todos os campos da conta bancária', true);
-                return;
-            }
-            
+        document.getElementById('openKycBtn')?.addEventListener('click', () => openCameraForKYC());
+        document.getElementById('saveSettingsBtn')?.addEventListener('click', async () => {
             await db.collection('users').doc(currentUser.uid).update({
-                linkedBank: { bank, accountNumber, accountHolder }
+                linkedIBAN: document.getElementById('ibanInput').value,
+                linkedPaypal: document.getElementById('paypalInput').value
             });
-            showToast('✅ Conta bancária vinculada com sucesso!', false);
+            showToast('✅ Configurações salvas!', false);
         });
     }
     
-    // ============================================
-    // TRANSFERÊNCIA
-    // ============================================
+    function openCameraForKYC() {
+        const modal = document.createElement('div');
+        modal.className = 'camera-modal';
+        modal.innerHTML = `
+            <div class="camera-container">
+                <div class="camera-preview"><video id="cameraVideo" autoplay playsinline></video></div>
+                <div style="display:flex; gap:12px; padding:20px;">
+                    <button id="capturePhotoBtn" class="btn-gold" style="flex:1;"><i class="fas fa-camera"></i> Tirar Foto</button>
+                    <button id="closeCameraBtn" class="btn-outline" style="flex:1;">Fechar</button>
+                </div>
+            </div>
+            <canvas id="photoCanvas" style="display:none;"></canvas>
+        `;
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
+        
+        const video = document.getElementById('cameraVideo');
+        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+            cameraStream = stream;
+            video.srcObject = stream;
+        }).catch(e => showToast('Erro na câmera: ' + e.message, true));
+        
+        document.getElementById('capturePhotoBtn').onclick = () => {
+            const canvas = document.getElementById('photoCanvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const imageData = canvas.toDataURL('image/jpeg');
+            if (cameraStream) cameraStream.getTracks().forEach(track => track.stop());
+            modal.remove();
+            confirmAndSubmitKYC(imageData);
+        };
+        document.getElementById('closeCameraBtn').onclick = () => {
+            if (cameraStream) cameraStream.getTracks().forEach(track => track.stop());
+            modal.remove();
+        };
+    }
+    
+    function confirmAndSubmitKYC(imageData) {
+        const confirmModal = document.createElement('div');
+        confirmModal.className = 'modal';
+        confirmModal.innerHTML = `
+            <div class="modal-content">
+                <h3 style="color:#d4af37;">Confirmar Documento</h3>
+                <img src="${imageData}" style="width:100%; border-radius:16px; margin:15px 0;">
+                <div style="display:flex; gap:12px;">
+                    <button id="confirmBtn" class="btn-gold">✅ Enviar</button>
+                    <button id="retakeBtn" class="btn-outline">📷 Tirar Novamente</button>
+                </div>
+            </div>`;
+        document.body.appendChild(confirmModal);
+        confirmModal.style.display = 'flex';
+        
+        document.getElementById('confirmBtn').onclick = async () => {
+            showToast('Documento enviado para análise', false);
+            await db.collection('kycRequests').add({
+                userId: currentUser.uid, userEmail: currentUser.email,
+                documentImage: imageData, status: 'pending',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            confirmModal.remove();
+        };
+        document.getElementById('retakeBtn').onclick = () => {
+            confirmModal.remove();
+            openCameraForKYC();
+        };
+    }
+    
     async function openTransferModal() {
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;"><i class="fas fa-paper-plane"></i> Transferir</h3>
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;">Transferir</h3>
             <input id="transferEmail" placeholder="Email do destinatário">
             <input id="transferAmount" type="number" placeholder="Valor">
             <select id="transferCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-            <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmTransfer" class="btn-gold">Enviar</button><button id="closeModal" class="btn-outline">Cancelar</button></div></div>`;
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button id="confirmTransfer" class="btn-gold">Enviar</button>
+                <button id="closeModal" class="btn-outline">Cancelar</button>
+            </div></div>`;
         document.body.appendChild(modal); modal.style.display = 'flex';
         
         document.getElementById('confirmTransfer').onclick = async () => {
@@ -699,67 +657,51 @@
             
             await db.collection('users').doc(targetUser.id).update({ balances: targetBalances });
             await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
-            
-            await sendEmailViaEmailJS(toEmail, 'Transferência Recebida - MAM Cash', `Você recebeu ${formatMoney(amount, currency)} de ${currentUser.email}`);
-            
-            showToast(`Transferência de ${formatMoney(amount, currency)} enviada.`, false);
+            showToast(`Transferência de ${formatMoney(amount, currency)} enviada`, false);
             modal.remove(); renderDashboard();
         };
         document.getElementById('closeModal').onclick = () => modal.remove();
     }
     
-    // ============================================
-    // SAQUE
-    // ============================================
-    async function openWithdrawModal() {
-        if (window.userKycStatus !== 'verified') {
-            showToast('Complete a verificação de identidade primeiro!', true);
-            return;
-        }
-        
+    async function openDepositModal() {
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;"><i class="fas fa-download"></i> Solicitar Saque</h3>
-            <input id="withdrawAmount" type="number" placeholder="Valor (mínimo 5000 Kz)">
-            <select id="withdrawCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
-            <p style="color:#b9a46b; margin-top:10px;">O valor será transferido para sua conta bancária vinculada.</p>
-            <div style="display:flex; gap:12px; margin-top:20px;"><button id="confirmWithdraw" class="btn-gold">Solicitar Saque</button><button id="closeWithdraw" class="btn-outline">Fechar</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#d4af37;">Depósito</h3>
+            <input id="depositAmount" type="number" placeholder="Valor">
+            <select id="depositCurrency"><option>AOA</option><option>USD</option><option>BRL</option></select>
+            <textarea id="depositProof" placeholder="Comprovativo" rows="3"></textarea>
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button id="sendDeposit" class="btn-gold">Solicitar</button>
+                <button id="closeDeposit" class="btn-outline">Fechar</button>
+            </div></div>`;
         document.body.appendChild(modal); modal.style.display = 'flex';
         
-        document.getElementById('confirmWithdraw').onclick = async () => {
-            const amount = parseFloat(document.getElementById('withdrawAmount').value);
-            const currency = document.getElementById('withdrawCurrency').value;
-            
-            if (isNaN(amount) || amount < 5000) { showToast('Valor mínimo: 5000 Kz', true); return; }
-            if (userBalances[currency] < amount) { showToast('Saldo insuficiente', true); return; }
-            
-            userBalances[currency] -= amount;
-            await db.collection('users').doc(currentUser.uid).update({ balances: userBalances });
-            
-            await sendEmailViaEmailJS(currentUser.email, 'Saque Solicitado - MAM Cash', `Foi solicitado um saque de ${formatMoney(amount, currency)}. O valor será creditado em até 48h.`);
-            
-            showToast(`✅ Saque de ${formatMoney(amount, currency)} solicitado com sucesso!`, false);
-            modal.remove(); renderDashboard();
+        document.getElementById('sendDeposit').onclick = async () => {
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+            const currency = document.getElementById('depositCurrency').value;
+            const proof = document.getElementById('depositProof').value;
+            if (isNaN(amount) || amount <= 0) { showToast('Valor inválido', true); return; }
+            await db.collection('deposits').add({
+                userId: currentUser.uid, userEmail: currentUser.email,
+                amount, currency, proof, status: 'pending',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast(`Pedido de depósito enviado`, false);
+            modal.remove();
         };
-        document.getElementById('closeWithdraw').onclick = () => modal.remove();
+        document.getElementById('closeDeposit').onclick = () => modal.remove();
     }
     
-    // ============================================
-    // LOGIN E REGISTRO
-    // ============================================
     function renderLogin() {
         const emailValue = preFilledEmail || '';
         const emailReadonly = preFilledEmail ? 'readonly' : '';
-        
         document.getElementById('appRoot').innerHTML = `
             <div style="max-width:460px; margin: 5vh auto; background:#12100b; border-radius:56px; padding:38px 28px; border:1px solid #d4af37;">
-                <div style="text-align:center;"><i class="fas fa-credit-card" style="font-size:3rem; color:#d4af37;"></i><h2 style="color:#d4af37;">MAM Cash</h2><p style="color:#b99f5a;">Cartão Visa Oficial • Palanca Negra</p></div>
-                <div id="loginView">
-                    <input id="loginEmail" placeholder="Email" value="${emailValue}" ${emailReadonly} style="width:100%; margin:16px 0 12px; padding:14px; background:#2a241b; border-radius:60px; color:white;">
-                    <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha" style="width:100%; padding:14px; background:#2a241b; border-radius:60px;"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
-                    <button id="doLogin" class="btn-gold" style="width:100%; margin-top:16px;">Entrar</button>
-                    <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
-                    <div id="forgotPasswordBtn" style="text-align:center; margin-top:16px; cursor:pointer; color:#d4af37;"><i class="fas fa-key"></i> Esqueci minha senha</div>
-                </div>
+                <div style="text-align:center;"><i class="fas fa-credit-card" style="font-size:3rem; color:#d4af37;"></i><h2 style="color:#d4af37;">MAM Cash</h2></div>
+                <input id="loginEmail" placeholder="Email" value="${emailValue}" ${emailReadonly} style="width:100%; margin:16px 0 12px; padding:14px; background:#2a241b; border-radius:60px; color:white;">
+                <div class="password-wrapper"><input id="loginPassword" type="password" placeholder="Senha" style="width:100%; padding:14px; background:#2a241b; border-radius:60px;"><button type="button" id="toggleLoginPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                <button id="doLogin" class="btn-gold" style="width:100%; margin-top:16px;">Entrar</button>
+                <button id="goToRegister" class="btn-outline" style="width:100%; margin-top:12px;">Criar Conta</button>
+                <div id="forgotPasswordBtn" style="text-align:center; margin-top:16px; cursor:pointer; color:#d4af37;">Esqueci minha senha</div>
             </div>`;
         
         document.getElementById('toggleLoginPass')?.addEventListener('click', () => { const inp = document.getElementById('loginPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
@@ -773,7 +715,7 @@
         document.getElementById('goToRegister').onclick = () => renderRegister();
         document.getElementById('forgotPasswordBtn').onclick = () => {
             const email = document.getElementById('loginEmail').value;
-            if (email) auth.sendPasswordResetEmail(email).then(() => showToast('Email de recuperação enviado!')).catch(e => showToast(e.message, true));
+            if (email) auth.sendPasswordResetEmail(email).then(() => showToast('Email enviado!')).catch(e => showToast(e.message, true));
             else showToast('Digite seu email', true);
         };
     }
@@ -781,23 +723,22 @@
     function renderRegister() {
         const emailValue = preFilledEmail || '';
         const emailReadonly = preFilledEmail ? 'readonly' : '';
-        let countryOptions = countriesWithCodes.map(c => `<option value="${c.name}" ${c.name === 'Angola' ? 'selected' : ''}>${c.name}</option>`).join('');
+        let codeOptions = countryCodes.map(c => `<option value="${c.code}" ${c.code === '+244' ? 'selected' : ''}>${c.code} (${c.country})</option>`).join('');
         
         document.getElementById('appRoot').innerHTML = `
             <div style="max-width:480px; margin: 3vh auto; background:#12100b; border-radius:56px; padding:32px 28px; border:1px solid #d4af37;">
                 <h2 style="color:#d4af37; text-align:center;">Criar Conta</h2>
-                <input id="regFirstName" placeholder="Nome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
-                <input id="regLastName" placeholder="Sobrenome" style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
-                <input id="regEmail" placeholder="Email" value="${emailValue}" ${emailReadonly} style="width:100%; margin:8px 0; padding:12px; background:#2a241b; border-radius:60px;">
-                <select id="regCountry" class="country-select">${countryOptions}</select>
-                <div class="phone-container">
-                    <span id="phoneCode" class="phone-code">+244</span>
-                    <input id="regPhone" class="phone-number" placeholder="999 999 999">
+                <input id="regFirstName" placeholder="Nome">
+                <input id="regLastName" placeholder="Sobrenome">
+                <input id="regEmail" placeholder="Email" value="${emailValue}" ${emailReadonly}>
+                <div class="phone-group">
+                    <select id="regCountryCode" class="country-code-select">${codeOptions}</select>
+                    <input id="regPhone" class="phone-input" placeholder="Número de telefone">
                 </div>
                 <div class="password-wrapper"><input id="regPassword" type="password" placeholder="Senha (min 6)"><button type="button" id="toggleRegPass" class="toggle-password"><i class="fas fa-eye"></i></button></div>
                 <div class="password-wrapper"><input id="regConfirmPassword" type="password" placeholder="Confirmar Senha"><button type="button" id="toggleRegConfirm" class="toggle-password"><i class="fas fa-eye"></i></button></div>
                 <button id="doRegister" class="btn-gold" style="width:100%; margin-top:16px;">Registrar</button>
-                <button id="backToLogin" class="btn-outline" style="width:100%; margin-top:12px;">Voltar ao Login</button>
+                <button id="backToLogin" class="btn-outline" style="width:100%; margin-top:12px;">Voltar</button>
             </div>`;
         
         document.getElementById('toggleRegPass')?.addEventListener('click', () => { const inp = document.getElementById('regPassword'); inp.type = inp.type === 'password' ? 'text' : 'password'; });
@@ -807,9 +748,9 @@
             const firstName = document.getElementById('regFirstName').value;
             const lastName = document.getElementById('regLastName').value;
             const email = document.getElementById('regEmail').value;
-            const phoneCode = document.getElementById('phoneCode').innerText;
+            const countryCode = document.getElementById('regCountryCode').value;
             const phoneNumber = document.getElementById('regPhone').value;
-            const fullPhone = `${phoneCode} ${phoneNumber}`;
+            const fullPhone = `${countryCode} ${phoneNumber}`;
             const password = document.getElementById('regPassword').value;
             const confirm = document.getElementById('regConfirmPassword').value;
             
@@ -819,29 +760,21 @@
             
             try {
                 const userCred = await auth.createUserWithEmailAndPassword(email, password);
+                const cardData = { number: generateCardNumber(), cvv: generateCVV(), expiry: EXPIRY_DATE };
                 await db.collection('users').doc(userCred.user.uid).set({
                     firstName, lastName, email, phone: fullPhone,
                     balances: { AOA: isFromDistribuidora ? 50000 : 0, USD: 0, BRL: 0 },
+                    cardData: cardData, cardActivated: true,
                     kycStatus: isFromDistribuidora ? 'verified' : 'pending',
-                    linkedIBAN: '', linkedBank: null,
                     isDistribuidoraUser: isFromDistribuidora,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
-                if (isFromDistribuidora) {
-                    await sendEmailViaEmailJS(email, 'Bem-vindo à MAM Cash', `Olá ${firstName}, seu cartão Visa MAM Cash já está ativo! Aproveite os benefícios exclusivos.`);
-                }
-                
-                showToast(isFromDistribuidora ? '✅ Conta criada! Seu cartão já está ativo.' : 'Conta criada! Verifique sua identidade.', false);
+                showToast(isFromDistribuidora ? '✅ Conta criada com cartão ativo!' : 'Conta criada!', false);
                 isDistribuidoraUser = isFromDistribuidora;
                 renderDashboard();
             } catch(e) { showToast(e.message, true); }
         };
         document.getElementById('backToLogin').onclick = () => renderLogin();
-        document.getElementById('regCountry').addEventListener('change', (e) => {
-            const country = countriesWithCodes.find(c => c.name === e.target.value);
-            if (country) document.getElementById('phoneCode').innerText = country.code;
-        });
     }
     
     auth.onAuthStateChanged(async user => {
